@@ -12,8 +12,9 @@ Nagi:
 - **the runtime**: understanding, a reasoning engine, code mode, and layered
   memory
 - **the hooks**: a stable way for anyone's data and code to plug in
-- **a small curriculum**: enough to bootstrap, demonstrate, and test the
-  above
+- **a default curriculum, t0 to t5**: the common knowledge a child has by
+  age five, so every Nagi starts out knowing the everyday world (see
+  [The default curriculum](#the-default-curriculum-t0t5))
 
 Everything else, like reminders, calendars, weather or wiki parsing, is a
 plugin. A plugin can live anywhere, and the repo keeps only a few in
@@ -29,10 +30,11 @@ plugin. A plugin can live anywhere, and the repo keeps only a few in
 | reasoning engine: traces, contract planner, TLA+ subset | domain TLA+ specs |
 | memory layers, forks, packages | shared memory packages |
 | eval harness, permissions, audit log | permissions they request |
-| t0 curriculum: how to learn, greet, small talk, learning in chat | everything past t0 |
+| t0–t5 curriculum: what a five-year-old knows, and the small modules it needs (numbers, calendar words, knowledge lookup) | specialist knowledge and adult skills |
 
 The test for adding something to core: does it help Nagi *learn*, or is it
-needed for Nagi to be Nagi? If it's a skill, it's a plugin.
+needed for Nagi to be Nagi? Knowing what a five-year-old knows is part of
+being Nagi. Running your calendar is a skill, so it's a plugin.
 
 ## Order of work
 
@@ -55,6 +57,9 @@ Each step unblocks the next. ✅ done, ▶ next.
    state spaces, check and recover.
 8. **Finish t0**: the small talk every Nagi needs, taught with the
    machinery above.
+9. **t1–t5**: common knowledge up to age five. Each tier lands once the
+   machinery it needs exists (see the table below), so the curriculum also
+   tests that machinery.
 
 ## 1. Learning kernel ✅
 
@@ -215,6 +220,38 @@ special cases.
 Exit: the t0 eval passes, noisy variants included, with every intent
 competing.
 
+## The default curriculum: t0–t5
+
+Tiers follow a child's first five years. Each tier teaches common
+knowledge, never trivia, and ships an eval that reads like a quiz for a
+child of that age. A tier needs certain machinery, so it lands only after
+that machinery exists. The knowledge itself is data, written as plain
+sentences or simple records, so it doubles as the reference for how users
+teach Nagi their own world.
+
+| Tier | Age | What Nagi learns | Needs | Sample eval |
+|---|---|---|---|---|
+| **t0** | 0–1 | how to learn; greetings, farewells, thanks, sorry, yes/no; "who are you"; being taught in chat | kernel ✅, evals, conversation | "bye!" → a farewell |
+| **t1** | 1–2 | words for things: family, body parts, animals and their sounds, food, toys, clothes; basic needs (hungry, tired) | facts (`learn.fact`), pattern learners, knowledge lookup | "what does a cow say?" → "Moo!" |
+| **t2** | 2–3 | colors, shapes, big/small, hot/cold and other opposites, counting to 10, feelings, my name and age, daily routines | slots, numbers module, personal facts | "what color is grass?" → "Green." |
+| **t3** | 3–4 | counting to 20; adding within 5; morning/afternoon/night; weather; in/on/under; categories ("is a whale a fish?"); helpers (doctor, firefighter); safety rules | rules and inference, typed thoughts | "is a whale a fish?" → "No, it's a mammal." |
+| **t4** | 4–5 | the alphabet; rhymes; days of the week; seasons; what comes next in a sequence; where animals live; how plants grow; washing hands and why; following two- or three-step instructions | sequences and planning in code, the inbox for gaps | "what comes after Tuesday?" → "Wednesday." |
+| **t5** | 5 | counting to 100; adding and taking away within 10; yesterday, today, tomorrow; telling time on the hour; left and right; simple cause and effect ("if it rains, take an umbrella"); fairness and taking turns; the rules of simple games | the reasoning engine: rules, planning, TLA+ for game rules | "I have 3 apples and eat 1. How many left?" → "2." |
+
+Rules for the curriculum:
+- **Knowledge is data**: facts, rules and specs go in assets. Core gets only
+  the small, generic modules a five-year-old's knowledge needs (`numbers`,
+  `calendar` words, `knowledge` lookup), never a module per topic.
+- **Answers show their reasoning**: from t3 on, answers come with typed
+  thoughts ("a whale breathes air and feeds milk to its young → mammal"),
+  so the curriculum also teaches *how* to reason.
+- **Safe by design**: the curriculum covers safety rules (hot stoves,
+  crossing the street) and never asks for or stores personal details
+  beyond what the user chooses to teach.
+- **Measured like a child**: each tier's eval is a quiz. A tier is done
+  when Nagi passes it, noisy variants included, without regressing the
+  tiers below.
+
 ## Cross-cutting
 
 **Scale**. These are done when evals show they are needed, but the design
@@ -263,3 +300,7 @@ Before step 7:
    stay valid for TLC.
 8. **Contract types**: a fixed core set (`Text`, `Date`, `Number`, …) that
    plugins extend.
+
+Before step 9:
+9. **Fact format**: plain sentences read by pattern learners, structured
+   records, or both, and how a fact links to the tier that taught it.
