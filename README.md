@@ -167,8 +167,9 @@ Three separate stages, one module each:
 2. **Intent capture** (`intent.py`). Each response's prompts form a bigram
    model of token sequences. Every response whose model fits what you say
    well enough is captured, skipping untaught words at a cost (so "hey
-   nagi" still fits); fitting means at least −4.7 bits (log₂ probability)
-   per word.
+   nagi" still fits). Words weigh by how much they tell intents apart, as
+   in TF-IDF: "spanish" counts for more than "how". Fitting means at least
+   −5.2 bits (log₂ probability) per unit of weight.
 3. **Generate** (`generate.py`). Of the captured responses with value ≥ 0,
    run the best fitting program, or say `...?`. Responses taught the same
    prompts fit equally, so preference (value) decides between them.

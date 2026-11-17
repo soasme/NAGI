@@ -18,6 +18,7 @@ from pathlib import Path
 
 from nagi.brain import Brain
 from nagi.generate import choose
+from nagi.intent import weigh
 from nagi.plugins import curriculum
 from nagi.tokens import tokenize
 
@@ -60,7 +61,7 @@ def main() -> None:
         heard = tokenize(text, brain.ranks)
         name, _ = brain.understand(text)
         right += name is not None and brain.memory["responses"][name]["code"] == code(intent)
-        nearest = choose(brain.responses, {n: i.read(heard) for n, i in brain.intents.items()})
+        nearest = choose(brain.responses, {n: i.read(heard, weigh(brain.intents, heard)) for n, i in brain.intents.items()})
         best += brain.memory["responses"][nearest]["code"] == code(intent)
     rejected = sum(brain.understand(text)[0] is None for text, _ in clinc["oos_test"])
     print(f"read {len(clinc['test']) + len(clinc['oos_test'])} in {time.time() - start:.0f}s")
