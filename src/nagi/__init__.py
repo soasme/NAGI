@@ -76,9 +76,11 @@ def main(argv: list[str] | None = None) -> None:
                 parser.exit(1)
         elif args.command == "respond":
             show(brain.respond(" ".join(args.words)), args.think)
+            brain.save(args.memory)
         else:
             while True:
                 show(brain.respond(input("> ")), args.think)
+                brain.save(args.memory)
     except (EOFError, KeyboardInterrupt):
         print()
     except (ValueError, OSError) as error:

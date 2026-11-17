@@ -248,6 +248,22 @@ def test_eval_does_not_teach():
     assert json.dumps(brain.memory) == before
 
 
+def test_residue_is_what_was_not_part_of_the_intent():
+    brain = greeter()
+    assert brain.respond("Hey, Nagi!").residue == ["Nagi"]
+    assert brain.respond("hello").residue == []
+    assert brain.respond("what time is it?").residue == ["what", "time", "is", "it"]
+
+
+def test_state_is_kept_between_turns():
+    brain = greeter()
+    turn = brain.respond("hello")
+    turn.state.setdefault("count", 0)
+    turn.state["count"] += 1
+    assert brain.respond("hello").state == {"count": 1}
+    assert brain.memory["state"] == {"count": 1}
+
+
 def test_replies_fit_what_was_heard():
     brain = greeter()
     assert brain.respond("good evening", MORNING).said == ["Good morning!"]

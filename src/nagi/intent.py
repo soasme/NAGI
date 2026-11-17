@@ -2,6 +2,7 @@
 
 import math
 from collections import Counter
+from dataclasses import dataclass
 
 SKIP = math.log2(0.01)  # bits to ignore a word, like the name in "hey nagi"
 UNSEEN = math.log2(0.0001)  # bits for a token transition never heard
@@ -24,23 +25,34 @@ class Intent:
         n = self.bigrams[a, b]
         return math.log2(n / self.following[a]) if n else UNSEEN
 
-    def score(self, heard: list[list[str]]) -> float:
-        """Bits per word of the most probable reading, skipping words as needed."""
-        paths = {"<s>": 0.0}  # last token kept -> best bits so far
-        for word in heard:
-            extended: dict[str, float] = {}
-            for last, total in paths.items():
-                extended[last] = max(extended.get(last, -math.inf), total + SKIP)
+    def read(self, heard: list[list[str]]) -> "Fit":
+        """The most probable reading, skipping words as needed."""
+        paths = {"<s>": (0.0, ())}  # last token kept -> (best bits so far, positions skipped)
+        for at, word in enumerate(heard):
+            extended: dict[str, tuple[float, tuple[int, ...]]] = {}
+
+            def offer(last: str, total: float, skipped: tuple[int, ...]) -> None:
+                if last not in extended or total > extended[last][0]:
+                    extended[last] = (total, skipped)
+
+            for last, (total, skipped) in paths.items():
+                offer(last, total + SKIP, (*skipped, at))
                 for token in word:
                     total += self.bits(last, token)
                     last = token
-                extended[last] = max(extended.get(last, -math.inf), total)
+                offer(last, total, skipped)
             paths = extended
-        best = max(total + self.bits(last, "</s>") for last, total in paths.items())
-        return best / (len(heard) + 1)
+        total, skipped = max((total + self.bits(last, "</s>"), skipped) for last, (total, skipped) in paths.items())
+        return Fit(total / (len(heard) + 1), list(skipped))
 
 
-def capture(intents: dict[str, Intent], heard: list[list[str]]) -> dict[str, float]:
-    """Every intent that fits what was heard, with its score."""
-    scores = {name: intent.score(heard) for name, intent in intents.items()}
-    return {name: score for name, score in scores.items() if score >= THRESHOLD}
+@dataclass
+class Fit:
+    score: float  # bits per word
+    skipped: list[int]  # positions of the words read as not part of the intent
+
+
+def capture(intents: dict[str, Intent], heard: list[list[str]]) -> dict[str, Fit]:
+    """Every intent that fits what was heard."""
+    fits = {name: intent.read(heard) for name, intent in intents.items()}
+    return {name: fit for name, fit in fits.items() if fit.score >= THRESHOLD}

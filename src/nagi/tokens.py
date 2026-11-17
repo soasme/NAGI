@@ -7,10 +7,19 @@ from collections import Counter
 Ranks = dict[tuple[str, str], int]
 
 
+def said(text: str) -> list[str]:
+    """The words as said, without surrounding punctuation, one per word Nagi reads."""
+    return [re.sub(r"^\W+|\W+$", "", word) for word in text.split() if normalize(word)]
+
+
 def words(text: str) -> list[str]:
-    text = re.sub(r"[^\w\s]", "", text.lower())
-    text = re.sub(r"(.)\1{2,}", r"\1", text)  # "hiii" -> "hi"
-    return [" " + word for word in text.split()]
+    """The words as Nagi reads them: lowercase, no punctuation, " "-prefixed."""
+    return [" " + normal for word in text.split() if (normal := normalize(word))]
+
+
+def normalize(word: str) -> str:
+    word = re.sub(r"[^\w]", "", word.lower())
+    return re.sub(r"(.)\1{2,}", r"\1", word)  # "hiii" -> "hi"
 
 
 def merge(parts: list[str], pair: tuple[str, str]) -> list[str]:

@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 from nagi.code import Program, Turn
+from nagi.intent import Fit
 
 CONFUSED = "...?"
 
@@ -14,9 +15,9 @@ class Response:
     value: float  # preference learned from DPO and RLHF; below zero is never chosen
 
 
-def choose(responses: dict[str, Response], fits: dict[str, float]) -> str | None:
+def choose(responses: dict[str, Response], fits: dict[str, Fit]) -> str | None:
     """The best fit; among equal fits, such as responses taught the same prompts, the most valued."""
-    candidates = [(score, responses[name].value, name) for name, score in fits.items() if responses[name].value >= 0]
+    candidates = [(fit.score, responses[name].value, name) for name, fit in fits.items() if responses[name].value >= 0]
     return max(candidates)[2] if candidates else None
 
 

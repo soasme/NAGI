@@ -6,13 +6,14 @@ lesson teaches the learners for SFT, DPO and RLHF records, and every
 completion they teach is ``{"think": "...", "code": "..."}``: an optional
 chain of thought, then a code-mode program (see ``nagi.code``).
 
-Memory keeps the learners, and one entry per distinct completion with the
-weight of each prompt toward it and its value::
+Memory keeps the learners, one entry per distinct completion with the
+weight of each prompt toward it and its value, and the modules' state::
 
     {"version": 2,
      "learners": {"sft": {"shape": {...}, "code": "..."}},
      "responses": {"<id>": {"think": "...", "code": "...",
-                            "prompts": {"hi": 1}, "value": 0}}}
+                            "prompts": {"hi": 1}, "value": 0}},
+     "state": {"todo": ["oat milk"]}}
 
 Responding is three separate stages: token in, intent capture, generate.
 """
@@ -26,7 +27,7 @@ from nagi.code import Program, Turn
 from nagi.generate import Response, choose, generate
 from nagi.intent import Intent, capture
 from nagi.learning import Learner, Lesson
-from nagi.tokens import tokenize, train
+from nagi.tokens import said, tokenize, train
 
 VERSION = 2
 
@@ -34,6 +35,7 @@ VERSION = 2
 class Brain:
     def __init__(self, memory: dict | None = None):
         self.memory = memory or {"version": VERSION, "learners": {}, "responses": {}}
+        self.memory.setdefault("state", {})
         self.fit()
 
     def fit(self) -> None:
@@ -96,14 +98,17 @@ class Brain:
             self.memory["responses"][name] = {"think": think, "code": code, "prompts": {}, "value": 0}
         return self.memory["responses"][name]
 
-    def choose(self, text: str) -> str | None:
-        """The response Nagi would give: token in, then intent capture."""
-        heard = tokenize(text, self.ranks)
-        return choose(self.responses, capture(self.intents, heard))
+    def understand(self, text: str) -> tuple[str | None, list[str]]:
+        """The response Nagi would give, and the words it read as not part of it."""
+        fits = capture(self.intents, tokenize(text, self.ranks))
+        name = choose(self.responses, fits)
+        words = said(text)
+        return name, [words[at] for at in fits[name].skipped] if name else words
 
     def respond(self, text: str, now: datetime | None = None) -> Turn:
-        name = self.choose(text)
-        return generate(self.responses.get(name), Turn(text, now or datetime.now()))
+        name, residue = self.understand(text)
+        turn = Turn(text, now or datetime.now(), residue=residue, state=self.memory["state"])
+        return generate(self.responses.get(name), turn)
 
     @classmethod
     def load(cls, path: Path) -> "Brain":

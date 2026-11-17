@@ -27,11 +27,19 @@ from nagi import plugins
 
 @dataclass
 class Turn:
-    """One exchange: what Nagi heard, and what it thought and said."""
+    """One exchange: what Nagi heard, and what it thought and said.
+
+    ``residue`` holds the words Nagi read as not part of the intent, as said:
+    in "add oat milk to my list" taught as "add to my list", ``["oat",
+    "milk"]``. ``state`` is kept in memory between turns; each module keeps
+    its data under its own name, as in ``turn.state.setdefault("todo", [])``.
+    """
 
     heard: str
     now: datetime = field(default_factory=datetime.now)
     random: Random = field(default_factory=Random)
+    residue: list[str] = field(default_factory=list)
+    state: dict = field(default_factory=dict)
     thoughts: list[str] = field(default_factory=list)
     said: list[str] = field(default_factory=list)
 
