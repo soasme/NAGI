@@ -1,0 +1,3 @@
+{"learner": "sft", "shape": {"prompt": "text", "completion": "completion"}, "code": "learn.prompt(record.prompt, record.completion, 1)"}
+{"learner": "dpo", "shape": {"prompt": "text", "chosen": "completion", "rejected": "completion"}, "code": "learn.prompt(record.prompt, record.chosen, 1)\nlearn.prompt(record.prompt, record.rejected, -1)\nlearn.value(record.chosen, 1)\nlearn.value(record.rejected, -1)"}
+{"learner": "rlhf", "shape": {"prompt": "text", "completion": "completion", "reward": "number"}, "code": "learn.prompt(record.prompt, record.completion, record.reward)\nlearn.value(record.completion, record.reward)"}

@@ -1,21 +1,18 @@
-"""Learn from SFT, DPO and RLHF records, remember, and respond.
+"""Learn, remember, and respond.
 
-A teaching asset is JSON Lines. Each record is one of::
-
-    {"prompt": "hi", "completion": C}                     # SFT: do this
-    {"prompt": "hi", "chosen": C, "rejected": C}          # DPO: this, not that
-    {"prompt": "hi", "completion": C, "reward": 1.0}      # RLHF: that was this good
-
-and every completion ``C`` is ``{"think": "...", "code": "..."}``: an optional
+A teaching asset is JSON Lines. A newborn Nagi knows how to learn only one
+kind of record, a learner (see ``nagi.learning``). The curriculum's first
+lesson teaches the learners for SFT, DPO and RLHF records, and every
+completion they teach is ``{"think": "...", "code": "..."}``: an optional
 chain of thought, then a code-mode program (see ``nagi.code``).
 
-A prompt shown to a completion teaches Nagi to recognize it: SFT, DPO's chosen
-and positively rewarded RLHF do. Preferences move the completion's value: DPO
-by +1 for chosen and -1 for rejected, RLHF by its reward. Repeating a lesson
-reinforces it. Memory keeps one entry per distinct completion::
+Memory keeps the learners, and one entry per distinct completion with the
+weight of each prompt toward it and its value::
 
-    {"responses": {"<id>": {"think": "...", "code": "...",
-                            "prompts": ["hi"], "value": 1.0}}}
+    {"version": 2,
+     "learners": {"sft": {"shape": {...}, "code": "..."}},
+     "responses": {"<id>": {"think": "...", "code": "...",
+                            "prompts": {"hi": 1}, "value": 0}}}
 
 Responding is three separate stages: token in, intent capture, generate.
 """
@@ -28,54 +25,76 @@ from pathlib import Path
 from nagi.code import Program, Turn
 from nagi.generate import Response, generate
 from nagi.intent import Intent, capture
+from nagi.learning import Learner, Lesson
 from nagi.tokens import tokenize, train
 
-
-def response_id(completion: dict) -> str:
-    return hashlib.sha1(json.dumps([completion["think"], completion["code"]]).encode()).hexdigest()[:12]
+VERSION = 2
 
 
 class Brain:
     def __init__(self, memory: dict | None = None):
-        self.memory = memory or {"responses": {}}
+        self.memory = memory or {"version": VERSION, "learners": {}, "responses": {}}
         self.fit()
 
     def fit(self) -> None:
-        responses = self.memory["responses"]
-        self.ranks = train([prompt for r in responses.values() for prompt in r["prompts"]])
-        self.intents = {
-            name: Intent([tokenize(prompt, self.ranks) for prompt in r["prompts"]])
-            for name, r in responses.items()
-            if r["prompts"]
+        self.learners = {name: Learner(**learner) for name, learner in self.memory["learners"].items()}
+        recognized = {
+            name: [prompt for prompt, weight in r["prompts"].items() if weight > 0]
+            for name, r in self.memory["responses"].items()
         }
-        self.responses = {name: Response(r["think"], Program(r["code"]), r["value"]) for name, r in responses.items()}
+        self.ranks = train([prompt for prompts in recognized.values() for prompt in prompts])
+        self.intents = {
+            name: Intent([tokenize(prompt, self.ranks) for prompt in prompts])
+            for name, prompts in recognized.items()
+            if prompts
+        }
+        self.responses = {
+            name: Response(r["think"], Program(r["code"]), r["value"]) for name, r in self.memory["responses"].items()
+        }
 
     def learn(self, text: str) -> int:
         learned = 0
         for number, line in enumerate(text.splitlines(), 1):
             if not line.strip():
                 continue
-            match json.loads(line):
-                case {"prompt": str(prompt), "chosen": {"code": str()} as chosen, "rejected": {"code": str()} as rejected}:
-                    self.teach(prompt, chosen, 1.0)
-                    self.teach(None, rejected, -1.0)
-                case {"prompt": str(prompt), "completion": {"code": str()} as completion, "reward": int() | float() as reward}:
-                    self.teach(prompt if reward > 0 else None, completion, reward)
-                case {"prompt": str(prompt), "completion": {"code": str()} as completion}:
-                    self.teach(prompt, completion, 0.0)
-                case _:
-                    raise ValueError(f"line {number}: not an SFT, DPO or RLHF record")
+            record = json.loads(line)
+            lesson = Lesson(self, record)
+            try:
+                if isinstance(record, dict) and "learner" in record:
+                    self.teach_learner(record)
+                else:
+                    self.learner_for(record).program(lesson)
+            except ValueError as error:
+                raise ValueError(f"line {number}: {error}") from error
             learned += 1
         self.fit()
         return learned
 
-    def teach(self, prompt: str | None, completion: dict, reward: float) -> None:
-        completion = {"think": completion.get("think", ""), "code": completion["code"]}
-        Program(completion["code"])  # reject bad code before remembering it
-        known = self.memory["responses"].setdefault(response_id(completion), {**completion, "prompts": [], "value": 0.0})
-        if prompt is not None and prompt not in known["prompts"]:
-            known["prompts"].append(prompt)
-        known["value"] += reward
+    def learner_for(self, record) -> Learner:
+        if isinstance(record, dict):
+            for learner in reversed(self.learners.values()):
+                if learner.fits(record):
+                    return learner
+        raise ValueError("no learner knows this kind of record yet")
+
+    def teach_learner(self, record: dict) -> None:
+        match record:
+            case {"learner": str(name), "shape": shape, "code": str(code)} if len(record) == 3:
+                self.learners.pop(name, None)
+                self.learners[name] = Learner(shape, code)
+                self.memory["learners"].pop(name, None)
+                self.memory["learners"][name] = {"shape": shape, "code": code}
+            case _:
+                raise ValueError('a learner is {"learner": name, "shape": {...}, "code": "..."}')
+
+    def remember(self, completion: dict) -> dict:
+        """The memory entry for a completion, made on first sight."""
+        think, code = completion.get("think", ""), completion["code"]
+        name = hashlib.sha1(json.dumps([think, code]).encode()).hexdigest()[:12]
+        if name not in self.memory["responses"]:
+            Program(code)  # reject bad code before remembering it
+            self.memory["responses"][name] = {"think": think, "code": code, "prompts": {}, "value": 0}
+        return self.memory["responses"][name]
 
     def respond(self, text: str, now: datetime | None = None) -> Turn:
         turn = Turn(text, now or datetime.now())
@@ -85,7 +104,12 @@ class Brain:
 
     @classmethod
     def load(cls, path: Path) -> "Brain":
-        return cls(json.loads(path.read_text()) if path.exists() else None)
+        if not path.exists():
+            return cls()
+        memory = json.loads(path.read_text())
+        if memory.get("version") != VERSION:
+            raise ValueError(f"{path} is an older memory format; remove it and run `nagi learn` again")
+        return cls(memory)
 
     def save(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,2 +1,3 @@
-{"prompt": "good morning", "chosen": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}
-{"prompt": "hi", "chosen": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}
+{"prompt": "good morning", "chosen": {"think": "They greet me by the time of day. Greet back with the time it really is.", "code": "speech.say(greeting.time_of_day())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}
+{"prompt": "hi", "chosen": {"think": "They are greeting me. Greet them back.", "code": "speech.say(greeting.hello())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}
+{"prompt": "how are you", "chosen": {"think": "They greet me and ask how I am. Greet back, then say how I am.", "code": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}, "rejected": {"think": "They are greeting me. Greet them back.", "code": "speech.say(greeting.hello())"}}

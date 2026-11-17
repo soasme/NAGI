@@ -37,16 +37,18 @@ def main(argv: list[str] | None = None) -> None:
         command.add_argument("--think", action="store_true", help="show the chain of thought")
     args = parser.parse_args(argv)
 
-    brain = Brain.load(args.memory)
-    if args.command == "learn":
-        for asset in args.assets or curriculum():
-            print(f"learned {brain.learn(asset.read_text())} records from {asset.name}")
-        brain.save(args.memory)
-    elif args.command == "respond":
-        show(brain.respond(" ".join(args.words)), args.think)
-    else:
-        try:
+    try:
+        brain = Brain.load(args.memory)
+        if args.command == "learn":
+            for asset in args.assets or curriculum():
+                print(f"learned {brain.learn(asset.read_text())} records from {asset.name}")
+            brain.save(args.memory)
+        elif args.command == "respond":
+            show(brain.respond(" ".join(args.words)), args.think)
+        else:
             while True:
                 show(brain.respond(input("> ")), args.think)
-        except (EOFError, KeyboardInterrupt):
-            print()
+    except (EOFError, KeyboardInterrupt):
+        print()
+    except ValueError as error:
+        parser.exit(1, f"nagi: {error}\n")

@@ -15,8 +15,8 @@ class Response:
 
 
 def generate(responses: dict[str, Response], fits: dict[str, float], turn: Turn) -> Turn:
-    """Prefer higher value, then a better fit."""
-    candidates = [(responses[name].value, score, name) for name, score in fits.items() if responses[name].value >= 0]
+    """The best fit; among equal fits, such as responses taught the same prompts, the most valued."""
+    candidates = [(score, responses[name].value, name) for name, score in fits.items() if responses[name].value >= 0]
     if not candidates:
         turn.said.append(CONFUSED)
         return turn
