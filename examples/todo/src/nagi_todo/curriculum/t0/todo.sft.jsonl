@@ -1,0 +1,41 @@
+{"prompt": "add to my list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "add to my todo list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "add to the list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "put on my list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "put on my todo list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "put on the list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "remember to", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "i need to", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "add", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "what's on my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "what's on my todo list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "show my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "show my todo list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "read my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "read me my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "what do i need to do", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "list my todos", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "cross off my list", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "cross off", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "remove from my list", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "take off my list", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "check off", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "i did", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "i finished", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "done with", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "clear my list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "clear my todo list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "empty my list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "delete my list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "start a new list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "please add to my list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "add to my list please", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "add to the list please", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "could you add to my list", "completion": {"think": "They want something on their list.", "code": "speech.say(todo.add())"}}
+{"prompt": "what's on my list please", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "can you read my list", "completion": {"think": "They want to hear their list.", "code": "speech.say(todo.show())"}}
+{"prompt": "please cross off my list", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "cross off my list please", "completion": {"think": "They finished something on their list.", "code": "speech.say(todo.done())"}}
+{"prompt": "please clear my list", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}
+{"prompt": "clear my list please", "completion": {"think": "They want an empty list.", "code": "speech.say(todo.clear())"}}

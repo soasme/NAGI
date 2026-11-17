@@ -2,6 +2,12 @@ version = 1
 revision = 3
 requires-python = ">=3.12"
 
+[manifest]
+members = [
+    "nagi",
+    "nagi-todo",
+]
+
 [[package]]
 name = "colorama"
 version = "0.4.6"
@@ -27,13 +33,36 @@ source = { editable = "." }
 
 [package.dev-dependencies]
 dev = [
+    { name = "nagi-todo" },
     { name = "pytest" },
 ]
 
 [package.metadata]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=9.2.0" }]
+dev = [
+    { name = "nagi-todo", editable = "examples/todo" },
+    { name = "pytest", specifier = ">=9.2.0" },
+]
+
+[[package]]
+name = "nagi-todo"
+version = "0.1.0"
+source = { editable = "examples/todo" }
+dependencies = [
+    { name = "nagi" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "nagi", editable = "." }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest" }]
 
 [[package]]
 name = "packaging"

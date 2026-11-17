@@ -135,6 +135,10 @@ Start one with `nagi new NAME`: it creates a package with a module, a
 curriculum with a teaching asset and an eval, and a test that learns and
 checks it, all passing from the first `uv run pytest`.
 
+[`examples/todo`](examples/todo) is a complete plugin built this way: a
+todo list whose items come from the words Nagi wasn't taught
+(`turn.residue`) and whose list persists in `turn.state`.
+
 Module and curriculum names share one namespace; two packages registering
 the same name is an error. Plugin code builds on `nagi.api`, which stays
 stable within a major `VERSION`.

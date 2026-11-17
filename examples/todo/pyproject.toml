@@ -1,0 +1,22 @@
+[project]
+name = "nagi-todo"
+version = "0.1.0"
+description = "A Nagi plugin: a todo list, as an example of extending Nagi"
+requires-python = ">=3.12"
+dependencies = ["nagi"]
+
+[project.entry-points."nagi.modules"]
+todo = "nagi_todo"
+
+[project.entry-points."nagi.curricula"]
+todo = "nagi_todo.curriculum"
+
+[build-system]
+requires = ["uv_build>=0.10.6,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv.sources]
+nagi = { workspace = true }

@@ -27,4 +27,14 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "pytest>=9.2.0",
+    "nagi-todo",
 ]
+
+[tool.uv.workspace]
+members = ["examples/*"]
+
+[tool.uv.sources]
+nagi-todo = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "examples"]
