@@ -82,5 +82,8 @@ class Program:
                 found = plugins.module(module, learner=self.learning)
                 if name in getattr(found, "__all__", ()):
                     return getattr(found, name)
-        who = "a learner" if self.learning else "a response"
-        raise ValueError(f"not a Nagi module function {who} may call: {ast.unparse(node)}")
+        who, group = ("a learner", "learning") if self.learning else ("a response", "module")
+        raise ValueError(
+            f"not a function {who} may call: {ast.unparse(node)} "
+            f"(is it in the {group} list of `nagi plugins`, and in its module's __all__?)"
+        )

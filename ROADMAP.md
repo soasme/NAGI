@@ -24,7 +24,7 @@ plugin. A plugin can live anywhere, and the repo keeps only a few in
 
 | In this repo | Plugins (users, `examples/`) |
 |---|---|
-| learning kernel, `learn.*` memory operations | domain learners (CSV of birthdays, MediaWiki pages) |
+| learning kernel, `learn.*` memory operations | domain learners and learning modules (birthdays, MediaWiki pages) |
 | code mode runtime and sandbox | domain modules (time, lists, reminders, connectors) |
 | understanding: tokens, intents, residue, inbox | domain curricula and their eval sets |
 | reasoning engine: traces, contract planner, TLA+ subset | domain TLA+ specs |
@@ -44,10 +44,10 @@ Each step unblocks the next. ✅ done, ▶ next.
    additive memory operations; versioned memory.
 2. ✅ **Evals**: `nagi eval` and eval sets. The gate for taught learners and
    forks, and the way plugin authors know their data works.
-3. ▶ **Hooks**: plugin modules, learners and curricula from any Python
+3. ✅ **Hooks**: plugin modules, learners and curricula from any Python
    package. This is what makes adoption possible, so it comes before
    memory and reasoning grow.
-4. **Memory layers and packages**: named teaching layers, export/import,
+4. ▶ **Memory layers and packages**: named teaching layers, export/import,
    keep training a downloaded memory.
 5. **Learning in conversation**: forks per conversation, learners taught in
    chat, matched by text pattern, gated by evals.
@@ -93,34 +93,42 @@ and they are what lets learning be gated automatically.
 Exit: `nagi eval` runs in CI on t0, at ≥ 95% accuracy with ≤ 2% false
 accepts.
 
-## 3. Hooks
+## 3. Hooks ✅
 
-A plugin is an ordinary Python package. It adds nothing core doesn't
-already understand: modules, learners, assets and evals.
+A plugin is an ordinary Python package registering three kinds of things
+with entry points. Core registers its own the same way, so core is just the
+first plugin.
 
-- **Modules**: register with an entry point. Code mode resolves
-  `calendar.events_on(...)` through the registry, imports lazily, and
-  resolves at compile time, so plugin calls cost the same as core ones.
-  ```toml
-  [project.entry-points."nagi.modules"]
-  calendar = "nagi_calendar.module"
-  ```
-- **Curricula**: an entry point naming a directory of tiers, assets and
-  evals. `nagi learn --curriculum calendar` teaches it, and `nagi eval
-  --curriculum calendar` checks it.
-- **Learners**: already data, so a plugin ships them in its curriculum.
-  Plugins may add **shape types** (`date`, `csv-row`) that learners can
-  match on.
-- **Without packaging**: `--modules DIR` and `nagi learn FILE` for trying
-  things out.
-- **Stability**: the hook surface is versioned on its own (`nagi.api`), and
-  core changes may not break it within a major version.
-- **`nagi new plugin NAME`**: scaffolds a package with a module, a
-  learner, an asset, an eval and a test.
+| Entry point group | What it is | Called by |
+|---|---|---|
+| `nagi.modules` | response modules: functions taking a `Turn` | response programs |
+| `nagi.learning` | learning modules: functions taking a `Lesson` (core's `learn` is one) | learners |
+| `nagi.curricula` | a directory of tiers holding assets and `*.eval.jsonl` | `nagi learn NAME`, `nagi eval NAME` |
 
-Exit: an `examples/todo` plugin, installed into a clean environment, adds a
-module and a curriculum, learns, passes its own evals, and is used in chat,
-with no change to core.
+What came with it:
+- **Learning hooks**, beyond the plan: a plugin's learner reads the user's
+  own data shape and calls the plugin's learning module. Learning and
+  responding meet in shared state (`lesson.state` is `turn.state`). This is
+  what lets users hook in *their data*, not only their code.
+- **What modules need for real tasks**: `turn.residue` (the words Nagi
+  wasn't taught, such as the item in "add oat milk to my list") and
+  `turn.state` (kept in memory between turns). These are the first slice
+  of step 6's `Understanding`.
+- **Separate namespaces enforce the sandbox**: response programs can't
+  reach learning modules, and learners can't reach response modules.
+- **`nagi new NAME`** scaffolds a package that passes its own tests and
+  evals from the first run. **`nagi plugins`** lists what is installed.
+- **`nagi.api`** (`Turn`, `Lesson`, `VERSION = 1`) is the surface plugins
+  build on.
+- **Two examples**, built with `nagi new` and run by the core test suite
+  through real entry points: `examples/todo` (residue and state) and
+  `examples/birthdays` (learning from the user's own data file).
+
+Not done, and not needed yet:
+- **Plugin shape types**: learning modules validate their own values, so
+  the three core types (`text`, `number`, `completion`) have been enough.
+- **`--modules DIR`**: `nagi new` plus `uv sync` turned out to be the
+  shorter path.
 
 ## 4. Memory layers and packages
 
@@ -263,7 +271,7 @@ must not block them.
 | Intent capture | scores every response every turn | inverted index from token to intents |
 | Learner dispatch | linear scan | index by shape keys and pattern tokens |
 | Layers | none | flatten once per load; forks overlay a small dict |
-| Plugin modules | n/a | lazy import; resolved at compile time |
+| Plugin modules | lazy import; resolved at compile time ✅ | keep it so |
 | Planning | none | index modules by contract types; memoize state-space search |
 | Memory | one JSON file | SQLite per layer once it grows; keep JSON export |
 | Tool calls | ~4M/s compiled closures | keep calls free of per-call lookups |
@@ -276,12 +284,12 @@ carries its source, so a bad lesson can be traced and undone.
 
 ## Decisions to make
 
-Before step 3:
-1. **Module namespace**: whether plugin modules share one flat namespace
-   with core (`calendar.x`) or are prefixed by plugin, and what happens on
-   a name collision.
-2. **Shape types from plugins**: how a plugin defines a type, and whether
-   types are checked in Python or declared as data.
+Settled in step 3:
+1. ✅ **Module namespace**: one flat namespace per entry point group,
+   shared with core; two packages registering a name is an error naming
+   both.
+2. ✅ **Shape types from plugins**: not needed yet. Learning modules
+   validate values in Python and raise `ValueError` on bad data.
 
 Before step 4:
 3. **Layer semantics**: tombstones, and how merging interacts with the eval
