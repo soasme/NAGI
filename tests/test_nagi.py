@@ -285,6 +285,28 @@ def test_residue_is_what_was_not_part_of_the_intent():
     assert brain.respond("what time is it?").residue == ["what", "time", "is", "it"]
 
 
+def test_slots_hold_the_words_heard_in_their_place():
+    brain = greeter()
+    asks = {"code": "speech.say(slot.thing)\nspeech.say(slot.kind)"}
+    brain.learn(jsonl({"prompt": "is a {thing} a {kind}?", "completion": asks}))
+    turn = brain.respond("Is a polar bear a mammal?")
+    assert turn.slots == {"thing": "polar bear", "kind": "mammal"}
+    assert turn.said == ["polar bear", "mammal"]
+    assert turn.residue == []
+    assert brain.respond("hello").slots == {}
+
+
+def test_a_slot_does_not_make_anything_fit():
+    brain = greeter()
+    brain.learn(jsonl({"prompt": "is a {thing} a {kind}?", "completion": FIXED}))
+    for text in ("what is the capital of france", "is it raining today", "i need to start a timer"):
+        assert brain.understand(text)[0] is None, text
+
+
+def test_a_slot_is_one_token():
+    assert tokenize("is a {thing}?", train(["is a cat"])) == [[" is"], [" a"], ["{thing}"]]
+
+
 def test_state_is_kept_between_turns():
     brain = greeter()
     turn = brain.respond("hello")

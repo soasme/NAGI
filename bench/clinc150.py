@@ -59,7 +59,7 @@ def main() -> None:
     right = best = 0
     for text, intent in clinc["test"]:
         heard = tokenize(text, brain.ranks)
-        name, _ = brain.understand(text)
+        name, *_ = brain.understand(text)
         right += name is not None and brain.memory["responses"][name]["code"] == code(intent)
         nearest = choose(brain.responses, {n: i.read(heard, weigh(brain.intents, heard)) for n, i in brain.intents.items()})
         best += brain.memory["responses"][nearest]["code"] == code(intent)

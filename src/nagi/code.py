@@ -9,7 +9,8 @@ number or string literals, one call per line::
 module (see ``nagi.plugins``); each takes the current context first.
 Responses run on a ``Turn`` and call ``nagi.modules``. Learners run on a
 ``Lesson``, call ``nagi.learning`` (such as ``learn.prompt``), and may read
-the lesson's ``record`` and its fields (``record.prompt``).
+the lesson's ``record`` and its fields (``record.prompt``). Responses may
+read the words heard in a slot of their prompt (``slot.thing``).
 
 A program is checked and compiled once into closures with every function
 already resolved, so running it costs only the calls: no parsing, lookup, or
@@ -31,7 +32,9 @@ class Turn:
 
     ``residue`` holds the words Nagi read as not part of the intent, as said:
     in "add oat milk to my list" taught as "add to my list", ``["oat",
-    "milk"]``. ``state`` is kept in memory between turns; each module keeps
+    "milk"]``. ``slots`` holds the words heard in each slot of the prompt
+    taught: "is a whale a fish" taught as "is a {thing} a {kind}" gives
+    ``{"thing": "whale", "kind": "fish"}``. ``state`` is kept in memory between turns; each module keeps
     its data under its own name, as in ``turn.state.setdefault("todo", [])``.
     """
 
@@ -39,6 +42,7 @@ class Turn:
     now: datetime = field(default_factory=datetime.now)
     random: Random = field(default_factory=Random)
     residue: list[str] = field(default_factory=list)
+    slots: dict[str, str] = field(default_factory=dict)
     state: dict = field(default_factory=dict)
     thoughts: list[str] = field(default_factory=list)
     said: list[str] = field(default_factory=list)
@@ -71,6 +75,8 @@ class Program:
                 return lambda context: context.record
             case ast.Attribute(value=ast.Name(id="record"), attr=name) if self.learning:
                 return lambda context: context.record[name]
+            case ast.Attribute(value=ast.Name(id="slot"), attr=name) if not self.learning:
+                return lambda context: context.slots.get(name, "")
             case ast.Call(func=func, args=args, keywords=[]):
                 function, args = self.resolve(func), [self.expression(arg) for arg in args]
                 return lambda context: function(context, *[arg(context) for arg in args])

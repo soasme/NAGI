@@ -7,14 +7,21 @@ from collections import Counter
 Ranks = dict[tuple[str, str], int]
 
 
+SLOT = re.compile(r"[^\w{]*(\{\w+\})[^\w}]*")  # "{thing}" in a taught prompt, as in "is a {thing} a {kind}?"
+
+
 def said(text: str) -> list[str]:
     """The words as said, without surrounding punctuation, one per word Nagi reads."""
     return [re.sub(r"^\W+|\W+$", "", word) for word in text.split() if normalize(word)]
 
 
 def words(text: str) -> list[str]:
-    """The words as Nagi reads them: lowercase, no punctuation, " "-prefixed."""
-    return [" " + normal for word in text.split() if (normal := normalize(word))]
+    """The words as Nagi reads them: lowercase, no punctuation, " "-prefixed; a slot as is."""
+    return [
+        slot[1] if (slot := SLOT.fullmatch(word)) else " " + normal
+        for word in text.split()
+        if (normal := normalize(word))
+    ]
 
 
 def normalize(word: str) -> str:
@@ -36,7 +43,7 @@ def merge(parts: list[str], pair: tuple[str, str]) -> list[str]:
 
 def train(texts: list[str]) -> Ranks:
     """Byte-pair merges, ranked most frequent first, until every word is one token."""
-    corpus = Counter(tuple(word) for text in texts for word in words(text))
+    corpus = Counter(tuple(word) for text in texts for word in words(text) if word[0] == " ")
     ranks: Ranks = {}
     while True:
         pairs = Counter()
@@ -62,5 +69,5 @@ def encode(word: str, ranks: Ranks) -> list[str]:
 
 
 def tokenize(text: str, ranks: Ranks) -> list[list[str]]:
-    """Tokens of each word, so later stages can still see word boundaries."""
-    return [encode(word, ranks) for word in words(text)]
+    """Tokens of each word, so later stages can still see word boundaries. A slot is one token."""
+    return [encode(word, ranks) if word[0] == " " else [word] for word in words(text)]

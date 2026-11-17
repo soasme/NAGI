@@ -95,10 +95,13 @@ of the cases that should stay unknown).
 A program is Python syntax restricted to `module.function(...)` calls and
 string or number literals, one call per line. Responses may call response
 modules (`nagi.modules`); learners may call learning modules
-(`nagi.learning`), and may read `record` and its fields. `module.function`
-must be in the module's `__all__`, and takes the current turn (or lesson)
-first. A turn carries what was heard, the untaught words (`turn.residue`),
-the time, a random source for variety, and `turn.state`, which persists:
+(`nagi.learning`), and may read `record` and its fields. Responses may
+read the words heard in a slot of their prompt: taught `"is a {thing} a
+{kind}?"`, Nagi reads "is a polar bear a mammal?" with `slot.thing` as
+"polar bear". `module.function` must be in the module's `__all__`, and
+takes the current turn (or lesson) first. A turn carries what was heard,
+the untaught words (`turn.residue`), the slots (`turn.slots`), the time, a
+random source for variety, and `turn.state`, which persists:
 
 ```python
 # src/nagi/modules/speech.py

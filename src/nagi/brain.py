@@ -98,16 +98,19 @@ class Brain:
             self.memory["responses"][name] = {"think": think, "code": code, "prompts": {}, "value": 0}
         return self.memory["responses"][name]
 
-    def understand(self, text: str) -> tuple[str | None, list[str]]:
-        """The response Nagi would give, and the words it read as not part of it."""
+    def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
+        """The response Nagi would give, the words it read as not part of it, and its slots."""
         fits = capture(self.intents, tokenize(text, self.ranks))
         name = choose(self.responses, fits)
         words = said(text)
-        return name, [words[at] for at in fits[name].skipped] if name else words
+        if name is None:
+            return None, words, {}
+        fit = fits[name]
+        return name, [words[at] for at in fit.skipped], {s: " ".join(words[at] for at in ats) for s, ats in fit.slots.items()}
 
     def respond(self, text: str, now: datetime | None = None) -> Turn:
-        name, residue = self.understand(text)
-        turn = Turn(text, now or datetime.now(), residue=residue, state=self.memory["state"])
+        name, residue, slots = self.understand(text)
+        turn = Turn(text, now or datetime.now(), residue=residue, slots=slots, state=self.memory["state"])
         return generate(self.responses.get(name), turn)
 
     @classmethod

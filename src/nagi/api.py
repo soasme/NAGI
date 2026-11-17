@@ -2,7 +2,8 @@
 
 A plugin module's functions take a ``Turn`` first. A turn carries what was
 heard, the words Nagi read as not part of the intent (``turn.residue``), the
-time, a random source, and ``turn.state``, which persists between turns::
+words heard in the slots of the prompt taught (``turn.slots``), the time, a
+random source, and ``turn.state``, which persists between turns::
 
     from nagi.api import Turn
 

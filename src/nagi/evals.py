@@ -59,7 +59,7 @@ def evaluate(brain, text: str) -> Report:
         match json.loads(line):
             case {"prompt": str(prompt), "expect": str() | None as expect}:
                 report.unknowns += expect is None
-                name, _ = brain.understand(prompt)
+                name, *_ = brain.understand(prompt)
                 got = name and brain.memory["responses"][name]["code"]
                 if got == expect:
                     report.passed += 1
