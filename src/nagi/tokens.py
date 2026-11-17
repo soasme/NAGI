@@ -7,7 +7,7 @@ from collections import Counter
 Ranks = dict[tuple[str, str], int]
 
 
-SLOT = re.compile(r"[^\w{]*(\{\w+\})[^\w}]*")  # "{thing}" in a taught prompt, as in "is a {thing} a {kind}?"
+SLOT = re.compile(r"[^\w{]*(\{\w+(?::\w+)?\})[^\w}]*")  # "{thing}" or "{thing:animal}" in a taught prompt
 
 
 def said(text: str) -> list[str]:

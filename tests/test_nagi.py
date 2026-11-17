@@ -311,6 +311,18 @@ def test_a_response_reading_a_slot_needs_it_heard():
     assert brain.understand("what time is it")[0] is None
 
 
+def test_a_typed_slot_holds_only_what_nagi_knows_is_that_kind():
+    brain = greeter()
+    brain.learn(jsonl(
+        {"rule": "{x} is {z} if {x} is {y} and {y} is {z}"},
+        {"subject": "a cat", "relation": "is a", "object": "pet"},
+        {"subject": "a pet", "relation": "is an", "object": "animal"},
+        {"prompt": "i saw a {thing:animal}", "completion": {"code": "speech.say(slot.thing)"}},
+    ))
+    assert brain.respond("i saw a cat").said == ["cat"]
+    assert brain.understand("i saw a car")[0] is None
+
+
 def test_a_slot_is_one_token():
     assert tokenize("is a {thing}?", train(["is a cat"])) == [[" is"], [" a"], ["{thing}"]]
 

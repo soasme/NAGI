@@ -10,7 +10,9 @@ one or more words heard in its place, each costing what skipping it would,
 so a slot pays off only when the words around it fit; the reading says
 which words filled it. A slot is entered only after a token a prompt put
 before it, and that step weighs 1, like the end of a sentence, so a rare
-word in a slot costs no more than in a skip.
+word in a slot costs no more than in a skip. A slot may name the kind of
+thing it holds, as in "i am {feeling:feeling}"; whether the words heard are
+one is for knowledge to say (see ``Brain.understand``).
 """
 
 import math
@@ -34,6 +36,7 @@ class Intent:
             self.bigrams.update(zip(tokens, tokens[1:]))
         self.words = {"".join(word) for heard in examples for word in heard}
         self.slots = {word for word in self.words if word[0] == "{"}
+        self.kinds = dict(slot[1:-1].split(":") for slot in self.slots if ":" in slot)  # slot name -> kind
         self.following = Counter()
         for (a, _), n in self.bigrams.items():
             self.following[a] += n
@@ -59,7 +62,7 @@ class Intent:
                 for slot in self.slots:
                     if slot == last or self.bigrams[last, slot]:  # only where a prompt put it
                         into = 0 if slot == last else self.bits(last, slot)  # weighs 1, like the end
-                        offer(slot, (total + into + weight * FILL, skipped, (*filled, (slot[1:-1], at))))
+                        offer(slot, (total + into + weight * FILL, skipped, (*filled, (slot[1:-1].split(":")[0], at))))
                 for token in word:
                     total += weight * self.bits(last, token)
                     last = token
@@ -89,8 +92,12 @@ def weigh(intents: dict[str, Intent], heard: list[list[str]]) -> list[float]:
     return [1 + math.log2((len(intents) + 1) / (heard_for("".join(word)) + 1)) for word in heard]
 
 
+def readings(intents: dict[str, Intent], heard: list[list[str]]) -> dict[str, Fit]:
+    """How each intent reads what was heard, however badly it fits."""
+    weights = weigh(intents, heard)
+    return {name: intent.read(heard, weights) for name, intent in intents.items()}
+
+
 def capture(intents: dict[str, Intent], heard: list[list[str]]) -> dict[str, Fit]:
     """Every intent that fits what was heard."""
-    weights = weigh(intents, heard)
-    fits = {name: intent.read(heard, weights) for name, intent in intents.items()}
-    return {name: fit for name, fit in fits.items() if fit.score >= THRESHOLD}
+    return {name: fit for name, fit in readings(intents, heard).items() if fit.score >= THRESHOLD}

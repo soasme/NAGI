@@ -1,0 +1,11 @@
+{"prompt": "i am hungry", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Eat."]}
+{"prompt": "I'm so tired", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Sleep."]}
+{"prompt": "what should i do when i am thirsty?", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Drink."]}
+{"prompt": "what do you do when you are sick", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Rest."]}
+{"prompt": "i am going to the park", "expect": null}
+{"prompt": "how do i feel about this job", "expect": null}
+{"prompt": "i am bored", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Play."]}
+{"prompt": "i am a teacher", "expect": null}
+{"prompt": "i am late for work", "expect": null}
+{"prompt": "i'm feeling lucky", "expect": null}
+{"prompt": "i feel sad", "expect": "speech.answer(reason.what(slot.feeling, \"needs\"))", "say": ["Hug."]}

@@ -1,0 +1,34 @@
+{"subject": "happy", "relation": "is a", "object": "feeling"}
+{"subject": "sad", "relation": "is a", "object": "feeling"}
+{"subject": "angry", "relation": "is a", "object": "feeling"}
+{"subject": "scared", "relation": "is a", "object": "feeling"}
+{"subject": "tired", "relation": "is a", "object": "feeling"}
+{"subject": "hungry", "relation": "is a", "object": "feeling"}
+{"subject": "thirsty", "relation": "is a", "object": "feeling"}
+{"subject": "bored", "relation": "is a", "object": "feeling"}
+{"subject": "sick", "relation": "is a", "object": "feeling"}
+{"rule": "{x} feels {f} if {x} is {f} and {f} is feeling"}
+{"subject": "hungry", "relation": "needs", "object": "eat"}
+{"subject": "thirsty", "relation": "needs", "object": "drink"}
+{"subject": "tired", "relation": "needs", "object": "sleep"}
+{"subject": "sick", "relation": "needs", "object": "rest"}
+{"subject": "scared", "relation": "needs", "object": "hug"}
+{"subject": "happy", "relation": "needs", "object": "smile"}
+{"subject": "angry", "relation": "needs", "object": "rest"}
+{"subject": "sad", "relation": "needs", "object": "hug"}
+{"subject": "bored", "relation": "needs", "object": "play"}
+{"rule": "{x} needs {n} if {x} feels {f} and {f} needs {n}"}
+{"prompt": "{person} is {feeling:feeling}.", "completion": {"think": "They tell me how someone feels.", "code": "reason.update(slot.person, \"is\", slot.feeling)"}}
+{"prompt": "{person} feels {feeling:feeling}.", "completion": {"think": "They tell me how someone feels.", "code": "reason.update(slot.person, \"is\", slot.feeling)"}}
+{"prompt": "how does {person} feel?", "completion": {"think": "They ask how someone feels. Recall it.", "code": "speech.answer(reason.what(slot.person, \"feels\"))"}}
+{"prompt": "how is {person} feeling?", "completion": {"think": "They ask how someone feels. Recall it.", "code": "speech.answer(reason.what(slot.person, \"feels\"))"}}
+{"prompt": "what do you do when you are {feeling}?", "completion": {"think": "They ask what someone who feels this way needs.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "what should i do when i am {feeling}?", "completion": {"think": "They ask what someone who feels this way needs.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "what do you need when you are {feeling}?", "completion": {"think": "They ask what someone who feels this way needs.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i am {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i'm {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i feel {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i'm so {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i am very {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i'm feeling {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}
+{"prompt": "i am so {feeling:feeling}", "completion": {"think": "They tell me how they feel. Say what helps when you feel that way.", "code": "speech.answer(reason.what(slot.feeling, \"needs\"))"}}

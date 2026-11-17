@@ -50,6 +50,9 @@
 {"prompt": "ni hao", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
 {"prompt": "aloha", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
 {"prompt": "ahoy", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
-{"prompt": "你好", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
-{"prompt": "こんにちは", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
-{"prompt": "안녕하세요", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
+{"prompt": "\u4f60\u597d", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
+{"prompt": "\u3053\u3093\u306b\u3061\u306f", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
+{"prompt": "\uc548\ub155\ud558\uc138\uc694", "completion": {"think": "They greet me in another language. Greet back in their words.", "code": "speech.say(greeting.echo())"}}
+{"prompt": "howdy partner", "completion": {"think": "They are greeting me. Greet them back.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hey partner", "completion": {"think": "They are greeting me. Greet them back.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hi buddy", "completion": {"think": "They are greeting me. Greet them back.", "code": "speech.say(greeting.hello())"}}

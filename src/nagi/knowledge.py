@@ -68,6 +68,11 @@ class Knowledge:
         self.facts[:] = [f for f in self.facts if f[:2] != [s, r]]
         return self.tell(subject, relation, object)
 
+    def forget(self, subject: str, relation: str, object: str) -> Triple:
+        fact = term(subject), term(relation), term(object)
+        self.facts[:] = [f for f in self.facts if tuple(f) != fact]
+        return fact
+
     def rule(self, text: str) -> None:
         then, _, conditions = text.partition(" if ")
         if not conditions:
@@ -75,6 +80,9 @@ class Knowledge:
         rule = {"then": list(triple(then)), "if": [list(triple(c)) for c in conditions.split(" and ")]}
         if rule not in self.rules:
             self.rules.append(rule)
+
+    def holds(self, subject: str, relation: str, object: str) -> bool:
+        return next(self.prove((term(subject), term(relation), term(object))), None) is not None
 
     def prove(self, goal: Triple) -> Iterator[tuple[Bindings, list[str]]]:
         """Every way to show the goal: the bindings of its variables, and the steps."""

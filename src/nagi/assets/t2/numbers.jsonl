@@ -1,0 +1,47 @@
+{"subject": "0", "relation": "in words", "object": "zero"}
+{"subject": "1", "relation": "in words", "object": "one"}
+{"subject": "2", "relation": "in words", "object": "two"}
+{"subject": "3", "relation": "in words", "object": "three"}
+{"subject": "4", "relation": "in words", "object": "four"}
+{"subject": "5", "relation": "in words", "object": "five"}
+{"subject": "6", "relation": "in words", "object": "six"}
+{"subject": "7", "relation": "in words", "object": "seven"}
+{"subject": "8", "relation": "in words", "object": "eight"}
+{"subject": "9", "relation": "in words", "object": "nine"}
+{"subject": "10", "relation": "in words", "object": "ten"}
+{"subject": "11", "relation": "in words", "object": "eleven"}
+{"subject": "12", "relation": "in words", "object": "twelve"}
+{"subject": "13", "relation": "in words", "object": "thirteen"}
+{"subject": "14", "relation": "in words", "object": "fourteen"}
+{"subject": "15", "relation": "in words", "object": "fifteen"}
+{"subject": "16", "relation": "in words", "object": "sixteen"}
+{"subject": "17", "relation": "in words", "object": "seventeen"}
+{"subject": "18", "relation": "in words", "object": "eighteen"}
+{"subject": "19", "relation": "in words", "object": "nineteen"}
+{"subject": "20", "relation": "in words", "object": "twenty"}
+{"subject": "zero", "relation": "comes before", "object": "one"}
+{"subject": "one", "relation": "comes before", "object": "two"}
+{"subject": "two", "relation": "comes before", "object": "three"}
+{"subject": "three", "relation": "comes before", "object": "four"}
+{"subject": "four", "relation": "comes before", "object": "five"}
+{"subject": "five", "relation": "comes before", "object": "six"}
+{"subject": "six", "relation": "comes before", "object": "seven"}
+{"subject": "seven", "relation": "comes before", "object": "eight"}
+{"subject": "eight", "relation": "comes before", "object": "nine"}
+{"subject": "nine", "relation": "comes before", "object": "ten"}
+{"subject": "ten", "relation": "comes before", "object": "eleven"}
+{"subject": "eleven", "relation": "comes before", "object": "twelve"}
+{"subject": "twelve", "relation": "comes before", "object": "thirteen"}
+{"subject": "thirteen", "relation": "comes before", "object": "fourteen"}
+{"subject": "fourteen", "relation": "comes before", "object": "fifteen"}
+{"subject": "fifteen", "relation": "comes before", "object": "sixteen"}
+{"subject": "sixteen", "relation": "comes before", "object": "seventeen"}
+{"subject": "seventeen", "relation": "comes before", "object": "eighteen"}
+{"subject": "eighteen", "relation": "comes before", "object": "nineteen"}
+{"subject": "nineteen", "relation": "comes before", "object": "twenty"}
+{"prompt": "what comes after {number}?", "completion": {"think": "They ask what number comes next. Count on by one.", "code": "speech.answer(reason.what(slot.number, \"comes before\"))"}}
+{"prompt": "what number comes after {number}?", "completion": {"think": "They ask what number comes next. Count on by one.", "code": "speech.answer(reason.what(slot.number, \"comes before\"))"}}
+{"prompt": "what is after {number}?", "completion": {"think": "They ask what number comes next. Count on by one.", "code": "speech.answer(reason.what(slot.number, \"comes before\"))"}}
+{"prompt": "what comes before {number}?", "completion": {"think": "They ask what number comes before. Count back by one.", "code": "speech.answer(reason.which(\"comes before\", slot.number))"}}
+{"prompt": "what number comes before {number}?", "completion": {"think": "They ask what number comes before. Count back by one.", "code": "speech.answer(reason.which(\"comes before\", slot.number))"}}
+{"prompt": "what is before {number}?", "completion": {"think": "They ask what number comes before. Count back by one.", "code": "speech.answer(reason.which(\"comes before\", slot.number))"}}

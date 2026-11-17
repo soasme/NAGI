@@ -108,13 +108,17 @@ class Brain:
 
     def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
         """The response Nagi would give, the words it read as not part of it, and its slots."""
-        fits = capture(self.intents, tokenize(text, self.ranks))
-        name = choose(self.responses, fits)
         words = said(text)
+        heard = lambda fit: {s: " ".join(words[at] for at in ats) for s, ats in fit.slots.items()}
+        fits = {
+            name: fit
+            for name, fit in capture(self.intents, tokenize(text, self.ranks)).items()
+            if all(self.knowledge.holds(heard(fit).get(slot, ""), "is", kind) for slot, kind in self.intents[name].kinds.items())
+        }
+        name = choose(self.responses, fits)
         if name is None:
             return None, words, {}
-        fit = fits[name]
-        return name, [words[at] for at in fit.skipped], {s: " ".join(words[at] for at in ats) for s, ats in fit.slots.items()}
+        return name, [words[at] for at in fits[name].skipped], heard(fits[name])
 
     def respond(self, text: str, now: datetime | None = None, keep: bool = True) -> Turn:
         """Respond; unless ``keep``, on a copy of the state and knowledge, so nothing changes."""

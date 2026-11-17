@@ -1,0 +1,6 @@
+{"prompt": "what comes after three?", "expect": "speech.answer(reason.what(slot.number, \"comes before\"))", "say": ["Four."]}
+{"prompt": "What number comes after nine", "expect": "speech.answer(reason.what(slot.number, \"comes before\"))", "say": ["Ten."]}
+{"prompt": "what comes before seven?", "expect": "speech.answer(reason.which(\"comes before\", slot.number))", "say": ["Six."]}
+{"prompt": "what is before one", "expect": "speech.answer(reason.which(\"comes before\", slot.number))", "say": ["Zero."]}
+{"prompt": "what comes after the break", "expect": "speech.answer(reason.what(slot.number, \"comes before\"))"}
+{"prompt": "what number should i call", "expect": null}

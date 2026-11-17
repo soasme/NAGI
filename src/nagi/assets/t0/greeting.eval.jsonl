@@ -19,7 +19,7 @@
 {"prompt": "how are you doing today", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
 {"prompt": "how's it going?", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
 {"prompt": "Bonjour!", "expect": "speech.say(greeting.echo())"}
-{"prompt": "你好", "expect": "speech.say(greeting.echo())"}
+{"prompt": "\u4f60\u597d", "expect": "speech.say(greeting.echo())"}
 {"prompt": "hola nagi", "expect": "speech.say(greeting.echo())"}
 {"prompt": "ciao!", "expect": "speech.say(greeting.echo())"}
 {"prompt": "what is the capital of france", "expect": null}
@@ -32,5 +32,4 @@
 {"prompt": "what time is it", "expect": null}
 {"prompt": "", "expect": null}
 {"prompt": "tell me a joke", "expect": null}
-{"prompt": "i am hungry", "expect": null}
 {"prompt": "what is up with that", "expect": null}

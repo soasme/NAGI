@@ -93,8 +93,12 @@ Responses reach it through the `reason` module, with slots:
 |---|---|
 | `reason.check(subject, relation, object)` | `"yes"` if it can be shown, else `"no"` |
 | `reason.what(subject, relation)` | the object it can show, newest first |
+| `reason.which(relation, object)` | the subject it can show, newest first |
+| `reason.each(relation, object)` | every such subject, as `"milk and apple"`, or `"nothing"` |
+| `reason.count(relation, object)` | how many, as a number: `"2"` |
 | `reason.tell(subject, relation, object)` | knows a new fact |
 | `reason.update(subject, relation, object)` | the same, replacing what was known of the subject's relation |
+| `reason.forget(subject, relation, object)` | no longer knows the fact |
 
 A proof is thought out loud: `nagi respond --think is a whale an animal`
 thinks `whale is mammal`, `mammal is animal`, `so whale is animal`, and says
@@ -125,7 +129,9 @@ modules (`nagi.modules`); learners may call learning modules
 read the words heard in a slot of their prompt: taught `"is a {thing} a
 {kind}?"`, Nagi reads "is a polar bear a mammal?" with `slot.thing` as
 "polar bear". A response that reads a slot is only chosen when its slot
-was heard. `module.function` must be in the module's `__all__`, and
+was heard. A slot can name the kind of thing it holds: `"i am
+{feeling:feeling}"` reads "i am bored" only if Nagi can show bored is a
+feeling, so "i am a teacher" isn't read as a feeling. `module.function` must be in the module's `__all__`, and
 takes the current turn (or lesson) first. A turn carries what was heard,
 the untaught words (`turn.residue`), the slots (`turn.slots`), the time, a
 random source for variety, and `turn.state`, which persists:

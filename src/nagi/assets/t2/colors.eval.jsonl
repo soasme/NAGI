@@ -1,0 +1,8 @@
+{"prompt": "what color is grass?", "expect": "speech.answer(reason.what(slot.thing, \"has color\"))", "say": ["Green."]}
+{"prompt": "What color is the sky", "expect": "speech.answer(reason.what(slot.thing, \"has color\"))", "say": ["Blue."]}
+{"prompt": "what colour is a banana?", "expect": "speech.answer(reason.what(slot.thing, \"has color\"))", "say": ["Yellow."]}
+{"prompt": "what color is snow", "expect": "speech.answer(reason.what(slot.thing, \"has color\"))", "say": ["White."]}
+{"prompt": "what color is a unicorn?", "expect": "speech.answer(reason.what(slot.thing, \"has color\"))", "say": ["I don't know."]}
+{"prompt": "is purple a color?", "expect": "speech.answer(reason.check(slot.thing, \"is\", \"color\"))", "say": ["Yes."]}
+{"prompt": "is happy a color?", "expect": "speech.answer(reason.check(slot.thing, \"is\", \"color\"))", "say": ["No."]}
+{"prompt": "what color should i paint my room", "expect": null}

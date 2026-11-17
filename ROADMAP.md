@@ -245,12 +245,14 @@ teach Nagi their own world.
 |---|---|---|---|---|
 | **t0** | 0–1 | how to learn; greetings, farewells, thanks, sorry, yes/no; "who are you"; being taught in chat | kernel ✅, evals, conversation | "bye!" → a farewell |
 | **t1** ◐ | 1–2 | words for things: family, body parts, animals and their sounds, food, toys, clothes; basic needs (hungry, tired) | facts (`learn.fact`), pattern learners, knowledge lookup | "what does a cow say?" → "Moo!" |
-| **t2** | 2–3 | colors, shapes, big/small, hot/cold and other opposites, counting to 10, feelings, my name and age, daily routines | slots, numbers module, personal facts | "what color is grass?" → "Green." |
+| **t2** ◐ | 2–3 | colors, shapes, big/small, hot/cold and other opposites, counting to 10, feelings, my name and age, daily routines | slots, numbers module, personal facts | "what color is grass?" → "Green." |
 | **t3** ◐ | 3–4 | counting to 20; adding within 5; morning/afternoon/night; weather; in/on/under; categories ("is a whale a fish?"); helpers (doctor, firefighter); safety rules | rules and inference, typed thoughts | "is a whale a fish?" → "No, it's a mammal." |
 | **t4** | 4–5 | the alphabet; rhymes; days of the week; seasons; what comes next in a sequence; where animals live; how plants grow; washing hands and why; following two- or three-step instructions | sequences and planning in code, the inbox for gaps | "what comes after Tuesday?" → "Wednesday." |
 | **t5** | 5 | counting to 100; adding and taking away within 10; yesterday, today, tomorrow; telling time on the hour; left and right; simple cause and effect ("if it rains, take an umbrella"); fairness and taking turns; the rules of simple games | the reasoning engine: rules, planning, TLA+ for game rules | "I have 3 apples and eat 1. How many left?" → "2." |
 
-Shipped so far (◐): t1 `animals`, what 20 animals say; t3 `kinds`, 50
+Shipped so far (◐): t1 `animals`, what 20 animals say; t2 `colors`,
+`feelings` (and what helps with each) and `numbers` (words, and what comes
+before and after, to twenty); t3 `kinds`, 50
 things in 9 kinds, and what follows from a kind (breathes, lives in, is
 alive), from one rule: a thing does what its kind does.
 
@@ -315,6 +317,10 @@ What the runs showed:
   words ("how do you do" fits "how do you say dog in spanish"): one score
   averaging fit and skips allows about three quarters of a sentence to be
   skipped.
+- Typed slots (`{feeling:feeling}`) let knowledge decide what a slot can
+  hold, which fixed "i am a teacher" being read as a feeling where every
+  scoring change tried (a dearer missing ending, a dearer skip) cost CLINC
+  more than it gained.
 - A slot word costs what a skip does. Cheaper slots let one slot swallow a
   whole sentence; a dearer skip cost CLINC more than it saved. What stops
   "what time is it" fitting "what is a {thing}" is that a response reading

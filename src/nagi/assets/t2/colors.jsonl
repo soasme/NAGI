@@ -1,0 +1,36 @@
+{"subject": "red", "relation": "is a", "object": "color"}
+{"subject": "orange", "relation": "is a", "object": "color"}
+{"subject": "yellow", "relation": "is a", "object": "color"}
+{"subject": "green", "relation": "is a", "object": "color"}
+{"subject": "blue", "relation": "is a", "object": "color"}
+{"subject": "purple", "relation": "is a", "object": "color"}
+{"subject": "pink", "relation": "is a", "object": "color"}
+{"subject": "brown", "relation": "is a", "object": "color"}
+{"subject": "black", "relation": "is a", "object": "color"}
+{"subject": "white", "relation": "is a", "object": "color"}
+{"subject": "gray", "relation": "is a", "object": "color"}
+{"rule": "{x} has color {c} if {x} is {c} and {c} is color"}
+{"subject": "grass", "relation": "has color", "object": "green"}
+{"subject": "the sky", "relation": "has color", "object": "blue"}
+{"subject": "a banana", "relation": "has color", "object": "yellow"}
+{"subject": "snow", "relation": "has color", "object": "white"}
+{"subject": "a strawberry", "relation": "has color", "object": "red"}
+{"subject": "an orange", "relation": "has color", "object": "orange"}
+{"subject": "a carrot", "relation": "has color", "object": "orange"}
+{"subject": "coal", "relation": "has color", "object": "black"}
+{"subject": "milk", "relation": "has color", "object": "white"}
+{"subject": "a frog", "relation": "has color", "object": "green"}
+{"subject": "the sun", "relation": "has color", "object": "yellow"}
+{"subject": "a tree", "relation": "has color", "object": "green"}
+{"subject": "chocolate", "relation": "has color", "object": "brown"}
+{"subject": "a tomato", "relation": "has color", "object": "red"}
+{"subject": "an elephant", "relation": "has color", "object": "gray"}
+{"prompt": "what color is {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what color is a {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what color is an {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what color is the {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what colour is {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what colour is a {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "what colour is the {thing}?", "completion": {"think": "They ask what color something is. Recall it, or what its kind looks like.", "code": "speech.answer(reason.what(slot.thing, \"has color\"))"}}
+{"prompt": "is {thing} a color?", "completion": {"think": "They ask whether a word is a color.", "code": "speech.answer(reason.check(slot.thing, \"is\", \"color\"))"}}
+{"prompt": "is {thing} a colour?", "completion": {"think": "They ask whether a word is a color.", "code": "speech.answer(reason.check(slot.thing, \"is\", \"color\"))"}}
