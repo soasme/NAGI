@@ -182,3 +182,11 @@ See [ROADMAP.md](ROADMAP.md).
 ```console
 $ uv run pytest
 ```
+
+Benchmarks live in `bench/` and download their data on first run. CLINC150
+measures intent capture on real assistant requests, out-of-scope ones
+included:
+
+```console
+$ uv run python bench/clinc150.py
+```
