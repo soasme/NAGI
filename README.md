@@ -1,8 +1,14 @@
 # Nagi
 
-Nagi is Not Artificial General Intelligence. It learns from teaching
-records, remembers what it learned, and responds by running small programs
-that call its own modules. No neural networks, just Python.
+Nagi is Not Artificial General Intelligence. It is a meta-learning
+framework: it learns how to learn, and you hook in your own training data
+and code to teach it what you need. It remembers what it learned and
+responds by running small programs that call its modules. No neural
+networks, just Python.
+
+This repo ships the learning kernel, the runtime and a small bootstrap
+curriculum; skills come from your data and plugins. See
+[ROADMAP.md](ROADMAP.md).
 
 ```console
 $ uv run nagi respond hello
