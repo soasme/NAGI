@@ -5,8 +5,8 @@ number or string literals, one call per line::
 
     speech.say(greeting.hello())
 
-``module.function`` names a function listed in ``__all__`` of
-``nagi.modules.<module>``; each takes the current context first. Responses
+``module.function`` names a function listed in ``__all__`` of a registered
+module (see ``nagi.plugins``); each takes the current context first. Responses
 run on a ``Turn`` and may call any module but ``learn``. Learners run on a
 lesson, may call only ``learn``, and may read the lesson's ``record`` and its
 fields (``record.prompt``).
@@ -17,11 +17,12 @@ already resolved, so running it costs only the calls: no parsing, lookup, or
 """
 
 import ast
-import importlib
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from random import Random
+
+from nagi import plugins
 
 
 @dataclass
@@ -70,10 +71,7 @@ class Program:
     def resolve(self, node: ast.expr) -> Callable:
         match node:
             case ast.Attribute(value=ast.Name(id=module), attr=name) if (module == "learn") == self.learning:
-                try:
-                    found = importlib.import_module(f"nagi.modules.{module}")
-                except ModuleNotFoundError:
-                    found = None
+                found = plugins.module(module)
                 if name in getattr(found, "__all__", ()):
                     return getattr(found, name)
         who = "a learner" if self.learning else "a response"

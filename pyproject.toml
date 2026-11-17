@@ -12,6 +12,14 @@ dependencies = []
 [project.scripts]
 nagi = "nagi:main"
 
+[project.entry-points."nagi.modules"]
+greeting = "nagi.modules.greeting"
+learn = "nagi.modules.learn"
+speech = "nagi.modules.speech"
+
+[project.entry-points."nagi.curricula"]
+nagi = "nagi.assets"
+
 [build-system]
 requires = ["uv_build>=0.10.6,<0.11.0"]
 build-backend = "uv_build"

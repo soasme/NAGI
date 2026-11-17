@@ -3,7 +3,8 @@ from datetime import datetime
 
 import pytest
 
-from nagi import curriculum, evals, main
+from nagi import main, plugins
+from nagi.plugins import curriculum, evals
 from nagi.brain import Brain
 from nagi.code import Program, Turn
 from nagi.evals import evaluate
@@ -79,6 +80,37 @@ def test_program_calls_nagi_modules():
 def test_program_rejects_anything_else(code):
     with pytest.raises(ValueError):
         Program(code)
+
+
+# plugins
+
+
+class Point:
+    def __init__(self, name, value, package):
+        self.name, self.value, self.dist = name, value, type("Dist", (), {"name": package})
+
+
+def test_core_registers_like_any_plugin():
+    assert {"greeting", "learn", "speech"} <= plugins.modules().keys()
+    assert plugins.curricula()["nagi"] == "nagi.assets"
+
+
+def test_two_packages_cannot_register_one_name(monkeypatch):
+    points = [Point("todo", "a.todo", "nagi-a"), Point("todo", "b.todo", "nagi-b")]
+    monkeypatch.setattr(plugins, "entry_points", lambda group: points)
+    with pytest.raises(ValueError, match="nagi-a and nagi-b"):
+        plugins.registry("nagi.modules")
+
+
+def test_unknown_curriculum_names_the_installed_ones():
+    with pytest.raises(ValueError, match="installed: .*nagi"):
+        curriculum("nope")
+
+
+def test_cli_reports_missing_files(tmp_path):
+    with pytest.raises(SystemExit) as exit:
+        main(["--memory", str(tmp_path / "memory.json"), "learn", str(tmp_path / "missing.jsonl")])
+    assert exit.value.code == 1
 
 
 # learning

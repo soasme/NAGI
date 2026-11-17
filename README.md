@@ -112,6 +112,29 @@ closures with every function already resolved. Running one costs only the
 calls (about 4M calls/s on one core, 18× faster than `exec`); modules load on
 first use. Nothing else (builtins, attributes, assignments) is allowed.
 
+## Plugins
+
+Nagi's own modules and curriculum are registered with Python entry points,
+and so is everyone else's. A plugin is an ordinary package:
+
+```toml
+[project.entry-points."nagi.modules"]
+todo = "nagi_todo"            # code mode can call todo.add(), todo.show(), ...
+
+[project.entry-points."nagi.curricula"]
+todo = "nagi_todo.curriculum" # t0/, t1/, ... of assets and *.eval.jsonl
+```
+
+```console
+$ uv run nagi plugins                 # what is installed
+$ uv run nagi learn nagi todo         # curricula by name, or asset files
+$ uv run nagi eval todo               # check the plugin's evals
+```
+
+Module and curriculum names share one namespace; two packages registering
+the same name is an error. Plugin code builds on `nagi.api`, which stays
+stable within a major `VERSION`.
+
 ## How it responds
 
 Three separate stages, one module each:
