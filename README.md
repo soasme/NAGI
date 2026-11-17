@@ -74,6 +74,22 @@ Memory keeps the learners and one entry per distinct completion, with each
 prompt's weight and the completion's value. It is versioned; an older
 memory file must be removed and relearned.
 
+## Evals
+
+An eval set sits next to the assets it checks (`*.eval.jsonl`) and is never
+learned. Each case names the program Nagi should run for a prompt, or
+`null` when Nagi should not understand it:
+
+```json
+{"prompt": "hey nagi", "expect": "speech.say(greeting.hello())"}
+{"prompt": "what is the capital of france", "expect": null}
+```
+
+`nagi eval` checks the bundled sets, or the files you name, against your
+memory. It prints every failure and exits non-zero below
+`--min-accuracy` (default 95%) or above `--max-false-accepts` (default 2%
+of the cases that should stay unknown).
+
 ## Code mode
 
 A program is Python syntax restricted to `module.function(...)` calls and

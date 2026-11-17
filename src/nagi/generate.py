@@ -1,4 +1,4 @@
-"""Generate: run the most preferred response among the intents captured."""
+"""Generate: choose the most preferred response among the intents captured, and run it."""
 
 from dataclasses import dataclass
 
@@ -14,13 +14,16 @@ class Response:
     value: float  # preference learned from DPO and RLHF; below zero is never chosen
 
 
-def generate(responses: dict[str, Response], fits: dict[str, float], turn: Turn) -> Turn:
+def choose(responses: dict[str, Response], fits: dict[str, float]) -> str | None:
     """The best fit; among equal fits, such as responses taught the same prompts, the most valued."""
     candidates = [(score, responses[name].value, name) for name, score in fits.items() if responses[name].value >= 0]
-    if not candidates:
+    return max(candidates)[2] if candidates else None
+
+
+def generate(response: Response | None, turn: Turn) -> Turn:
+    if response is None:
         turn.said.append(CONFUSED)
         return turn
-    response = responses[max(candidates)[2]]
     if response.think:
         turn.thoughts.append(response.think)
     response.program(turn)

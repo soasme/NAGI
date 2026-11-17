@@ -42,9 +42,9 @@ Each step unblocks the next. ✅ done, ▶ next.
 
 1. ✅ **Learning kernel**: learners as data; SFT/DPO/RLHF re-taught;
    additive memory operations; versioned memory.
-2. ▶ **Evals**: `nagi eval` and eval sets. The gate for taught learners and
+2. ✅ **Evals**: `nagi eval` and eval sets. The gate for taught learners and
    forks, and the way plugin authors know their data works.
-3. **Hooks**: plugin modules, learners and curricula from any Python
+3. ▶ **Hooks**: plugin modules, learners and curricula from any Python
    package. This is what makes adoption possible, so it comes before
    memory and reasoning grow.
 4. **Memory layers and packages**: named teaching layers, export/import,

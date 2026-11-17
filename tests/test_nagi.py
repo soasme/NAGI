@@ -3,9 +3,10 @@ from datetime import datetime
 
 import pytest
 
-from nagi import curriculum, main
+from nagi import curriculum, evals, main
 from nagi.brain import Brain
 from nagi.code import Program, Turn
+from nagi.evals import evaluate
 from nagi.generate import CONFUSED
 from nagi.intent import Intent, capture
 from nagi.tokens import encode, tokenize, train
@@ -184,39 +185,35 @@ def test_newborn_is_confused():
     assert Brain().respond("hello").said == [CONFUSED]
 
 
-GENERAL = "speech.say(greeting.hello())"
-TIME = "speech.say(greeting.time_of_day())"
-HOW = "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"
-ECHO = "speech.say(greeting.echo())"
+def test_curriculum_passes_its_evals():
+    brain = greeter()
+    for eval_set in evals():
+        report = evaluate(brain, eval_set.read_text())
+        assert report.failed == [], eval_set.name
 
 
-def program_for(brain: Brain, said: str) -> str | None:
-    fits = capture(brain.intents, tokenize(said, brain.ranks))
-    best = max(fits, key=fits.get, default=None)
-    return best and brain.memory["responses"][best]["code"]
+def test_eval_reports_false_accepts_and_rejects():
+    report = evaluate(
+        greeter(),
+        jsonl(
+            {"prompt": "hello", "expect": "speech.say(greeting.hello())"},
+            {"prompt": "hello", "expect": "speech.say(greeting.echo())"},
+            {"prompt": "hello", "expect": None},
+            {"prompt": "what is the capital of france", "expect": "speech.say(greeting.hello())"},
+            {"prompt": "what is the capital of france", "expect": None},
+        ),
+    )
+    assert (report.passed, report.total, report.unknowns) == (2, 5, 2)
+    assert [c.prompt for c in report.false_accepts] == ["hello"]
+    assert [c.prompt for c in report.false_rejects] == ["what is the capital of france"]
+    assert report.false_accept_rate == 0.5
 
 
-@pytest.mark.parametrize(
-    "said, code",
-    [
-        ("hello", GENERAL),
-        ("Hi!", GENERAL),
-        ("hiii", GENERAL),
-        ("hey nagi", GENERAL),
-        ("hey there, nagi", GENERAL),
-        ("Howdy partner!", GENERAL),
-        ("Good morning!", TIME),
-        ("good evening", TIME),
-        ("how r u", HOW),
-        ("what's up?", HOW),
-        ("sup dude", HOW),
-        ("hi nagi how are you", HOW),
-        ("Bonjour!", ECHO),
-        ("你好", ECHO),
-    ],
-)
-def test_greetings_get_their_own_program(said, code):
-    assert program_for(greeter(), said) == code
+def test_eval_does_not_teach():
+    brain = greeter()
+    before = json.dumps(brain.memory)
+    evaluate(brain, jsonl({"prompt": "goodbye", "expect": None}))
+    assert json.dumps(brain.memory) == before
 
 
 def test_replies_fit_what_was_heard():
@@ -246,6 +243,12 @@ def test_memory_round_trips(tmp_path):
     assert Brain.load(memory).memory == brain.memory
 
 
+def test_cli_eval_fails_below_threshold(tmp_path, capsys):
+    with pytest.raises(SystemExit) as exit:
+        main(["--memory", str(tmp_path / "memory.json"), "eval"])
+    assert exit.value.code == 1
+
+
 def test_cli_remembers_across_runs(tmp_path, capsys):
     memory = tmp_path / "memory.json"
     main(["--memory", str(memory), "respond", "hi"])
@@ -253,6 +256,9 @@ def test_cli_remembers_across_runs(tmp_path, capsys):
 
     main(["--memory", str(memory), "learn"])
     assert "records from greeting.sft.jsonl" in capsys.readouterr().out
+
+    main(["--memory", str(memory), "eval"])
+    assert "accuracy 100.0%" in capsys.readouterr().out
 
     main(["--memory", str(memory), "respond", "--think", "good", "morning"])
     think, said = capsys.readouterr().out.splitlines()

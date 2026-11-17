@@ -23,7 +23,7 @@ from datetime import datetime
 from pathlib import Path
 
 from nagi.code import Program, Turn
-from nagi.generate import Response, generate
+from nagi.generate import Response, choose, generate
 from nagi.intent import Intent, capture
 from nagi.learning import Learner, Lesson
 from nagi.tokens import tokenize, train
@@ -96,11 +96,14 @@ class Brain:
             self.memory["responses"][name] = {"think": think, "code": code, "prompts": {}, "value": 0}
         return self.memory["responses"][name]
 
-    def respond(self, text: str, now: datetime | None = None) -> Turn:
-        turn = Turn(text, now or datetime.now())
+    def choose(self, text: str) -> str | None:
+        """The response Nagi would give: token in, then intent capture."""
         heard = tokenize(text, self.ranks)
-        fits = capture(self.intents, heard)
-        return generate(self.responses, fits, turn)
+        return choose(self.responses, capture(self.intents, heard))
+
+    def respond(self, text: str, now: datetime | None = None) -> Turn:
+        name = self.choose(text)
+        return generate(self.responses.get(name), Turn(text, now or datetime.now()))
 
     @classmethod
     def load(cls, path: Path) -> "Brain":

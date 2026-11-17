@@ -1,0 +1,36 @@
+{"prompt": "hello", "expect": "speech.say(greeting.hello())"}
+{"prompt": "Hi!", "expect": "speech.say(greeting.hello())"}
+{"prompt": "hiii", "expect": "speech.say(greeting.hello())"}
+{"prompt": "HELLO THERE", "expect": "speech.say(greeting.hello())"}
+{"prompt": "hey nagi", "expect": "speech.say(greeting.hello())"}
+{"prompt": "hey there, nagi", "expect": "speech.say(greeting.hello())"}
+{"prompt": "Howdy partner!", "expect": "speech.say(greeting.hello())"}
+{"prompt": "hi friend!", "expect": "speech.say(greeting.hello())"}
+{"prompt": "welcome back nagi", "expect": "speech.say(greeting.hello())"}
+{"prompt": "nice to meet you nagi", "expect": "speech.say(greeting.hello())"}
+{"prompt": "Good morning!", "expect": "speech.say(greeting.time_of_day())"}
+{"prompt": "good evening", "expect": "speech.say(greeting.time_of_day())"}
+{"prompt": "good morning nagi", "expect": "speech.say(greeting.time_of_day())"}
+{"prompt": "morning!!", "expect": "speech.say(greeting.time_of_day())"}
+{"prompt": "how r u", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "what's up?", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "sup dude", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "hi nagi how are you", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "how are you doing today", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "how's it going?", "expect": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
+{"prompt": "Bonjour!", "expect": "speech.say(greeting.echo())"}
+{"prompt": "你好", "expect": "speech.say(greeting.echo())"}
+{"prompt": "hola nagi", "expect": "speech.say(greeting.echo())"}
+{"prompt": "ciao!", "expect": "speech.say(greeting.echo())"}
+{"prompt": "what is the capital of france", "expect": null}
+{"prompt": "this", "expect": null}
+{"prompt": "you", "expect": null}
+{"prompt": "help", "expect": null}
+{"prompt": "nice weather", "expect": null}
+{"prompt": "see you later", "expect": null}
+{"prompt": "goodbye", "expect": null}
+{"prompt": "what time is it", "expect": null}
+{"prompt": "", "expect": null}
+{"prompt": "tell me a joke", "expect": null}
+{"prompt": "i am hungry", "expect": null}
+{"prompt": "what is up with that", "expect": null}
