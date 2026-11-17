@@ -53,8 +53,8 @@ Each step unblocks the next. ✅ done, ▶ next.
    chat, matched by text pattern, gated by evals.
 6. **Formats for thinking and understanding**: typed thought steps, the
    `Understanding` report, and the inbox.
-7. **Reasoning engine**: working memory and rules, contract planning, TLA+
-   state spaces, check and recover.
+7. ◐ **Reasoning engine**: facts, rules and proofs ✅; contract planning,
+   TLA+ state spaces, check and recover to come.
 8. **Finish t0**: the small talk every Nagi needs, taught with the
    machinery above.
 9. **t1–t5**: common knowledge up to age five. Each tier lands once the
@@ -197,8 +197,12 @@ right program, and every skipped word reaches the inbox.
 The engine is plain Python, with no neural model. It is generic, and
 plugins supply the domain: modules with contracts, rules, and specs.
 
-- **Working memory and rules**: facts, slots and step results; rules taught
-  by learners; forward chaining to derive, backward chaining to answer.
+- ✅ **Facts and rules**: facts are triples, rules are sentences with
+  `{variables}` (a relation can be a variable too), both taught by learners
+  or told in conversation. Backward chaining answers, and the proof becomes
+  the turn's thoughts. bAbI tasks 1, 2, 6 and 15 score 100%. Still to come:
+  forward chaining, step results as facts, and word forms (bAbI's "mice"
+  needs a taught plural today).
 - **Contract planning**: type annotations are contracts
   (`parse(turn, text: Text) -> Date`). The planner chains calls from what
   is known to the goal type, best-first within a budget, ordered by learned
@@ -240,11 +244,15 @@ teach Nagi their own world.
 | Tier | Age | What Nagi learns | Needs | Sample eval |
 |---|---|---|---|---|
 | **t0** | 0–1 | how to learn; greetings, farewells, thanks, sorry, yes/no; "who are you"; being taught in chat | kernel ✅, evals, conversation | "bye!" → a farewell |
-| **t1** | 1–2 | words for things: family, body parts, animals and their sounds, food, toys, clothes; basic needs (hungry, tired) | facts (`learn.fact`), pattern learners, knowledge lookup | "what does a cow say?" → "Moo!" |
+| **t1** ◐ | 1–2 | words for things: family, body parts, animals and their sounds, food, toys, clothes; basic needs (hungry, tired) | facts (`learn.fact`), pattern learners, knowledge lookup | "what does a cow say?" → "Moo!" |
 | **t2** | 2–3 | colors, shapes, big/small, hot/cold and other opposites, counting to 10, feelings, my name and age, daily routines | slots, numbers module, personal facts | "what color is grass?" → "Green." |
-| **t3** | 3–4 | counting to 20; adding within 5; morning/afternoon/night; weather; in/on/under; categories ("is a whale a fish?"); helpers (doctor, firefighter); safety rules | rules and inference, typed thoughts | "is a whale a fish?" → "No, it's a mammal." |
+| **t3** ◐ | 3–4 | counting to 20; adding within 5; morning/afternoon/night; weather; in/on/under; categories ("is a whale a fish?"); helpers (doctor, firefighter); safety rules | rules and inference, typed thoughts | "is a whale a fish?" → "No, it's a mammal." |
 | **t4** | 4–5 | the alphabet; rhymes; days of the week; seasons; what comes next in a sequence; where animals live; how plants grow; washing hands and why; following two- or three-step instructions | sequences and planning in code, the inbox for gaps | "what comes after Tuesday?" → "Wednesday." |
 | **t5** | 5 | counting to 100; adding and taking away within 10; yesterday, today, tomorrow; telling time on the hour; left and right; simple cause and effect ("if it rains, take an umbrella"); fairness and taking turns; the rules of simple games | the reasoning engine: rules, planning, TLA+ for game rules | "I have 3 apples and eat 1. How many left?" → "2." |
+
+Shipped so far (◐): t1 `animals`, what 20 animals say; t3 `kinds`, 50
+things in 9 kinds, and what follows from a kind (breathes, lives in, is
+alive), from one rule: a thing does what its kind does.
 
 Rules for the curriculum:
 - **Knowledge is data**: facts, rules and specs go in assets. Core gets only
@@ -285,6 +293,16 @@ own evals. CLINC150 (150 assistant intents and out-of-scope questions,
 | Bigram capture | 69.1% | 66.4% | 75.3% |
 | + words weighed by 1 + IDF ✅ | 76.1% | 81.7% | 82.9% |
 
+bAbI (stories and questions; Nagi is taught `bench/babi.jsonl`, 28 sentence
+forms with slots, two rules and four plurals, on top of the curriculum):
+
+| Task | Accuracy |
+|---|---|
+| 1 single supporting fact | 100% |
+| 2 two supporting facts | 100% |
+| 6 yes/no questions | 100% |
+| 15 basic deduction | 100% |
+
 What the runs showed:
 
 - Backing the bigrams off to single tokens raised CLINC in-scope accuracy
@@ -292,8 +310,12 @@ What the runs showed:
   accepts, so it was not kept.
 - The shipped curriculum with the example plugins accepts 5.1% of CLINC's
   sentences, against the 2% target. Most come from intents that take open
-  residue ("i need *to start a timer*" fits todo's "i need …"). Explicit
-  slots (decision 6) should fix this: only a slot takes free words.
+  residue ("i need *to start a timer*" fits todo's "i need …"). Slots now
+  exist; moving todo and birthdays from residue to slots is next.
+- A slot word costs what a skip does. Cheaper slots let one slot swallow a
+  whole sentence; a dearer skip cost CLINC more than it saved. What stops
+  "what time is it" fitting "what is a {thing}" is that a response reading
+  a slot needs it heard.
 - Teaching 15,000 prompts takes about 40 s, nearly all of it retraining the
   tokenizer; understanding takes about 3.5 ms a turn over 150 intents.
 - On ARC-Easy and GSM8K the shipped curriculum declines every question
@@ -324,9 +346,8 @@ Before step 4:
 Before step 6:
 5. **Thought step vocabulary**: whether these step kinds cover rules,
    plans and TLA+ transitions without later breaking changes.
-6. **Slot syntax**: `{name}` placeholders, shared by intents and pattern
-   learners. CLINC150 shows open residue causes most false accepts, so
-   slots come early.
+6. ✅ **Slot syntax**: `{name}` in prompts, read as `slot.name`; the same
+   braces are a rule's variables.
 
 Before step 7:
 7. **The TLA+ subset**, and how `Ask` and `Do` bind to modules while specs
@@ -335,5 +356,6 @@ Before step 7:
    plugins extend.
 
 Before step 9:
-9. **Fact format**: plain sentences read by pattern learners, structured
-   records, or both, and how a fact links to the tier that taught it.
+9. ◐ **Fact format**: facts are structured records (`subject`, `relation`,
+   `object`) and rules are sentences. Still open: plain sentences as facts,
+   and how a fact links to the tier that taught it.

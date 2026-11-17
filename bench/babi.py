@@ -1,8 +1,11 @@
 """bAbI: stories and questions that need reasoning over what was said.
 
 Nagi learns its curriculum and ``bench/babi.jsonl``: how to read the
-stories' sentences (prompts with slots) and the rules to reason with. Then
-it hears each test story, sentence by sentence, and answers its questions::
+stories' sentences (prompts with slots), two rules for where things are,
+and plurals. Deduction ("Gertrude is a sheep", "sheep are afraid of
+wolves") needs nothing new: the curriculum already teaches that a thing does
+what its kind does. Then Nagi hears each test story, sentence by sentence,
+and answers its questions::
 
     uv run python bench/babi.py
 

@@ -58,6 +58,7 @@ class Program:
     def __init__(self, code: str, learning: bool = False):
         self.code = code
         self.learning = learning
+        self.slots: set[str] = set()  # the slots it reads, so it is only run when they were heard
         self.steps = []
         for node in ast.parse(code).body:
             if not isinstance(node, ast.Expr):
@@ -79,7 +80,8 @@ class Program:
             case ast.Attribute(value=ast.Name(id="record"), attr=name) if self.learning:
                 return lambda context: context.record[name]
             case ast.Attribute(value=ast.Name(id="slot"), attr=name) if not self.learning:
-                return lambda context: context.slots.get(name, "")
+                self.slots.add(name)
+                return lambda context: context.slots[name]
             case ast.Call(func=func, args=args, keywords=[]):
                 function, args = self.resolve(func), [self.expression(arg) for arg in args]
                 return lambda context: function(context, *[arg(context) for arg in args])

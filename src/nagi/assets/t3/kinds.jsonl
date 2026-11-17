@@ -1,0 +1,90 @@
+{"rule": "{x} {r} {z} if {x} is {y} and {y} {r} {z}"}
+{"subject": "a dog", "relation": "is a", "object": "mammal"}
+{"subject": "a cat", "relation": "is a", "object": "mammal"}
+{"subject": "a cow", "relation": "is a", "object": "mammal"}
+{"subject": "a horse", "relation": "is a", "object": "mammal"}
+{"subject": "a pig", "relation": "is a", "object": "mammal"}
+{"subject": "a sheep", "relation": "is a", "object": "mammal"}
+{"subject": "a mouse", "relation": "is a", "object": "mammal"}
+{"subject": "a lion", "relation": "is a", "object": "mammal"}
+{"subject": "a whale", "relation": "is a", "object": "mammal"}
+{"subject": "a dolphin", "relation": "is a", "object": "mammal"}
+{"subject": "a bat", "relation": "is a", "object": "mammal"}
+{"subject": "a monkey", "relation": "is a", "object": "mammal"}
+{"subject": "a elephant", "relation": "is a", "object": "mammal"}
+{"subject": "a bear", "relation": "is a", "object": "mammal"}
+{"subject": "a goat", "relation": "is a", "object": "mammal"}
+{"subject": "a donkey", "relation": "is a", "object": "mammal"}
+{"subject": "a wolf", "relation": "is a", "object": "mammal"}
+{"subject": "a shark", "relation": "is a", "object": "fish"}
+{"subject": "a goldfish", "relation": "is a", "object": "fish"}
+{"subject": "a salmon", "relation": "is a", "object": "fish"}
+{"subject": "a tuna", "relation": "is a", "object": "fish"}
+{"subject": "a robin", "relation": "is a", "object": "bird"}
+{"subject": "a penguin", "relation": "is a", "object": "bird"}
+{"subject": "a owl", "relation": "is a", "object": "bird"}
+{"subject": "a duck", "relation": "is a", "object": "bird"}
+{"subject": "a chicken", "relation": "is a", "object": "bird"}
+{"subject": "a eagle", "relation": "is a", "object": "bird"}
+{"subject": "a parrot", "relation": "is a", "object": "bird"}
+{"subject": "a rooster", "relation": "is a", "object": "bird"}
+{"subject": "a snake", "relation": "is a", "object": "reptile"}
+{"subject": "a lizard", "relation": "is a", "object": "reptile"}
+{"subject": "a turtle", "relation": "is a", "object": "reptile"}
+{"subject": "a crocodile", "relation": "is a", "object": "reptile"}
+{"subject": "a frog", "relation": "is an", "object": "amphibian"}
+{"subject": "a toad", "relation": "is an", "object": "amphibian"}
+{"subject": "a bee", "relation": "is an", "object": "insect"}
+{"subject": "a ant", "relation": "is an", "object": "insect"}
+{"subject": "a butterfly", "relation": "is an", "object": "insect"}
+{"subject": "a ladybug", "relation": "is an", "object": "insect"}
+{"subject": "a apple", "relation": "is a", "object": "fruit"}
+{"subject": "a banana", "relation": "is a", "object": "fruit"}
+{"subject": "a orange", "relation": "is a", "object": "fruit"}
+{"subject": "a grape", "relation": "is a", "object": "fruit"}
+{"subject": "a strawberry", "relation": "is a", "object": "fruit"}
+{"subject": "a carrot", "relation": "is a", "object": "vegetable"}
+{"subject": "a potato", "relation": "is a", "object": "vegetable"}
+{"subject": "a pea", "relation": "is a", "object": "vegetable"}
+{"subject": "a broccoli", "relation": "is a", "object": "vegetable"}
+{"subject": "a tree", "relation": "is a", "object": "plant"}
+{"subject": "a flower", "relation": "is a", "object": "plant"}
+{"subject": "a grass", "relation": "is a", "object": "plant"}
+{"subject": "a mammal", "relation": "is an", "object": "animal"}
+{"subject": "a fish", "relation": "is an", "object": "animal"}
+{"subject": "a bird", "relation": "is an", "object": "animal"}
+{"subject": "a reptile", "relation": "is an", "object": "animal"}
+{"subject": "a amphibian", "relation": "is an", "object": "animal"}
+{"subject": "a insect", "relation": "is an", "object": "animal"}
+{"subject": "a fruit", "relation": "is", "object": "food"}
+{"subject": "a vegetable", "relation": "is", "object": "food"}
+{"subject": "an animal", "relation": "is", "object": "alive"}
+{"subject": "a plant", "relation": "is", "object": "alive"}
+{"subject": "a mammal", "relation": "breathes", "object": "air"}
+{"subject": "a bird", "relation": "breathes", "object": "air"}
+{"subject": "a reptile", "relation": "breathes", "object": "air"}
+{"subject": "a fish", "relation": "breathes", "object": "water"}
+{"subject": "a fish", "relation": "lives in", "object": "water"}
+{"subject": "a whale", "relation": "lives in", "object": "the sea"}
+{"subject": "a dolphin", "relation": "lives in", "object": "the sea"}
+{"subject": "a bee", "relation": "lives in", "object": "a hive"}
+{"subject": "a bird", "relation": "lives in", "object": "a nest"}
+{"subject": "a bear", "relation": "lives in", "object": "a cave"}
+{"subject": "a dog", "relation": "lives in", "object": "a house"}
+{"subject": "a bird", "relation": "has", "object": "feathers"}
+{"subject": "a fish", "relation": "has", "object": "fins"}
+{"subject": "a mammal", "relation": "drinks", "object": "milk"}
+{"prompt": "is a {thing} a {kind}?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))"}}
+{"prompt": "is a {thing} an {kind}?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))"}}
+{"prompt": "what is a {thing}?", "completion": {"think": "They ask what kind of thing it is. Recall its kind.", "code": "speech.answer(reason.what(slot.thing, \"is\"))"}}
+{"prompt": "what kind of thing is a {thing}?", "completion": {"think": "They ask what kind of thing it is. Recall its kind.", "code": "speech.answer(reason.what(slot.thing, \"is\"))"}}
+{"prompt": "what does a {thing} breathe?", "completion": {"think": "They ask what it breathes. What kind of thing is it, and what does that kind breathe?", "code": "speech.answer(reason.what(slot.thing, \"breathes\"))"}}
+{"prompt": "where does a {thing} live?", "completion": {"think": "They ask where it lives. Recall it, or what its kind lives in.", "code": "speech.answer(reason.what(slot.thing, \"lives in\"))"}}
+{"prompt": "is an {thing} a {kind}?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))"}}
+{"prompt": "is an {thing} an {kind}?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))"}}
+{"prompt": "what is an {thing}?", "completion": {"think": "They ask what kind of thing it is. Recall its kind.", "code": "speech.answer(reason.what(slot.thing, \"is\"))"}}
+{"prompt": "what kind of thing is an {thing}?", "completion": {"think": "They ask what kind of thing it is. Recall its kind.", "code": "speech.answer(reason.what(slot.thing, \"is\"))"}}
+{"prompt": "what does an {thing} breathe?", "completion": {"think": "They ask what it breathes. What kind of thing is it, and what does that kind breathe?", "code": "speech.answer(reason.what(slot.thing, \"breathes\"))"}}
+{"prompt": "where does an {thing} live?", "completion": {"think": "They ask where it lives. Recall it, or what its kind lives in.", "code": "speech.answer(reason.what(slot.thing, \"lives in\"))"}}
+{"prompt": "is a {thing} alive?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", \"alive\"))"}}
+{"prompt": "is an {thing} alive?", "completion": {"think": "They ask whether a thing is a kind of thing. Check what I know about its kind.", "code": "speech.answer(reason.check(slot.thing, \"is\", \"alive\"))"}}

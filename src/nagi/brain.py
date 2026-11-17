@@ -21,6 +21,7 @@ reasons with (see ``nagi.knowledge``), and the modules' state::
 Responding is three separate stages: token in, intent capture, generate.
 """
 
+import copy
 import hashlib
 import json
 from datetime import datetime
@@ -115,10 +116,14 @@ class Brain:
         fit = fits[name]
         return name, [words[at] for at in fit.skipped], {s: " ".join(words[at] for at in ats) for s, ats in fit.slots.items()}
 
-    def respond(self, text: str, now: datetime | None = None) -> Turn:
+    def respond(self, text: str, now: datetime | None = None, keep: bool = True) -> Turn:
+        """Respond; unless ``keep``, on a copy of the state and knowledge, so nothing changes."""
         name, residue, slots = self.understand(text)
-        turn = Turn(text, now or datetime.now(), residue=residue, slots=slots, state=self.memory["state"],
-                    knowledge=self.knowledge)
+        state, knowledge = self.memory["state"], self.knowledge
+        if not keep:
+            state = copy.deepcopy(state)
+            knowledge = Knowledge(copy.deepcopy(knowledge.facts), copy.deepcopy(knowledge.rules))
+        turn = Turn(text, now or datetime.now(), residue=residue, slots=slots, state=state, knowledge=knowledge)
         return generate(self.responses.get(name), turn)
 
     @classmethod

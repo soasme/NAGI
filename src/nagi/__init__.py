@@ -25,7 +25,10 @@ def report(results: list[tuple[str, Report]], min_accuracy: float, max_false_acc
     for name, result in results:
         print(f"{name}: {result.passed}/{result.total}")
         for case in result.failed:
-            print(f"  ✗ {case.prompt!r}: expected {case.expect or 'nothing'}, got {case.got or 'nothing'}")
+            if case.got == case.expect:
+                print(f"  ✗ {case.prompt!r}: expected to say {case.say}, said {case.said}")
+            else:
+                print(f"  ✗ {case.prompt!r}: expected {case.expect or 'nothing'}, got {case.got or 'nothing'}")
         total += result
     print(
         f"accuracy {total.accuracy:.1%}, false accepts {total.false_accept_rate:.1%}, "

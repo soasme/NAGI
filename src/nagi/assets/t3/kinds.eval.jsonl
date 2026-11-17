@@ -1,0 +1,20 @@
+{"prompt": "is a whale a fish?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["No."]}
+{"prompt": "is a whale a mammal?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["Yes."]}
+{"prompt": "Is a whale an animal?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["Yes."]}
+{"prompt": "is a penguin a bird", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["Yes."]}
+{"prompt": "is a bat a bird?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["No."]}
+{"prompt": "is an apple a fruit?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["Yes."]}
+{"prompt": "is a carrot a fruit?", "expect": "speech.answer(reason.check(slot.thing, \"is\", slot.kind))", "say": ["No."]}
+{"prompt": "what is a shark?", "expect": "speech.answer(reason.what(slot.thing, \"is\"))", "say": ["Fish."]}
+{"prompt": "what kind of thing is a frog", "expect": "speech.answer(reason.what(slot.thing, \"is\"))", "say": ["Amphibian."]}
+{"prompt": "what does a whale breathe?", "expect": "speech.answer(reason.what(slot.thing, \"breathes\"))", "say": ["Air."]}
+{"prompt": "what does a goldfish breathe", "expect": "speech.answer(reason.what(slot.thing, \"breathes\"))", "say": ["Water."]}
+{"prompt": "where does a whale live?", "expect": "speech.answer(reason.what(slot.thing, \"lives in\"))", "say": ["Sea."]}
+{"prompt": "where does a salmon live", "expect": "speech.answer(reason.what(slot.thing, \"lives in\"))", "say": ["Water."]}
+{"prompt": "where does a robin live?", "expect": "speech.answer(reason.what(slot.thing, \"lives in\"))", "say": ["Nest."]}
+{"prompt": "is a tree alive?", "expect": "speech.answer(reason.check(slot.thing, \"is\", \"alive\"))", "say": ["Yes."]}
+{"prompt": "is a dog alive", "expect": "speech.answer(reason.check(slot.thing, \"is\", \"alive\"))", "say": ["Yes."]}
+{"prompt": "is a rock alive?", "expect": "speech.answer(reason.check(slot.thing, \"is\", \"alive\"))", "say": ["No."]}
+{"prompt": "what is the capital of france", "expect": null}
+{"prompt": "what is the weather like", "expect": null}
+{"prompt": "is it going to rain", "expect": null}

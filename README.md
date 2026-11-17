@@ -124,7 +124,8 @@ modules (`nagi.modules`); learners may call learning modules
 (`nagi.learning`), and may read `record` and its fields. Responses may
 read the words heard in a slot of their prompt: taught `"is a {thing} a
 {kind}?"`, Nagi reads "is a polar bear a mammal?" with `slot.thing` as
-"polar bear". `module.function` must be in the module's `__all__`, and
+"polar bear". A response that reads a slot is only chosen when its slot
+was heard. `module.function` must be in the module's `__all__`, and
 takes the current turn (or lesson) first. A turn carries what was heard,
 the untaught words (`turn.residue`), the slots (`turn.slots`), the time, a
 random source for variety, and `turn.state`, which persists:
@@ -216,7 +217,8 @@ $ uv run pytest
 Benchmarks live in `bench/` and download their data on first run. CLINC150
 measures intent capture on real assistant requests, out-of-scope ones
 included. bAbI measures reasoning over stories, with Nagi taught only
-`bench/babi.jsonl`: how to read the stories' sentences, and three rules.
+`bench/babi.jsonl`: how to read the stories' sentences, two rules for where
+things are, and plurals.
 
 ```console
 $ uv run python bench/clinc150.py

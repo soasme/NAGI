@@ -1,0 +1,9 @@
+{"prompt": "what does a cow say?", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["Moo."]}
+{"prompt": "What does a dog say", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["Woof."]}
+{"prompt": "what sound does a duck make", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["Quack."]}
+{"prompt": "what noise does an owl make?", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["Hoot."]}
+{"prompt": "how does a sheep go", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["Baa."]}
+{"prompt": "what does a fox say?", "expect": "speech.answer(reason.what(slot.thing, \"says\"))", "say": ["I don't know."]}
+{"prompt": "what does a little cat say", "expect": "speech.answer(reason.what(slot.thing, \"says\"))"}
+{"prompt": "what does this word mean", "expect": null}
+{"prompt": "what time does the store close", "expect": null}

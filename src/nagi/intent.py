@@ -16,6 +16,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 
 SKIP = math.log2(0.01)  # bits to ignore a word, like the name in "hey nagi"
+FILL = SKIP  # bits for a word read into a slot
 UNSEEN = math.log2(0.0001)  # bits for a token transition never heard
 TIE = 1e-9  # readings closer than this are equally probable; then the one skipping fewer words wins
 THRESHOLD = -5.2  # bits per unit of weight an intent must reach to be captured
@@ -55,7 +56,7 @@ class Intent:
                 offer(last, (total + weight * SKIP, (*skipped, at), filled))
                 for slot in self.slots:
                     into = 0 if slot == last else self.bits(last, slot)
-                    offer(slot, (total + weight * (into + SKIP), skipped, (*filled, (slot[1:-1], at))))
+                    offer(slot, (total + weight * (into + FILL), skipped, (*filled, (slot[1:-1], at))))
                 for token in word:
                     total += weight * self.bits(last, token)
                     last = token

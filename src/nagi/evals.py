@@ -2,10 +2,14 @@
 
 An eval set is JSON Lines next to the assets it checks (``*.eval.jsonl``),
 and is never learned. Each case names the program Nagi should run, or
-``null`` when Nagi should not understand::
+``null`` when Nagi should not understand, and may say what it should say::
 
     {"prompt": "hey nagi", "expect": "speech.say(greeting.hello())"}
     {"prompt": "what is the capital of france", "expect": null}
+    {"prompt": "what does a cow say?", "expect": "...", "say": ["Moo."]}
+
+A case that says what to say runs its program on a copy of what Nagi
+knows, so evals never change it.
 """
 
 import json
@@ -17,6 +21,8 @@ class Case:
     prompt: str
     expect: str | None
     got: str | None
+    say: list[str] | None = None
+    said: list[str] | None = None
 
 
 @dataclass
@@ -57,14 +63,24 @@ def evaluate(brain, text: str) -> Report:
         if not line.strip():
             continue
         match json.loads(line):
-            case {"prompt": str(prompt), "expect": str() | None as expect}:
+            case {"prompt": str(prompt), "expect": str() | None as expect, **more} if valid(more):
                 report.unknowns += expect is None
                 name, *_ = brain.understand(prompt)
-                got = name and brain.memory["responses"][name]["code"]
-                if got == expect:
+                case = Case(prompt, expect, name and brain.memory["responses"][name]["code"], more.get("say"))
+                if case.got == expect and case.say is not None:
+                    case.said = brain.respond(prompt, keep=False).said
+                if case.got == expect and case.said == case.say:
                     report.passed += 1
                 else:
-                    report.failed.append(Case(prompt, expect, got))
+                    report.failed.append(case)
             case _:
-                raise ValueError(f'line {number}: an eval case is {{"prompt": "...", "expect": "code" or null}}')
+                raise ValueError(
+                    f'line {number}: an eval case is {{"prompt": "...", "expect": "code" or null}}, '
+                    f'and may have "say": ["..."]'
+                )
     return report
+
+
+def valid(more: dict) -> bool:
+    say = more.get("say", [])
+    return more.keys() <= {"say"} and isinstance(say, list) and all(isinstance(s, str) for s in say)

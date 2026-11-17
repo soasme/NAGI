@@ -1,0 +1,27 @@
+{"subject": "a cow", "relation": "says", "object": "moo"}
+{"subject": "a dog", "relation": "says", "object": "woof"}
+{"subject": "a cat", "relation": "says", "object": "meow"}
+{"subject": "a duck", "relation": "says", "object": "quack"}
+{"subject": "a sheep", "relation": "says", "object": "baa"}
+{"subject": "a pig", "relation": "says", "object": "oink"}
+{"subject": "a horse", "relation": "says", "object": "neigh"}
+{"subject": "a lion", "relation": "says", "object": "roar"}
+{"subject": "a bird", "relation": "says", "object": "tweet"}
+{"subject": "a mouse", "relation": "says", "object": "squeak"}
+{"subject": "a frog", "relation": "says", "object": "ribbit"}
+{"subject": "a chicken", "relation": "says", "object": "cluck"}
+{"subject": "a owl", "relation": "says", "object": "hoot"}
+{"subject": "a bee", "relation": "says", "object": "buzz"}
+{"subject": "a snake", "relation": "says", "object": "hiss"}
+{"subject": "a donkey", "relation": "says", "object": "hee-haw"}
+{"subject": "a goat", "relation": "says", "object": "maa"}
+{"subject": "a rooster", "relation": "says", "object": "cock-a-doodle-doo"}
+{"subject": "a wolf", "relation": "says", "object": "howl"}
+{"subject": "a monkey", "relation": "says", "object": "ooh ooh ah ah"}
+{"prompt": "what does a {thing} say?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "what sound does a {thing} make?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "what noise does a {thing} make?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "what does an {thing} say?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "what sound does an {thing} make?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "what noise does an {thing} make?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}
+{"prompt": "how does a {thing} go?", "completion": {"think": "They ask what sound an animal makes. Recall what it says.", "code": "speech.answer(reason.what(slot.thing, \"says\"))"}}

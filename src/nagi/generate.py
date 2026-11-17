@@ -16,8 +16,16 @@ class Response:
 
 
 def choose(responses: dict[str, Response], fits: dict[str, Fit]) -> str | None:
-    """The best fit; among equal fits, such as responses taught the same prompts, the most valued."""
-    candidates = [(fit.score, responses[name].value, name) for name, fit in fits.items() if responses[name].value >= 0]
+    """The best fit; among equal fits, such as responses taught the same prompts, the most valued.
+
+    A response is a candidate only if it is not disliked (value ≥ 0) and
+    every slot its program reads was heard.
+    """
+    candidates = [
+        (fit.score, responses[name].value, name)
+        for name, fit in fits.items()
+        if responses[name].value >= 0 and responses[name].program.slots <= fit.slots.keys()
+    ]
     return max(candidates)[2] if candidates else None
 
 

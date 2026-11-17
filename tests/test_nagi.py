@@ -304,6 +304,13 @@ def test_a_slot_does_not_make_anything_fit():
         assert brain.understand(text)[0] is None, text
 
 
+def test_a_response_reading_a_slot_needs_it_heard():
+    brain = greeter()
+    brain.learn(jsonl({"prompt": "what is a {thing}?", "completion": {"code": "speech.say(slot.thing)"}}))
+    assert brain.respond("what is a shark?").said == ["shark"]
+    assert brain.understand("what time is it")[0] is None
+
+
 def test_a_slot_is_one_token():
     assert tokenize("is a {thing}?", train(["is a cat"])) == [[" is"], [" a"], ["{thing}"]]
 
@@ -365,13 +372,13 @@ def test_nagi_reasons_out_loud():
         *({"prompt": f"is a {{thing}} {a} {{kind}}?", "completion": asks} for a in ("a", "an")),
         *({"prompt": f"a {{thing}} is {a} {{kind}}.", "completion": tells} for a in ("a", "an")),
     ))
-    brain.respond("A whale is a mammal.")
-    brain.respond("A mammal is an animal.")
-    turn = brain.respond("Is a whale an animal?")
+    brain.respond("A zorb is a blip.")
+    brain.respond("A blip is an orb.")
+    turn = brain.respond("Is a zorb an orb?")
     assert turn.said == ["yes"]
-    assert turn.thoughts == ["whale is mammal", "mammal is animal", "so whale is animal"]
-    assert brain.respond("Is a whale a fish?").said == ["no"]
-    assert brain.memory["facts"] == [["whale", "is", "mammal"], ["mammal", "is", "animal"]]
+    assert turn.thoughts == ["zorb is blip", "blip is orb", "so zorb is orb"]
+    assert brain.respond("Is a zorb a fish?").said == ["no"]
+    assert brain.memory["facts"][-2:] == [["zorb", "is", "blip"], ["blip", "is", "orb"]]
 
 
 def test_state_is_kept_between_turns():
