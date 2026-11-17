@@ -1,0 +1,2 @@
+{"prompt": "hello", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}, "reward": 1.0}
+{"prompt": "hey", "completion": {"think": "", "code": "speech.say(\"...?\")"}, "reward": -1.0}

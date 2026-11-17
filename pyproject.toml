@@ -1,0 +1,22 @@
+[project]
+name = "nagi"
+version = "0.1.0"
+description = "Nagi is Not Artificial General Intelligence."
+readme = "README.md"
+authors = [
+    { name = "Ju Lin", email = "soasme@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+nagi = "nagi:main"
+
+[build-system]
+requires = ["uv_build>=0.10.6,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]

@@ -1,0 +1,2 @@
+{"prompt": "good morning", "chosen": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}
+{"prompt": "hi", "chosen": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}, "rejected": {"think": "", "code": "speech.say(\"Hello!\")"}}

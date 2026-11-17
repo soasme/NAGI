@@ -1,0 +1,55 @@
+{"prompt": "hello", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hello there", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hello everyone", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hi", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hi there", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hi everyone", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hey", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hey there", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "heya", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hiya", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "howdy", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "yo", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "sup", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "what's up", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "wassup", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "what's good", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "greetings", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "good morning", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "good afternoon", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "good evening", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "good day", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "morning", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "evening", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "top of the morning", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how are you", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how are you doing", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how are u", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how r u", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how's it going", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how have you been", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how do you do", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "how's everything", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "nice to meet you", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "pleased to meet you", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "good to see you", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "nice to see you", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "long time no see", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "welcome", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "welcome back", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hey buddy", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hi friend", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hello friend", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "ahoy", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "aloha", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hola", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "bonjour", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "ciao", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "salut", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "hallo", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "namaste", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "konnichiwa", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "ni hao", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "你好", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "こんにちは", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
+{"prompt": "안녕하세요", "completion": {"think": "They are greeting me. Greet them back, fitting the time of day.", "code": "speech.say(greeting.hello())"}}
