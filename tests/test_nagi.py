@@ -10,6 +10,7 @@ from nagi.code import Program, Turn
 from nagi.evals import evaluate
 from nagi.generate import CONFUSED
 from nagi.intent import Intent, capture
+from nagi.knowledge import Knowledge, triple
 from nagi.tokens import encode, tokenize, train
 
 MORNING = datetime(2026, 1, 1, 9)
@@ -213,7 +214,7 @@ def test_reteaching_a_learner_changes_how_nagi_learns():
     eager = "learn.prompt(record.prompt, record.completion, 1)\nlearn.value(record.completion, 1)"
     brain.learn(jsonl({"learner": "sft", "shape": {"prompt": "text", "completion": "completion"}, "code": eager}))
     brain.learn(jsonl({"prompt": "hi", "completion": HELLO}))
-    assert list(brain.learners) == ["dpo", "rlhf", "sft"]
+    assert list(brain.learners) == ["dpo", "rlhf", "fact", "rule", "sft"]
     assert [r["value"] for r in brain.memory["responses"].values()] == [1]
 
 
@@ -305,6 +306,72 @@ def test_a_slot_does_not_make_anything_fit():
 
 def test_a_slot_is_one_token():
     assert tokenize("is a {thing}?", train(["is a cat"])) == [[" is"], [" a"], ["{thing}"]]
+
+
+# reasoning
+
+
+def zoo() -> Knowledge:
+    knowledge = Knowledge([], [])
+    knowledge.tell("a whale", "is a", "mammal")
+    knowledge.tell("a mammal", "is an", "animal")
+    knowledge.tell("a mammal", "breathes", "air")
+    knowledge.rule("{x} is {z} if {x} is {y} and {y} is {z}")
+    knowledge.rule("{x} breathes {z} if {x} is {y} and {y} breathes {z}")
+    return knowledge
+
+
+def test_facts_are_compared_as_plain_words():
+    assert zoo().facts[0] == ["whale", "is", "mammal"]
+    assert triple("{x} is at the {y}") == ("{x}", "is at", "{y}")
+
+
+def test_a_proof_is_the_facts_used_and_what_follows():
+    proofs = zoo().prove(("whale", "breathes", "{what}"))
+    bound, steps = next(proofs)
+    assert bound["{what}"] == "air"
+    assert steps == ["whale is mammal", "mammal breathes air", "so whale breathes air"]
+
+
+def test_what_cannot_be_shown_is_not_true():
+    assert list(zoo().prove(("whale", "is", "fish"))) == []
+
+
+def test_rules_that_lead_back_to_themselves_end():
+    knowledge = zoo()
+    knowledge.tell("animal", "is", "mammal")
+    assert next(knowledge.prove(("whale", "is", "animal")))[1][-1] == "so whale is animal"
+    assert list(knowledge.prove(("whale", "is", "fish"))) == []
+
+
+def test_update_replaces_what_was_known():
+    knowledge = Knowledge([], [])
+    knowledge.update("Mary", "is in", "the kitchen")
+    knowledge.update("Mary", "is in", "the garden")
+    assert knowledge.facts == [["mary", "is in", "garden"]]
+
+
+def test_a_rule_needs_a_condition():
+    with pytest.raises(ValueError, match="if"):
+        Knowledge([], []).rule("{x} is {y}")
+
+
+def test_nagi_reasons_out_loud():
+    brain = greeter()
+    asks = {"code": 'speech.say(reason.check(slot.thing, "is", slot.kind))'}
+    tells = {"code": 'reason.tell(slot.thing, "is", slot.kind)'}
+    brain.learn(jsonl(
+        {"rule": "{x} is {z} if {x} is {y} and {y} is {z}"},
+        *({"prompt": f"is a {{thing}} {a} {{kind}}?", "completion": asks} for a in ("a", "an")),
+        *({"prompt": f"a {{thing}} is {a} {{kind}}.", "completion": tells} for a in ("a", "an")),
+    ))
+    brain.respond("A whale is a mammal.")
+    brain.respond("A mammal is an animal.")
+    turn = brain.respond("Is a whale an animal?")
+    assert turn.said == ["yes"]
+    assert turn.thoughts == ["whale is mammal", "mammal is animal", "so whale is animal"]
+    assert brain.respond("Is a whale a fish?").said == ["no"]
+    assert brain.memory["facts"] == [["whale", "is", "mammal"], ["mammal", "is", "animal"]]
 
 
 def test_state_is_kept_between_turns():

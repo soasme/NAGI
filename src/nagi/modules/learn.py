@@ -1,10 +1,11 @@
 """Memory operations: the only way learners change what Nagi knows.
 
-Everything is a sum, so lessons add up in any order: a prompt's weight
-toward a completion, and a completion's value.
+Each adds up, so lessons can be taught in any order and repeating one does
+no harm: a prompt's weight toward a completion, a completion's value, and
+the facts and rules Nagi reasons with (see ``nagi.knowledge``).
 """
 
-__all__ = ["prompt", "value"]
+__all__ = ["fact", "prompt", "rule", "value"]
 
 
 def prompt(lesson, text: str, completion: dict, weight: float) -> None:
@@ -17,3 +18,12 @@ def value(lesson, completion: dict, delta: float) -> None:
     """How much completion is preferred; below zero it is never chosen."""
     lesson.brain.remember(completion)["value"] += delta
 
+
+
+def fact(lesson, subject: str, relation: str, object: str) -> None:
+    lesson.brain.knowledge.tell(subject, relation, object)
+
+
+def rule(lesson, text: str) -> None:
+    """A rule as a sentence: "{x} is {z} if {x} is {y} and {y} is {z}"."""
+    lesson.brain.knowledge.rule(text)

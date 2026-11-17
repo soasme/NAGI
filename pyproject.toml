@@ -14,6 +14,7 @@ nagi = "nagi:main"
 
 [project.entry-points."nagi.modules"]
 greeting = "nagi.modules.greeting"
+reason = "nagi.modules.reason"
 speech = "nagi.modules.speech"
 
 [project.entry-points."nagi.learning"]

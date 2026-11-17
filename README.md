@@ -43,25 +43,29 @@ changes memory through `learn.*` operations only.
 ```
 
 The curriculum's first lesson, `t0/0-how-to-learn.jsonl`, teaches the
-learners for the usual fine-tuning shapes:
+learners for the usual fine-tuning shapes, and for knowledge:
 
 | Learner | Record | Effect |
 |---|---|---|
 | `sft` | `{"prompt", "completion"}` | prompt weight +1 |
 | `dpo` | `{"prompt", "chosen", "rejected"}` | prompt weight and value +1 for chosen, −1 for rejected |
 | `rlhf` | `{"prompt", "completion", "reward"}` | prompt weight and value += reward |
+| `fact` | `{"subject", "relation", "object"}` | a fact to reason with |
+| `rule` | `{"rule"}` | a rule, as a sentence: `"{x} is {z} if {x} is {y} and {y} is {z}"` |
 
 A record goes to the most recently taught learner whose shape it fits
 exactly (shape types: `text`, `number`, `completion`). So a new way of
 learning is a new learner, taught in any asset, and teaching a learner
 under an existing name changes how Nagi learns.
-The memory operations are sums, so lessons add up in any order and
-repeating one reinforces it:
+The memory operations add up, so lessons can be taught in any order and
+repeating one does no harm:
 
 | Operation | Effect |
 |---|---|
 | `learn.prompt(text, completion, weight)` | hearing `text` leads to `completion` while its total weight is positive |
 | `learn.value(completion, delta)` | preference; below zero, never chosen |
+| `learn.fact(subject, relation, object)` | Nagi knows the fact |
+| `learn.rule(text)` | Nagi reasons with the rule |
 
 Every completion is a chain of thought and a program, never fixed text:
 
@@ -70,9 +74,31 @@ Every completion is a chain of thought and a program, never fixed text:
  "code": "speech.say(greeting.hello())\nspeech.say(greeting.doing_well())"}
 ```
 
-Memory keeps the learners and one entry per distinct completion, with each
-prompt's weight and the completion's value. It is versioned; an older
-memory file must be removed and relearned.
+Memory keeps the learners, one entry per distinct completion with each
+prompt's weight and the completion's value, and the facts and rules. It is
+versioned; an older memory file must be removed and relearned.
+
+## Reasoning
+
+Nagi reasons with facts and rules, not with code written for a domain. A
+fact is a subject, a relation and an object, compared as plain words, so
+"a whale is a mammal" is `whale | is | mammal`. A rule is a sentence of such
+triples with `{variables}`. To answer, Nagi chains backward: a matching
+fact (newest first), or a rule whose conclusion matches, whose conditions
+it then shows in turn. What it can't show is not true.
+
+Responses reach it through the `reason` module, with slots:
+
+| Call | Does |
+|---|---|
+| `reason.check(subject, relation, object)` | `"yes"` if it can be shown, else `"no"` |
+| `reason.what(subject, relation)` | the object it can show, newest first |
+| `reason.tell(subject, relation, object)` | knows a new fact |
+| `reason.update(subject, relation, object)` | the same, replacing what was known of the subject's relation |
+
+A proof is thought out loud: `nagi respond --think is a whale an animal`
+thinks `whale is mammal`, `mammal is animal`, `so whale is animal`, and says
+`yes`. Facts told in conversation persist like any other.
 
 ## Evals
 
@@ -189,8 +215,10 @@ $ uv run pytest
 
 Benchmarks live in `bench/` and download their data on first run. CLINC150
 measures intent capture on real assistant requests, out-of-scope ones
-included:
+included. bAbI measures reasoning over stories, with Nagi taught only
+`bench/babi.jsonl`: how to read the stories' sentences, and three rules.
 
 ```console
 $ uv run python bench/clinc150.py
+$ uv run python bench/babi.py
 ```

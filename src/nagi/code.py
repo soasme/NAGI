@@ -24,6 +24,7 @@ from datetime import datetime
 from random import Random
 
 from nagi import plugins
+from nagi.knowledge import Knowledge
 
 
 @dataclass
@@ -34,7 +35,8 @@ class Turn:
     in "add oat milk to my list" taught as "add to my list", ``["oat",
     "milk"]``. ``slots`` holds the words heard in each slot of the prompt
     taught: "is a whale a fish" taught as "is a {thing} a {kind}" gives
-    ``{"thing": "whale", "kind": "fish"}``. ``state`` is kept in memory between turns; each module keeps
+    ``{"thing": "whale", "kind": "fish"}``. ``knowledge`` is what Nagi
+    knows and reasons with (see ``nagi.knowledge``). ``state`` is kept in memory between turns; each module keeps
     its data under its own name, as in ``turn.state.setdefault("todo", [])``.
     """
 
@@ -44,6 +46,7 @@ class Turn:
     residue: list[str] = field(default_factory=list)
     slots: dict[str, str] = field(default_factory=dict)
     state: dict = field(default_factory=dict)
+    knowledge: Knowledge = field(default_factory=lambda: Knowledge([], []))
     thoughts: list[str] = field(default_factory=list)
     said: list[str] = field(default_factory=list)
 

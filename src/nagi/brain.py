@@ -7,12 +7,15 @@ completion they teach is ``{"think": "...", "code": "..."}``: an optional
 chain of thought, then a code-mode program (see ``nagi.code``).
 
 Memory keeps the learners, one entry per distinct completion with the
-weight of each prompt toward it and its value, and the modules' state::
+weight of each prompt toward it and its value, the facts and rules Nagi
+reasons with (see ``nagi.knowledge``), and the modules' state::
 
     {"version": 2,
      "learners": {"sft": {"shape": {...}, "code": "..."}},
      "responses": {"<id>": {"think": "...", "code": "...",
                             "prompts": {"hi": 1}, "value": 0}},
+     "facts": [["whale", "is", "mammal"]],
+     "rules": [{"then": ["{x}", "is", "{z}"], "if": [["{x}", "is", "{y}"], ["{y}", "is", "{z}"]]}],
      "state": {"todo": ["oat milk"]}}
 
 Responding is three separate stages: token in, intent capture, generate.
@@ -26,6 +29,7 @@ from pathlib import Path
 from nagi.code import Program, Turn
 from nagi.generate import Response, choose, generate
 from nagi.intent import Intent, capture
+from nagi.knowledge import Knowledge
 from nagi.learning import Learner, Lesson
 from nagi.tokens import said, tokenize, train
 
@@ -35,7 +39,10 @@ VERSION = 2
 class Brain:
     def __init__(self, memory: dict | None = None):
         self.memory = memory or {"version": VERSION, "learners": {}, "responses": {}}
+        for kept in ("facts", "rules"):
+            self.memory.setdefault(kept, [])
         self.memory.setdefault("state", {})
+        self.knowledge = Knowledge(self.memory["facts"], self.memory["rules"])
         self.fit()
 
     def fit(self) -> None:
@@ -110,7 +117,8 @@ class Brain:
 
     def respond(self, text: str, now: datetime | None = None) -> Turn:
         name, residue, slots = self.understand(text)
-        turn = Turn(text, now or datetime.now(), residue=residue, slots=slots, state=self.memory["state"])
+        turn = Turn(text, now or datetime.now(), residue=residue, slots=slots, state=self.memory["state"],
+                    knowledge=self.knowledge)
         return generate(self.responses.get(name), turn)
 
     @classmethod
