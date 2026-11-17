@@ -276,6 +276,30 @@ must not block them.
 | Memory | one JSON file | SQLite per layer once it grows; keep JSON export |
 | Tool calls | ~4M/s compiled closures | keep calls free of per-call lookups |
 
+**Benchmarks**. `bench/` measures Nagi on public data rather than only its
+own evals. CLINC150 (150 assistant intents and out-of-scope questions,
+15,000 training prompts):
+
+| | In-scope accuracy | Out-of-scope recall | Nearest intent |
+|---|---|---|---|
+| Bigram capture | 69.1% | 66.4% | 75.3% |
+| + words weighed by 1 + IDF ✅ | 76.1% | 81.7% | 82.9% |
+
+What the runs showed:
+
+- Backing the bigrams off to single tokens raised CLINC in-scope accuracy
+  about 2 points, but broke the shipped evals (92%) and doubled their false
+  accepts, so it was not kept.
+- The shipped curriculum with the example plugins accepts 5.1% of CLINC's
+  sentences, against the 2% target. Most come from intents that take open
+  residue ("i need *to start a timer*" fits todo's "i need …"). Explicit
+  slots (decision 6) should fix this: only a slot takes free words.
+- Teaching 15,000 prompts takes about 40 s, nearly all of it retraining the
+  tokenizer; understanding takes about 3.5 ms a turn over 150 intents.
+- On ARC-Easy and GSM8K the shipped curriculum declines every question
+  (0 answered, 0 false accepts). They become meaningful once t1–t5 and the
+  reasoning engine land.
+
 **Trust**. Everything stays local by default. Plugins declare permissions
 (`__permissions__ = ["network"]`); the user grants them once, and code
 mode, the planner and imported packages all refuse ungranted modules. Side
@@ -301,7 +325,8 @@ Before step 6:
 5. **Thought step vocabulary**: whether these step kinds cover rules,
    plans and TLA+ transitions without later breaking changes.
 6. **Slot syntax**: `{name}` placeholders, shared by intents and pattern
-   learners.
+   learners. CLINC150 shows open residue causes most false accepts, so
+   slots come early.
 
 Before step 7:
 7. **The TLA+ subset**, and how `Ask` and `Do` bind to modules while specs
