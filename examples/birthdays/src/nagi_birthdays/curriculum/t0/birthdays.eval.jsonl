@@ -1,7 +1,9 @@
-{"prompt": "when is Mei's birthday?", "expect": "speech.say(birthdays.when())"}
-{"prompt": "When's Grandpa's birthday", "expect": "speech.say(birthdays.when())"}
-{"prompt": "what day is Sam's birthday", "expect": "speech.say(birthdays.when())"}
-{"prompt": "when was Mei born?", "expect": "speech.say(birthdays.when())"}
+{"prompt": "when is Mei's birthday?", "expect": "speech.say(birthdays.when(slot.person))"}
+{"prompt": "When's Grandpa's birthday", "expect": "speech.say(birthdays.when(slot.person))"}
+{"prompt": "what day is Sam's birthday", "expect": "speech.say(birthdays.when(slot.person))"}
+{"prompt": "when was Mei born?", "expect": "speech.say(birthdays.when(slot.person))"}
 {"prompt": "hello", "expect": "speech.say(greeting.hello())"}
 {"prompt": "what is the capital of france", "expect": null}
 {"prompt": "happy now", "expect": null}
+{"prompt": "when is Mei's birthday?", "expect": "speech.say(birthdays.when(slot.person))", "say": ["Mei's birthday is 3 May."]}
+{"prompt": "when is my paycheck arriving", "expect": null}

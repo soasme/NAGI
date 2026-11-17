@@ -40,4 +40,3 @@ def test_new_data_keeps_training(nagi):
 
 def test_says_what_it_does_not_know(nagi):
     assert say(nagi, "when is Bob's birthday") == "I don't know when Bob's birthday is yet."
-    assert say(nagi, "when is birthday") == "Whose birthday?"

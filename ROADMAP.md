@@ -308,10 +308,13 @@ What the runs showed:
 - Backing the bigrams off to single tokens raised CLINC in-scope accuracy
   about 2 points, but broke the shipped evals (92%) and doubled their false
   accepts, so it was not kept.
-- The shipped curriculum with the example plugins accepts 5.1% of CLINC's
-  sentences, against the 2% target. Most come from intents that take open
-  residue ("i need *to start a timer*" fits todo's "i need …"). Slots now
-  exist; moving todo and birthdays from residue to slots is next.
+- The shipped curriculum with the example plugins accepted 5.1% of CLINC's
+  sentences, against the 2% target, mostly through open residue ("i need
+  *to start a timer*" fit todo's "i need …"). With todo and birthdays on
+  slots it is 4.0%. Most of the rest are prompts that tolerate trailing
+  words ("how do you do" fits "how do you say dog in spanish"): one score
+  averaging fit and skips allows about three quarters of a sentence to be
+  skipped.
 - A slot word costs what a skip does. Cheaper slots let one slot swallow a
   whole sentence; a dearer skip cost CLINC more than it saved. What stops
   "what time is it" fitting "what is a {thing}" is that a response reading

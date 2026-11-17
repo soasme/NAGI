@@ -176,9 +176,8 @@ curriculum with a teaching asset and an eval, and a test that learns and
 checks it, all passing from the first `uv run pytest`.
 
 Two complete plugins are built this way:
-- [`examples/todo`](examples/todo): a todo list whose items come from the
-  words Nagi wasn't taught (`turn.residue`) and whose list persists in
-  `turn.state`.
+- [`examples/todo`](examples/todo): a todo list whose items are slots
+  (`add {item} to my list`) and whose list persists in `turn.state`.
 - [`examples/birthdays`](examples/birthdays): birthdays learned from your
   own data file through a plugin learner and learning module, then
   answered.

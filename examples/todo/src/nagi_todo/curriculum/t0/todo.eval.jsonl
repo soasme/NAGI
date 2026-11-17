@@ -1,14 +1,13 @@
-{"prompt": "add oat milk to my list", "expect": "speech.say(todo.add())"}
-{"prompt": "put eggs on my todo list", "expect": "speech.say(todo.add())"}
-{"prompt": "remember to call Mei", "expect": "speech.say(todo.add())"}
-{"prompt": "Add bread to the list, please", "expect": "speech.say(todo.add())"}
-{"prompt": "i need to water the plants", "expect": "speech.say(todo.add())"}
+{"prompt": "add oat milk to my list", "expect": "speech.say(todo.add(slot.item))"}
+{"prompt": "put eggs on my todo list", "expect": "speech.say(todo.add(slot.item))"}
+{"prompt": "remember to call Mei", "expect": "speech.say(todo.add(slot.item))"}
+{"prompt": "Add bread to the list, please", "expect": "speech.say(todo.add(slot.item))"}
 {"prompt": "what's on my list?", "expect": "speech.say(todo.show())"}
 {"prompt": "show me my todo list", "expect": "speech.say(todo.show())"}
 {"prompt": "what do I need to do today", "expect": "speech.say(todo.show())"}
-{"prompt": "cross milk off my list", "expect": "speech.say(todo.done())"}
-{"prompt": "remove eggs from my list", "expect": "speech.say(todo.done())"}
-{"prompt": "I did the laundry", "expect": "speech.say(todo.done())"}
+{"prompt": "cross milk off my list", "expect": "speech.say(todo.done(slot.item))"}
+{"prompt": "remove eggs from my list", "expect": "speech.say(todo.done(slot.item))"}
+{"prompt": "I did the laundry", "expect": "speech.say(todo.done(slot.item))"}
 {"prompt": "clear my list", "expect": "speech.say(todo.clear())"}
 {"prompt": "empty my todo list please", "expect": "speech.say(todo.clear())"}
 {"prompt": "hello", "expect": "speech.say(greeting.hello())"}
@@ -16,3 +15,4 @@
 {"prompt": "what is the capital of france", "expect": null}
 {"prompt": "tell me a joke", "expect": null}
 {"prompt": "nice weather", "expect": null}
+{"prompt": "add oat milk to my list", "expect": "speech.say(todo.add(slot.item))", "say": ["Added oat milk."]}

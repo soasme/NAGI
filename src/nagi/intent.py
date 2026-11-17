@@ -8,7 +8,9 @@ tokens, or of skipping it, and a reading's score is bits per unit of weight.
 A taught prompt may have slots, as in "is a {thing} a {kind}". A slot reads
 one or more words heard in its place, each costing what skipping it would,
 so a slot pays off only when the words around it fit; the reading says
-which words filled it.
+which words filled it. A slot is entered only after a token a prompt put
+before it, and that step weighs 1, like the end of a sentence, so a rare
+word in a slot costs no more than in a skip.
 """
 
 import math
@@ -55,8 +57,9 @@ class Intent:
             for last, (total, skipped, filled) in paths.items():
                 offer(last, (total + weight * SKIP, (*skipped, at), filled))
                 for slot in self.slots:
-                    into = 0 if slot == last else self.bits(last, slot)
-                    offer(slot, (total + weight * (into + FILL), skipped, (*filled, (slot[1:-1], at))))
+                    if slot == last or self.bigrams[last, slot]:  # only where a prompt put it
+                        into = 0 if slot == last else self.bits(last, slot)  # weighs 1, like the end
+                        offer(slot, (total + into + weight * FILL, skipped, (*filled, (slot[1:-1], at))))
                 for token in word:
                     total += weight * self.bits(last, token)
                     last = token

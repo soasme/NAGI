@@ -1,8 +1,9 @@
 """A todo list. Code mode calls these as todo.add(), todo.show(), and so on.
 
-The item is whatever Nagi heard but wasn't taught (``turn.residue``): taught
-"add to my list", it reads "add oat milk to my list" as adding "oat milk".
-The list lives in ``turn.state``, so it is kept between turns.
+The item is a slot of the prompts taught: taught "add {item} to my list",
+Nagi reads "add oat milk to my list" as ``todo.add(slot.item)`` with the
+item "oat milk". The list lives in ``turn.state``, so it is kept between
+turns.
 """
 
 from nagi.api import Turn
@@ -14,10 +15,7 @@ def items(turn: Turn) -> list[str]:
     return turn.state.setdefault("todo", [])
 
 
-def add(turn: Turn) -> str:
-    item = " ".join(turn.residue)
-    if not item:
-        return "What should I add?"
+def add(turn: Turn, item: str) -> str:
     items(turn).append(item)
     return f"Added {item}."
 
@@ -31,13 +29,12 @@ def show(turn: Turn) -> str:
     return f"On your list: {', '.join(listed[:-1])} and {listed[-1]}."
 
 
-def done(turn: Turn) -> str:
-    item = " ".join(turn.residue)
+def done(turn: Turn, item: str) -> str:
     for listed in items(turn):
         if listed.lower() == item.lower():
             items(turn).remove(listed)
             return f"Crossed off {listed}."
-    return f"{item or 'That'} isn't on your list."
+    return f"{item} isn't on your list."
 
 
 def clear(turn: Turn) -> str:
