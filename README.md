@@ -93,11 +93,12 @@ of the cases that should stay unknown).
 ## Code mode
 
 A program is Python syntax restricted to `module.function(...)` calls and
-string or number literals, one call per line. Responses may call any module
-but `learn`; learners may call only `learn`, and may read `record` and its
-fields. `module.function` must be in
-`__all__` of `nagi.modules.<module>`, and each takes the current turn first (what was heard, the time, and a
-random source for variety):
+string or number literals, one call per line. Responses may call response
+modules (`nagi.modules`); learners may call learning modules
+(`nagi.learning`), and may read `record` and its fields. `module.function`
+must be in the module's `__all__`, and takes the current turn (or lesson)
+first. A turn carries what was heard, the untaught words (`turn.residue`),
+the time, a random source for variety, and `turn.state`, which persists:
 
 ```python
 # src/nagi/modules/speech.py
@@ -118,12 +119,21 @@ Nagi's own modules and curriculum are registered with Python entry points,
 and so is everyone else's. A plugin is an ordinary package:
 
 ```toml
-[project.entry-points."nagi.modules"]
-todo = "nagi_todo"            # code mode can call todo.add(), todo.show(), ...
+[project.entry-points."nagi.modules"]       # responses call birthdays.when()
+birthdays = "nagi_birthdays"
 
-[project.entry-points."nagi.curricula"]
-todo = "nagi_todo.curriculum" # t0/, t1/, ... of assets and *.eval.jsonl
+[project.entry-points."nagi.learning"]      # learners call birthdays.remember(...)
+birthdays = "nagi_birthdays.learning"
+
+[project.entry-points."nagi.curricula"]     # t0/, t1/, ... of assets and *.eval.jsonl
+birthdays = "nagi_birthdays.curriculum"
 ```
+
+Response modules take a `Turn`, and learning modules take a `Lesson`. They
+share state: what a learning module keeps in `lesson.state`, a response
+module reads from `turn.state`. Core's `learn.*` is just the first learning
+module, so your own data can be learned your own way: teach a learner for
+its shape, and point it at your learning module.
 
 ```console
 $ uv run nagi plugins                 # what is installed
@@ -135,12 +145,16 @@ Start one with `nagi new NAME`: it creates a package with a module, a
 curriculum with a teaching asset and an eval, and a test that learns and
 checks it, all passing from the first `uv run pytest`.
 
-[`examples/todo`](examples/todo) is a complete plugin built this way: a
-todo list whose items come from the words Nagi wasn't taught
-(`turn.residue`) and whose list persists in `turn.state`.
+Two complete plugins are built this way:
+- [`examples/todo`](examples/todo): a todo list whose items come from the
+  words Nagi wasn't taught (`turn.residue`) and whose list persists in
+  `turn.state`.
+- [`examples/birthdays`](examples/birthdays): birthdays learned from your
+  own data file through a plugin learner and learning module, then
+  answered.
 
-Module and curriculum names share one namespace; two packages registering
-the same name is an error. Plugin code builds on `nagi.api`, which stays
+Names share one namespace per group; two packages registering the same
+name in a group is an error. Plugin code builds on `nagi.api`, which stays
 stable within a major `VERSION`.
 
 ## How it responds

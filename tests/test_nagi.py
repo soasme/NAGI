@@ -91,7 +91,8 @@ class Point:
 
 
 def test_core_registers_like_any_plugin():
-    assert {"greeting", "learn", "speech"} <= plugins.modules().keys()
+    assert {"greeting", "speech"} <= plugins.modules().keys()
+    assert "learn" in plugins.learning()
     assert plugins.curricula()["nagi"] == "nagi.assets"
 
 
@@ -220,6 +221,7 @@ def test_reteaching_a_learner_changes_how_nagi_learns():
     "learner",
     [
         {"learner": "x", "shape": {"q": "text"}, "code": "speech.say(record.q)"},  # learners only learn
+        {"learner": "x", "shape": {"q": "text"}, "code": "birthdays.when(record.q)"},  # not a learning module
         {"learner": "x", "shape": {"q": "words"}, "code": "learn.value(record.q, 1)"},  # unknown type
         {"learner": "x", "shape": {}, "code": "learn.value(record, 1)"},  # empty shape
         {"learner": "x", "shape": {"q": "text"}},  # no code
@@ -230,7 +232,9 @@ def test_bad_learners_are_rejected(learner):
         newborn().learn(jsonl(learner))
 
 
-@pytest.mark.parametrize("code", ["learn.value(record, 1)", "speech.say(record.prompt)"])
+@pytest.mark.parametrize(
+    "code", ["learn.value(record, 1)", "speech.say(record.prompt)", "birthdays.remember('Mei', '3 May')"]
+)
 def test_responses_cannot_learn_or_read_records(code):
     with pytest.raises(ValueError):
         Program(code)

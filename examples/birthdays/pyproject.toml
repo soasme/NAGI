@@ -1,0 +1,25 @@
+[project]
+name = "nagi-birthdays"
+version = "0.1.0"
+description = "A Nagi plugin: learn birthdays from your own data, as an example of hooking data into learning"
+requires-python = ">=3.12"
+dependencies = ["nagi"]
+
+[project.entry-points."nagi.modules"]
+birthdays = "nagi_birthdays"
+
+[project.entry-points."nagi.learning"]
+birthdays = "nagi_birthdays.learning"
+
+[project.entry-points."nagi.curricula"]
+birthdays = "nagi_birthdays.curriculum"
+
+[build-system]
+requires = ["uv_build>=0.10.6,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv.sources]
+nagi = { workspace = true }

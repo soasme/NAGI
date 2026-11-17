@@ -2,18 +2,24 @@
 
 A plugin is an ordinary Python package that declares entry points::
 
-    [project.entry-points."nagi.modules"]
-    todo = "nagi_todo"
+    [project.entry-points."nagi.modules"]       # responses call these
+    birthdays = "nagi_birthdays"
+
+    [project.entry-points."nagi.learning"]      # learners call these
+    birthdays = "nagi_birthdays.learning"
 
     [project.entry-points."nagi.curricula"]
-    todo = "nagi_todo.curriculum"
+    birthdays = "nagi_birthdays.curriculum"
 
 A module is any Python module whose ``__all__`` functions take the context
-first (see ``nagi.api``); code mode calls it as ``todo.add()``. A curriculum
+first (see ``nagi.api``): a ``Turn`` for modules responses call, a
+``Lesson`` for modules learners call. Code mode calls either as
+``birthdays.when()``. A curriculum
 is a package directory of tiers ``t0/``, ``t1/``, … holding teaching assets
 and eval sets (``*.eval.jsonl``). Nagi registers its own modules and its
 curriculum the same way, so core is just the first plugin. Names share one
-namespace, and two packages registering the same name is an error.
+namespace per group, and two packages registering the same name in a group
+is an error.
 """
 
 import re
@@ -41,12 +47,18 @@ def modules() -> dict[str, str]:
 
 
 @cache
+def learning() -> dict[str, str]:
+    return registry("nagi.learning")
+
+
+@cache
 def curricula() -> dict[str, str]:
     return registry("nagi.curricula")
 
 
-def module(name: str) -> ModuleType | None:
-    path = modules().get(name)
+def module(name: str, learner: bool = False) -> ModuleType | None:
+    """A module responses may call, or with ``learner``, one learners may call."""
+    path = (learning() if learner else modules()).get(name)
     return import_module(path) if path else None
 
 

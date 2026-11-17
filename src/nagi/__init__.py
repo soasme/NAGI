@@ -69,7 +69,8 @@ def main(argv: list[str] | None = None) -> None:
                 print(f"created {path}")
             return
         if args.command == "plugins":
-            for kind, registered in (("module", plugins.modules()), ("curriculum", plugins.curricula())):
+            groups = (("module", plugins.modules()), ("learning", plugins.learning()), ("curriculum", plugins.curricula()))
+            for kind, registered in groups:
                 for name, path in sorted(registered.items()):
                     print(f"{kind:10} {name:12} {path}")
             return

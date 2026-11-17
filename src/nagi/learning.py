@@ -8,8 +8,8 @@ The kernel knows only one kind of record by itself, a learner::
 
 Every other record is learned by the most recently taught learner whose
 shape it fits: exactly the shape's keys, each value of the shape's type. The
-learner's program changes memory only through ``learn.*`` (see
-``nagi.modules.learn``). Teaching a learner under an existing name replaces
+learner's program changes memory only through learning modules: core's
+``learn.*`` (see ``nagi.modules.learn``) and any a plugin registers. Teaching a learner under an existing name replaces
 it, so Nagi can be taught to learn differently.
 """
 
@@ -29,10 +29,18 @@ TYPES: dict[str, Callable[[object], bool]] = {
 
 @dataclass
 class Lesson:
-    """What a learner runs on: the record, and the brain it teaches."""
+    """What a learner runs on: the record, and the brain it teaches.
+
+    ``state`` is the same state modules see as ``turn.state``, so a learning
+    module can keep what it learned for the modules that respond with it.
+    """
 
     brain: object
     record: dict
+
+    @property
+    def state(self) -> dict:
+        return self.brain.memory["state"]
 
 
 class Learner:

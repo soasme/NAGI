@@ -5,6 +5,7 @@ requires-python = ">=3.12"
 [manifest]
 members = [
     "nagi",
+    "nagi-birthdays",
     "nagi-todo",
 ]
 
@@ -33,6 +34,7 @@ source = { editable = "." }
 
 [package.dev-dependencies]
 dev = [
+    { name = "nagi-birthdays" },
     { name = "nagi-todo" },
     { name = "pytest" },
 ]
@@ -41,9 +43,29 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "nagi-birthdays", editable = "examples/birthdays" },
     { name = "nagi-todo", editable = "examples/todo" },
     { name = "pytest", specifier = ">=9.2.0" },
 ]
+
+[[package]]
+name = "nagi-birthdays"
+version = "0.1.0"
+source = { editable = "examples/birthdays" }
+dependencies = [
+    { name = "nagi" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "nagi", editable = "." }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest" }]
 
 [[package]]
 name = "nagi-todo"

@@ -1,0 +1,7 @@
+{"prompt": "when is birthday", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "when's birthday", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "what day is birthday", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "when was born", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "what's birthday", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "when do we celebrate birthday", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}
+{"prompt": "when is birthday please", "completion": {"think": "They ask when someone's birthday is. Look it up.", "code": "speech.say(birthdays.when())"}}

@@ -6,10 +6,10 @@ number or string literals, one call per line::
     speech.say(greeting.hello())
 
 ``module.function`` names a function listed in ``__all__`` of a registered
-module (see ``nagi.plugins``); each takes the current context first. Responses
-run on a ``Turn`` and may call any module but ``learn``. Learners run on a
-lesson, may call only ``learn``, and may read the lesson's ``record`` and its
-fields (``record.prompt``).
+module (see ``nagi.plugins``); each takes the current context first.
+Responses run on a ``Turn`` and call ``nagi.modules``. Learners run on a
+``Lesson``, call ``nagi.learning`` (such as ``learn.prompt``), and may read
+the lesson's ``record`` and its fields (``record.prompt``).
 
 A program is checked and compiled once into closures with every function
 already resolved, so running it costs only the calls: no parsing, lookup, or
@@ -78,8 +78,8 @@ class Program:
 
     def resolve(self, node: ast.expr) -> Callable:
         match node:
-            case ast.Attribute(value=ast.Name(id=module), attr=name) if (module == "learn") == self.learning:
-                found = plugins.module(module)
+            case ast.Attribute(value=ast.Name(id=module), attr=name):
+                found = plugins.module(module, learner=self.learning)
                 if name in getattr(found, "__all__", ()):
                     return getattr(found, name)
         who = "a learner" if self.learning else "a response"

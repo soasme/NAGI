@@ -10,10 +10,15 @@ time, a random source, and ``turn.state``, which persists between turns::
 
     def hello(turn: Turn) -> str:
         return "Hello!"
+
+
+A module that learners call takes a ``Lesson`` first instead: the record
+being learned and ``lesson.state``, the same state ``turn.state`` reads.
 """
 
 from nagi.code import Turn
+from nagi.learning import Lesson
 
 VERSION = 1
 
-__all__ = ["Turn", "VERSION"]
+__all__ = ["Lesson", "Turn", "VERSION"]

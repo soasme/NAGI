@@ -1,0 +1,1 @@
+{"learner": "birthday", "shape": {"person": "text", "birthday": "text"}, "code": "birthdays.remember(record.person, record.birthday)"}
