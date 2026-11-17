@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from nagi import main, plugins
+from nagi import main, plugins, scaffold
 from nagi.plugins import curriculum, evals
 from nagi.brain import Brain
 from nagi.code import Program, Turn
@@ -111,6 +111,32 @@ def test_cli_reports_missing_files(tmp_path):
     with pytest.raises(SystemExit) as exit:
         main(["--memory", str(tmp_path / "memory.json"), "learn", str(tmp_path / "missing.jsonl")])
     assert exit.value.code == 1
+
+
+def test_new_plugin_learns_and_passes_its_evals(tmp_path, monkeypatch):
+    made = scaffold.create("weather", tmp_path / "nagi-weather")
+    assert {p.name for p in made} >= {"pyproject.toml", "__init__.py", "weather.sft.jsonl", "weather.eval.jsonl"}
+    monkeypatch.syspath_prepend(str(tmp_path / "nagi-weather" / "src"))
+    monkeypatch.setattr(plugins, "modules", lambda: {**plugins.registry("nagi.modules"), "weather": "nagi_weather"})
+    monkeypatch.setattr(
+        plugins, "curricula", lambda: {**plugins.registry("nagi.curricula"), "weather": "nagi_weather.curriculum"}
+    )
+    brain = greeter()
+    for asset in curriculum("weather"):
+        brain.learn(asset.read_text())
+    assert evaluate(brain, evals("weather")[0].read_text()).failed == []
+    assert brain.respond("try weather").said == ["Hello from weather!"]
+
+
+@pytest.mark.parametrize("name", ["Weather", "my-plugin", "1st", ""])
+def test_new_plugin_needs_a_python_name(tmp_path, name):
+    with pytest.raises(ValueError):
+        scaffold.create(name, tmp_path / "x")
+
+
+def test_new_plugin_never_overwrites(tmp_path):
+    with pytest.raises(ValueError, match="already exists"):
+        scaffold.create("weather", tmp_path)
 
 
 # learning

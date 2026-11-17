@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 
-from nagi import plugins
+from nagi import plugins, scaffold
 from nagi.brain import Brain
 from nagi.code import Turn
 from nagi.evals import Report, evaluate
@@ -55,11 +55,19 @@ def main(argv: list[str] | None = None) -> None:
     check.add_argument("--max-false-accepts", type=float, default=0.02)
     chat = commands.add_parser("chat", help="talk until EOF")
     commands.add_parser("plugins", help="list installed modules and curricula")
+    new = commands.add_parser("new", help="create a plugin package")
+    new.add_argument("name")
+    new.add_argument("--dir", type=Path, help="where to create it (default: ./nagi-NAME)")
     for command in (respond, chat):
         command.add_argument("--think", action="store_true", help="show the chain of thought")
     args = parser.parse_args(argv)
 
     try:
+        if args.command == "new":
+            where = args.dir or Path(f"nagi-{args.name.replace('_', '-')}")
+            for path in scaffold.create(args.name, where):
+                print(f"created {path}")
+            return
         if args.command == "plugins":
             for kind, registered in (("module", plugins.modules()), ("curriculum", plugins.curricula())):
                 for name, path in sorted(registered.items()):

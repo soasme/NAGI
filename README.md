@@ -131,6 +131,10 @@ $ uv run nagi learn nagi todo         # curricula by name, or asset files
 $ uv run nagi eval todo               # check the plugin's evals
 ```
 
+Start one with `nagi new NAME`: it creates a package with a module, a
+curriculum with a teaching asset and an eval, and a test that learns and
+checks it, all passing from the first `uv run pytest`.
+
 Module and curriculum names share one namespace; two packages registering
 the same name is an error. Plugin code builds on `nagi.api`, which stays
 stable within a major `VERSION`.
