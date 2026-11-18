@@ -316,6 +316,14 @@ one prompt for each of the 146 sentence shapes in the train split):
 |---|---|---|---|---|---|---|
 | Accuracy | 100% | 100% | 100% | 100% | 99.9% | 99.7% |
 
+SNIPS (seven assistant intents; the train split taught as SFT, each
+annotated span a slot; 700 test sentences):
+
+| | Intent | Slot F1 |
+|---|---|---|
+| Understood | 37.4% | 21.2% |
+| Nearest reading | 96.4% | 34.0% |
+
 What the runs showed:
 
 - Backing the bigrams off to single tokens raised CLINC in-scope accuracy
@@ -347,6 +355,17 @@ What the runs showed:
   a search over everything Dave is. A theory is meant to be all there is,
   so the bench teaches only how to learn. Prior knowledge that is general
   enough to always apply is also general enough to always cost.
+- SNIPS shows what slots lack. A slot word costs what a skip does, so a
+  sentence that is mostly a playlist or film name falls below the
+  threshold: Nagi picks the right intent 96% of the time but understands
+  only 37%. Charging slot words less let slots swallow sentences again (48%
+  false accepts on the shipped evals). And a slot knows nothing of what it
+  holds, so where two slots meet ("my | Classical Relaxations") any split
+  costs the same. Both point at slots learning their contents, as typed
+  slots do through knowledge.
+- CLUTRR (kinship stories) is not tried yet: its crowd-written sentences
+  each tell two or three facts ("Clarence's granddaughter, Emily, was busy
+  helping her brother, Michael"), and Nagi reads one intent per sentence.
 - Typed slots were first checked after reading, so a typed reading could
   lose to an untyped one and be thrown away. Checked while reading, they
   cost nothing, since knowledge vouches for them.

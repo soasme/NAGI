@@ -234,10 +234,12 @@ things are, directions, positions, sizes and motives. It answers 16 of the
 20 tasks, 15 of them at 100%. ProofWriter measures reasoning over rules
 told in English ("If someone is big then they are kind."), up to five steps
 deep, with Nagi taught only how to learn, the theories' words, and one
-prompt per sentence shape in the train split.
+prompt per sentence shape in the train split. SNIPS measures slots: which
+words fill each one.
 
 ```console
 $ uv run python bench/clinc150.py
 $ uv run python bench/babi.py
 $ uv run python bench/proofwriter.py
+$ uv run python bench/snips.py
 ```
