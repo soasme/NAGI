@@ -1,19 +1,94 @@
 {"subject": "the kitchen", "relation": "is a", "object": "place"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the garden"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the office"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the hallway"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the school"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the park"}
+{"subject": "the kitchen", "relation": "differs from", "object": "the cinema"}
 {"subject": "the garden", "relation": "is a", "object": "place"}
+{"subject": "the garden", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the garden", "relation": "differs from", "object": "the office"}
+{"subject": "the garden", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the garden", "relation": "differs from", "object": "the hallway"}
+{"subject": "the garden", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the garden", "relation": "differs from", "object": "the school"}
+{"subject": "the garden", "relation": "differs from", "object": "the park"}
+{"subject": "the garden", "relation": "differs from", "object": "the cinema"}
 {"subject": "the office", "relation": "is a", "object": "place"}
+{"subject": "the office", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the office", "relation": "differs from", "object": "the garden"}
+{"subject": "the office", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the office", "relation": "differs from", "object": "the hallway"}
+{"subject": "the office", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the office", "relation": "differs from", "object": "the school"}
+{"subject": "the office", "relation": "differs from", "object": "the park"}
+{"subject": "the office", "relation": "differs from", "object": "the cinema"}
 {"subject": "the bathroom", "relation": "is a", "object": "place"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the garden"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the office"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the hallway"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the school"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the park"}
+{"subject": "the bathroom", "relation": "differs from", "object": "the cinema"}
 {"subject": "the hallway", "relation": "is a", "object": "place"}
+{"subject": "the hallway", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the hallway", "relation": "differs from", "object": "the garden"}
+{"subject": "the hallway", "relation": "differs from", "object": "the office"}
+{"subject": "the hallway", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the hallway", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the hallway", "relation": "differs from", "object": "the school"}
+{"subject": "the hallway", "relation": "differs from", "object": "the park"}
+{"subject": "the hallway", "relation": "differs from", "object": "the cinema"}
 {"subject": "the bedroom", "relation": "is a", "object": "place"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the garden"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the office"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the hallway"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the school"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the park"}
+{"subject": "the bedroom", "relation": "differs from", "object": "the cinema"}
+{"subject": "the school", "relation": "is a", "object": "place"}
+{"subject": "the school", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the school", "relation": "differs from", "object": "the garden"}
+{"subject": "the school", "relation": "differs from", "object": "the office"}
+{"subject": "the school", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the school", "relation": "differs from", "object": "the hallway"}
+{"subject": "the school", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the school", "relation": "differs from", "object": "the park"}
+{"subject": "the school", "relation": "differs from", "object": "the cinema"}
+{"subject": "the park", "relation": "is a", "object": "place"}
+{"subject": "the park", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the park", "relation": "differs from", "object": "the garden"}
+{"subject": "the park", "relation": "differs from", "object": "the office"}
+{"subject": "the park", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the park", "relation": "differs from", "object": "the hallway"}
+{"subject": "the park", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the park", "relation": "differs from", "object": "the school"}
+{"subject": "the park", "relation": "differs from", "object": "the cinema"}
+{"subject": "the cinema", "relation": "is a", "object": "place"}
+{"subject": "the cinema", "relation": "differs from", "object": "the kitchen"}
+{"subject": "the cinema", "relation": "differs from", "object": "the garden"}
+{"subject": "the cinema", "relation": "differs from", "object": "the office"}
+{"subject": "the cinema", "relation": "differs from", "object": "the bathroom"}
+{"subject": "the cinema", "relation": "differs from", "object": "the hallway"}
+{"subject": "the cinema", "relation": "differs from", "object": "the bedroom"}
+{"subject": "the cinema", "relation": "differs from", "object": "the school"}
+{"subject": "the cinema", "relation": "differs from", "object": "the park"}
 {"rule": "{x} is at {y} if {x} is in {y} and {y} is place"}
 {"rule": "{x} is at {z} if {x} is in {y} and {y} is at {z}"}
-{"prompt": "{person} went to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} went back to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} moved to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} travelled to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} is in the {place}.", "completion": {"think": "They tell me where someone is.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
-{"prompt": "{person} is no longer in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)"}}
-{"prompt": "{person} is not in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)"}}
+{"prompt": "{person} went to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} went back to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} moved to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} travelled to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} is in the {place}.", "completion": {"think": "They tell me where someone is.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)\nreason.update(slot.person, \"might be in\", slot.place)"}}
+{"prompt": "{person} is no longer in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)\nreason.tell(slot.person, \"is away from\", slot.place)"}}
+{"prompt": "{person} is not in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)\nreason.tell(slot.person, \"is away from\", slot.place)"}}
 {"prompt": "{person} and {other} went to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)\nreason.update(\"they\", \"means\", slot.person)\nreason.update(\"they too\", \"means\", slot.other)"}}
 {"prompt": "{person} and {other} went back to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)\nreason.update(\"they\", \"means\", slot.person)\nreason.update(\"they too\", \"means\", slot.other)"}}
 {"prompt": "{person} and {other} moved to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)\nreason.update(\"they\", \"means\", slot.person)\nreason.update(\"they too\", \"means\", slot.other)"}}
@@ -101,10 +176,116 @@
 {"prompt": "What did {person} give to {other}?", "completion": {"think": "They ask what someone was given.", "code": "speech.answer(reason.what(slot.other, \"was given\"))"}}
 {"prompt": "Where is {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.answer(reason.what(slot.thing, \"is at\"))"}}
 {"prompt": "Where is the {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.answer(reason.what(slot.thing, \"is at\"))"}}
-{"prompt": "Is {person} in the {place}?", "completion": {"think": "They ask whether someone is in a place. Check where they are.", "code": "speech.answer(reason.check(slot.person, \"is at\", slot.place))"}}
+{"prompt": "{person} is either in the {place} or the {other:place}.", "completion": {"think": "They tell me two places someone might be in. Now I don't know which.", "code": "reason.update(slot.person, \"is in\", \"one of two places\")\nreason.update(slot.person, \"might be in\", slot.place)\nreason.tell(slot.person, \"might be in\", slot.other)"}}
+{"rule": "{x} is away from {p} if {x} is at {q} and {q} differs from {p}"}
+{"rule": "{x} is away from {p} if {x} might be in {q} and {q} differs from {p} and {x} not might be in {p}"}
+{"prompt": "Is {person} in the {place}?", "completion": {"think": "They ask whether someone is in a place. Check where they are, or whether they are away; else I don't know.", "code": "speech.answer(reason.ask(slot.person, \"is at\", slot.place, \"is away from\"))"}}
 {"prompt": "What is {person} carrying?", "completion": {"think": "They ask what someone carries: whatever is in them.", "code": "speech.answer(reason.each(\"is in\", slot.person))"}}
 {"prompt": "How many objects is {person} carrying?", "completion": {"think": "They ask how many things someone carries. Count what is in them.", "code": "speech.answer(reason.what(reason.count(\"is in\", slot.person), \"in words\"))"}}
 {"subject": "0", "relation": "in words", "object": "none"}
+{"prompt": "{person} went to the {place} yesterday.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "{person} went back to the {place} yesterday.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "{person} moved to the {place} yesterday.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "{person} journeyed to the {place} yesterday.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "{person} travelled to the {place} yesterday.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "yesterday {person} went to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "yesterday {person} went back to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "yesterday {person} moved to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "yesterday {person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "yesterday {person} travelled to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in yesterday\", slot.place)"}}
+{"prompt": "{person} went to the {place} this morning.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "{person} went back to the {place} this morning.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "{person} moved to the {place} this morning.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "{person} journeyed to the {place} this morning.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "{person} travelled to the {place} this morning.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "this morning {person} went to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "this morning {person} went back to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "this morning {person} moved to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "this morning {person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "this morning {person} travelled to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in morning\", slot.place)"}}
+{"prompt": "{person} went to the {place} this afternoon.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "{person} went back to the {place} this afternoon.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "{person} moved to the {place} this afternoon.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "{person} journeyed to the {place} this afternoon.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "{person} travelled to the {place} this afternoon.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "this afternoon {person} went to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "this afternoon {person} went back to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "this afternoon {person} moved to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "this afternoon {person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "this afternoon {person} travelled to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in afternoon\", slot.place)"}}
+{"prompt": "{person} went to the {place} this evening.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "{person} went back to the {place} this evening.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "{person} moved to the {place} this evening.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "{person} journeyed to the {place} this evening.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "{person} travelled to the {place} this evening.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "this evening {person} went to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "this evening {person} went back to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "this evening {person} moved to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "this evening {person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"prompt": "this evening {person} travelled to the {place}.", "completion": {"think": "They tell me where someone went, and when.", "code": "reason.tell(slot.person, \"in evening\", slot.place)"}}
+{"rule": "{x} before kitchen {q} if {x} in evening kitchen and {x} in yesterday {q}"}
+{"rule": "{x} before kitchen {q} if {x} in afternoon kitchen and {x} in yesterday {q}"}
+{"rule": "{x} before kitchen {q} if {x} in evening kitchen and {x} in morning {q}"}
+{"rule": "{x} before kitchen {q} if {x} in morning kitchen and {x} in yesterday {q}"}
+{"rule": "{x} before kitchen {q} if {x} in afternoon kitchen and {x} in morning {q}"}
+{"rule": "{x} before kitchen {q} if {x} in evening kitchen and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the kitchen?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before kitchen\"))"}}
+{"rule": "{x} before garden {q} if {x} in evening garden and {x} in yesterday {q}"}
+{"rule": "{x} before garden {q} if {x} in afternoon garden and {x} in yesterday {q}"}
+{"rule": "{x} before garden {q} if {x} in evening garden and {x} in morning {q}"}
+{"rule": "{x} before garden {q} if {x} in morning garden and {x} in yesterday {q}"}
+{"rule": "{x} before garden {q} if {x} in afternoon garden and {x} in morning {q}"}
+{"rule": "{x} before garden {q} if {x} in evening garden and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the garden?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before garden\"))"}}
+{"rule": "{x} before office {q} if {x} in evening office and {x} in yesterday {q}"}
+{"rule": "{x} before office {q} if {x} in afternoon office and {x} in yesterday {q}"}
+{"rule": "{x} before office {q} if {x} in evening office and {x} in morning {q}"}
+{"rule": "{x} before office {q} if {x} in morning office and {x} in yesterday {q}"}
+{"rule": "{x} before office {q} if {x} in afternoon office and {x} in morning {q}"}
+{"rule": "{x} before office {q} if {x} in evening office and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the office?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before office\"))"}}
+{"rule": "{x} before bathroom {q} if {x} in evening bathroom and {x} in yesterday {q}"}
+{"rule": "{x} before bathroom {q} if {x} in afternoon bathroom and {x} in yesterday {q}"}
+{"rule": "{x} before bathroom {q} if {x} in evening bathroom and {x} in morning {q}"}
+{"rule": "{x} before bathroom {q} if {x} in morning bathroom and {x} in yesterday {q}"}
+{"rule": "{x} before bathroom {q} if {x} in afternoon bathroom and {x} in morning {q}"}
+{"rule": "{x} before bathroom {q} if {x} in evening bathroom and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the bathroom?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before bathroom\"))"}}
+{"rule": "{x} before hallway {q} if {x} in evening hallway and {x} in yesterday {q}"}
+{"rule": "{x} before hallway {q} if {x} in afternoon hallway and {x} in yesterday {q}"}
+{"rule": "{x} before hallway {q} if {x} in evening hallway and {x} in morning {q}"}
+{"rule": "{x} before hallway {q} if {x} in morning hallway and {x} in yesterday {q}"}
+{"rule": "{x} before hallway {q} if {x} in afternoon hallway and {x} in morning {q}"}
+{"rule": "{x} before hallway {q} if {x} in evening hallway and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the hallway?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before hallway\"))"}}
+{"rule": "{x} before bedroom {q} if {x} in evening bedroom and {x} in yesterday {q}"}
+{"rule": "{x} before bedroom {q} if {x} in afternoon bedroom and {x} in yesterday {q}"}
+{"rule": "{x} before bedroom {q} if {x} in evening bedroom and {x} in morning {q}"}
+{"rule": "{x} before bedroom {q} if {x} in morning bedroom and {x} in yesterday {q}"}
+{"rule": "{x} before bedroom {q} if {x} in afternoon bedroom and {x} in morning {q}"}
+{"rule": "{x} before bedroom {q} if {x} in evening bedroom and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the bedroom?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before bedroom\"))"}}
+{"rule": "{x} before school {q} if {x} in evening school and {x} in yesterday {q}"}
+{"rule": "{x} before school {q} if {x} in afternoon school and {x} in yesterday {q}"}
+{"rule": "{x} before school {q} if {x} in evening school and {x} in morning {q}"}
+{"rule": "{x} before school {q} if {x} in morning school and {x} in yesterday {q}"}
+{"rule": "{x} before school {q} if {x} in afternoon school and {x} in morning {q}"}
+{"rule": "{x} before school {q} if {x} in evening school and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the school?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before school\"))"}}
+{"rule": "{x} before park {q} if {x} in evening park and {x} in yesterday {q}"}
+{"rule": "{x} before park {q} if {x} in afternoon park and {x} in yesterday {q}"}
+{"rule": "{x} before park {q} if {x} in evening park and {x} in morning {q}"}
+{"rule": "{x} before park {q} if {x} in morning park and {x} in yesterday {q}"}
+{"rule": "{x} before park {q} if {x} in afternoon park and {x} in morning {q}"}
+{"rule": "{x} before park {q} if {x} in evening park and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the park?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before park\"))"}}
+{"rule": "{x} before cinema {q} if {x} in evening cinema and {x} in yesterday {q}"}
+{"rule": "{x} before cinema {q} if {x} in afternoon cinema and {x} in yesterday {q}"}
+{"rule": "{x} before cinema {q} if {x} in evening cinema and {x} in morning {q}"}
+{"rule": "{x} before cinema {q} if {x} in morning cinema and {x} in yesterday {q}"}
+{"rule": "{x} before cinema {q} if {x} in afternoon cinema and {x} in morning {q}"}
+{"rule": "{x} before cinema {q} if {x} in evening cinema and {x} in afternoon {q}"}
+{"prompt": "Where was {person} before the cinema?", "completion": {"think": "They ask where someone was before a place. When were they there, and where were they just before?", "code": "speech.answer(reason.what(slot.person, \"before cinema\"))"}}
 {"subject": "mice", "relation": "is plural of", "object": "mouse"}
 {"subject": "cats", "relation": "is plural of", "object": "cat"}
 {"subject": "wolves", "relation": "is plural of", "object": "wolf"}
@@ -164,13 +345,14 @@
 {"rule": "{x} is below {z} if {x} right of {y} and {y} is below {z}"}
 {"rule": "{x} is below {z} if {x} below {y} and {y} left of {z}"}
 {"rule": "{x} is below {z} if {x} below {y} and {y} right of {z}"}
-{"rule": "{x} bigger than {y} if {y} fits inside {x}"}
-{"rule": "{x} fits inside {y} if {y} bigger than {x}"}
-{"rule": "{x} bigger than {z} if {x} bigger than {y} and {y} bigger than {z}"}
-{"prompt": "The {thing} is bigger than the {other}.", "completion": {"think": "They tell me one thing is bigger than another.", "code": "reason.tell(slot.thing, \"bigger than\", slot.other)"}}
-{"prompt": "The {thing} fits inside the {other}.", "completion": {"think": "They tell me one thing fits inside another.", "code": "reason.tell(slot.thing, \"fits inside\", slot.other)"}}
-{"prompt": "Is the {thing} bigger than the {other}?", "completion": {"think": "They ask whether one thing is bigger than another.", "code": "speech.answer(reason.check(slot.thing, \"bigger than\", slot.other))"}}
-{"prompt": "Does the {thing} fit in the {other}?", "completion": {"think": "They ask whether one thing fits in another.", "code": "speech.answer(reason.check(slot.thing, \"fits inside\", slot.other))"}}
+{"rule": "{x} is bigger than {z} if {x} bigger than {z}"}
+{"rule": "{x} is bigger than {z} if {x} bigger than {y} and {y} is bigger than {z}"}
+{"rule": "{x} fits within {z} if {x} fits inside {z}"}
+{"rule": "{x} fits within {z} if {x} fits inside {y} and {y} fits within {z}"}
+{"prompt": "The {thing} is bigger than the {other}.", "completion": {"think": "They tell me one thing is bigger than another, so the other fits inside it.", "code": "reason.tell(slot.thing, \"bigger than\", slot.other)\nreason.tell(slot.other, \"fits inside\", slot.thing)"}}
+{"prompt": "The {thing} fits inside the {other}.", "completion": {"think": "They tell me one thing fits inside another, so the other is bigger.", "code": "reason.tell(slot.thing, \"fits inside\", slot.other)\nreason.tell(slot.other, \"bigger than\", slot.thing)"}}
+{"prompt": "Is the {thing} bigger than the {other}?", "completion": {"think": "They ask whether one thing is bigger than another.", "code": "speech.answer(reason.check(slot.thing, \"is bigger than\", slot.other))"}}
+{"prompt": "Does the {thing} fit in the {other}?", "completion": {"think": "They ask whether one thing fits in another.", "code": "speech.answer(reason.check(slot.thing, \"fits within\", slot.other))"}}
 {"rule": "{x} will go to kitchen if {x} is hungry"}
 {"rule": "{x} will go to kitchen if {x} is thirsty"}
 {"rule": "{x} will go to bedroom if {x} is tired"}

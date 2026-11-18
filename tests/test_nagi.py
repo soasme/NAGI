@@ -11,6 +11,7 @@ from nagi.evals import evaluate
 from nagi.generate import CONFUSED
 from nagi.intent import THRESHOLD, Intent, readings
 from nagi.knowledge import Knowledge, triple
+from nagi.modules import reason
 from nagi.tokens import encode, tokenize, train
 
 MORNING = datetime(2026, 1, 1, 9)
@@ -390,6 +391,14 @@ def test_a_negated_relation_holds_when_the_rest_cannot_be_shown():
     assert knowledge.holds("cat", "is", "small")
     assert not knowledge.holds("dog", "is", "small")
     assert knowledge.holds("dog", "not is", "small")
+
+
+def test_asking_tells_no_from_not_knowing():
+    brain = greeter()
+    brain.knowledge.tell("cat", "is", "big")
+    brain.knowledge.tell("dog", "is not", "big")
+    asks = lambda thing: reason.ask(brain.respond("hi", keep=False), thing, "is", "big", "is not")
+    assert [asks("cat"), asks("dog"), asks("cow")] == ["yes", "no", "I don't know"]
 
 
 def test_update_replaces_what_was_known():

@@ -7,6 +7,7 @@ to the turn's thoughts. Conversation can add to what Nagi knows::
     speech.say(reason.what(slot.person, "is in"))         # "Where is Mary?"
     speech.say(reason.which("south of", slot.place))      # "What is south of the garden?"
     speech.say(reason.check(slot.thing, "is", slot.kind))  # "Is a whale a fish?"
+    speech.say(reason.ask(slot.thing, "is", slot.kind, "is not"))  # the same, where unknown isn't false
     speech.say(reason.each("is in", slot.person))         # "What is Mary carrying?"
     speech.say(reason.count("is in", slot.person))        # "How many objects is Mary carrying?"
     reason.rule("{x}", "is", slot.b, "{x}", "is", slot.a)  # "All {a} things are {b}."
@@ -15,7 +16,7 @@ to the turn's thoughts. Conversation can add to what Nagi knows::
 from nagi.code import Turn
 from nagi.knowledge import said, term
 
-__all__ = ["check", "count", "each", "forget", "rule", "tell", "update", "what", "which"]
+__all__ = ["ask", "check", "count", "each", "forget", "rule", "tell", "update", "what", "which"]
 
 UNKNOWN = "I don't know"
 NOTHING = "nothing"
@@ -29,6 +30,20 @@ def check(turn: Turn, subject: str, relation: str, object: str) -> str:
         return "yes"
     turn.thoughts.append(f"I can't show {said(goal)}")
     return "no"
+
+
+def ask(turn: Turn, subject: str, relation: str, object: str, opposite: str) -> str:
+    """"yes" if Nagi can show the fact, "no" if it can show the opposite, otherwise that it doesn't know.
+
+    For a world where not knowing isn't knowing not: ask("cat", "is", "big", "is not").
+    """
+    for answer, said_relation in (("yes", relation), ("no", opposite)):
+        goal = term(subject), term(said_relation), term(object)
+        for _, steps in turn.knowledge.prove(goal):
+            turn.thoughts.extend(steps)
+            return answer
+    turn.thoughts.append(f"I can't show {said((term(subject), term(relation), term(object)))}, or that it's not so")
+    return UNKNOWN
 
 
 def what(turn: Turn, subject: str, relation: str) -> str:

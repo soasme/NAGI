@@ -39,7 +39,14 @@ turn. Facts and rules are both tried newest first, so a later lesson
 refines an earlier one.
 
 What Nagi can't show is not true, and a relation starting with `not` says
-so: `cat | not is | big` holds unless `cat is big` can be shown.
+so: `cat | not is | big` holds unless `cat is big` can be shown. Where not
+knowing isn't knowing not, say what is not so as a fact like any other
+(`cat | denied is | big`) and ask with `reason.ask(slot.thing, "is",
+slot.kind, "denied is")`, which can answer that it doesn't know.
+
+A goal that needs itself is a loop and fails, but a goal with unknowns may
+recur once: showing "something eats the dog" may need "the dog likes the
+tiger", which needs someone else who eats the dog.
 
 A proof is thought out loud:
 
@@ -64,6 +71,7 @@ Responses ask and tell through `reason`, usually with slots:
 | Call | Does |
 |---|---|
 | `reason.check(subject, relation, object)` | `"yes"` if it can be shown, else `"no"` |
+| `reason.ask(subject, relation, object, opposite)` | `"yes"` if it can be shown, `"no"` if the opposite can, else `"I don't know"` |
 | `reason.what(subject, relation)` | the object it can show, newest first |
 | `reason.which(relation, object)` | the subject it can show, newest first |
 | `reason.each(relation, object)` | every such subject, as `"milk and apple"`, or `"nothing"` |

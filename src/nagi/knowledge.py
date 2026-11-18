@@ -57,6 +57,7 @@ class Knowledge:
         self.facts = facts
         self.rules = rules
         self.indexed: list[list[str]] | None = None  # the facts as they were when last indexed
+        self.ruled: list[dict] | None = None  # the rules as they were when last indexed
 
     def index(self) -> dict[tuple[int, str], list[Triple]]:
         """Facts by a term and its place, newest first, kept until the facts change."""
@@ -67,6 +68,19 @@ class Knowledge:
                     self.by_term.setdefault((place, t), []).append(tuple(fact))
             self.indexed = self.facts[:]
         return self.by_term
+
+    def rules_for(self, relation: str) -> list[dict]:
+        """The rules that may conclude a relation, newest first, kept until the rules change."""
+        if self.ruled != self.rules:
+            self.by_relation: dict[str, list[dict]] = {}
+            self.ruled = self.rules[:]
+        relation = "{}" if is_variable(relation) else relation
+        if relation not in self.by_relation:
+            self.by_relation[relation] = [
+                rule for rule in reversed(self.rules)
+                if is_variable(relation) or is_variable(rule["then"][1]) or rule["then"][1] == relation
+            ]
+        return self.by_relation[relation]
 
     def tell(self, subject: str, relation: str, object: str) -> Triple:
         fact = term(subject), term(relation), term(object)
@@ -113,9 +127,9 @@ class Knowledge:
         The most bound condition is shown first, as Prolog programmers order
         them by hand, and proving gives up after STEPS facts and rules tried.
         """
-        yield from self.show([goal], {}, [], 0, [STEPS], self.index())
+        yield from self.show([goal], {}, [], 0, Search(self.index()))
 
-    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, budget: list[int], index):
+    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, search: "Search"):
         if not goals:
             yield bound, []
             return
@@ -125,36 +139,46 @@ class Knowledge:
         goal, rest = resolved[at], goals[:at] + goals[at + 1 :]
         if goal[1].startswith("not "):  # what can't be shown is not true
             positive = goal[0], goal[1][4:], goal[2]
-            if next(self.show([positive], bound, [], depth, budget, index), None) is None:
-                for done, steps in self.show(rest, bound, stack, depth, budget, index):
+            if next(self.show([positive], bound, [], depth, search), None) is None:
+                for done, steps in self.show(rest, bound, stack, depth, search):
                     yield done, [f"I can't show {said(positive)}", *steps]
             return
         shape = tuple("{}" if is_variable(t) else t for t in goal)
-        if shape in stack:  # showing this needs showing itself first
-            return
-        known = [index.get((place, t), []) for place, t in enumerate(goal) if not is_variable(t)]
+        if stack.count(shape) > (shape.count("{}") == 1):  # showing this needs showing itself first
+            return  # but a goal with one unknown may recur once: "who eats the dog?" can find someone new
+        known = [search.index.get((place, t), []) for place, t in enumerate(goal) if not is_variable(t)]
         for fact in min(known, key=len) if known else map(tuple, reversed(self.facts)):
-            budget[0] -= 1
-            if budget[0] < 0:
+            if search.spent():
                 return
             if (more := unify(goal, fact, bound)) is not None:
-                for done, steps in self.show(rest, more, stack, depth, budget, index):
+                for done, steps in self.show(rest, more, stack, depth, search):
                     yield done, [said(fact), *steps]
         if depth == DEPTH:
             return
-        for rule in reversed(self.rules):
-            budget[0] -= 1
-            if budget[0] < 0:
+        for rule in self.rules_for(goal[1]):
+            if search.spent():
                 return
-            fresh = lambda t, n=budget[0]: f"{t[:-1]}.{n}}}" if is_variable(t) else t  # new names for each use
+            fresh = lambda t, n=search.budget: f"{t[:-1]}.{n}}}" if is_variable(t) else t  # new names for each use
             then = tuple(map(fresh, rule["then"]))
             if (more := unify(then, goal, bound)) is None:
                 continue
             conditions = [tuple(map(fresh, c)) for c in rule["if"]]
-            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1, budget, index):
+            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1, search):
                 conclusion = "so " + said(resolve(goal, shown))
-                for done, steps in self.show(rest, shown, stack, depth, budget, index):
+                for done, steps in self.show(rest, shown, stack, depth, search):
                     yield done, [*why, conclusion, *steps]
+
+
+class Search:
+    """One proof's way through: the facts to look in, and how many more tries it may make."""
+
+    def __init__(self, index: dict[tuple[int, str], list[Triple]]):
+        self.index = index
+        self.budget = STEPS
+
+    def spent(self) -> bool:
+        self.budget -= 1
+        return self.budget < 0
 
 
 def is_variable(t: str) -> bool:

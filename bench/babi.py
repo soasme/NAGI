@@ -34,9 +34,11 @@ TASKS = {
     7: "counting",
     8: "lists-sets",
     9: "simple-negation",
+    10: "indefinite-knowledge",
     11: "basic-coreference",
     12: "conjunction",
     13: "compound-coreference",
+    14: "time-reasoning",
     15: "basic-deduction",
     16: "basic-induction",
     17: "positional-reasoning",
@@ -64,7 +66,8 @@ def stories(task: int) -> list[list[tuple[str, str | None]]]:
 
 
 def words(text: str) -> set[str]:
-    """An answer's words, so "milk and apple" is "apple,milk"."""
+    """An answer's words, so "milk and apple" is "apple,milk", and "I don't know" is "maybe"."""
+    text = text.replace("I don't know", "maybe")
     return {normalize(w) for w in text.split()} - {"and", ""}
 
 

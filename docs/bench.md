@@ -5,17 +5,20 @@ script downloads its dataset to `~/.cache/nagi/` on first run.
 
 ```console
 $ uv run python bench/clinc150.py        # intent capture
+$ uv run python bench/banking77.py       # close intents
 $ uv run python bench/snips.py           # slots
 $ uv run python bench/babi.py            # reasoning over stories
 $ uv run python bench/proofwriter.py     # reasoning over rules in English
+$ uv run python bench/proofwriter.py --world OWA   # where unknown isn't false
 ```
 
 | Bench | Measures | Nagi is taught |
 |---|---|---|
 | [CLINC150](https://github.com/clinc/oos-eval) | 150 assistant intents, and questions none of them covers | only how to learn, then the 15,000 train prompts as SFT, one response per intent |
+| [Banking77](https://github.com/PolyAI-LDN/task-specific-datasets) | 77 close intents of one bank's customers | only how to learn, then the 10,003 train prompts as SFT |
 | [SNIPS](https://github.com/sonos/nlu-benchmark) | 7 assistant intents, and which words fill each slot | only how to learn, then the train split as SFT, each annotated span a slot and its words a fact |
 | [bAbI](https://research.facebook.com/downloads/babi/) | answering questions about short stories | the curriculum, then `bench/babi.jsonl`: how to read the stories' sentences, and rules for places, directions, positions, sizes and motives |
-| [ProofWriter](https://allenai.org/data/proofwriter) | true or false from facts and rules told in English, up to 5 steps deep | only how to learn, the theories' words as facts, and one prompt per sentence shape in the train split |
+| [ProofWriter](https://allenai.org/data/proofwriter) | true or false from facts and rules told in English, up to 5 steps deep, and in the open world also unknown | only how to learn, the theories' words as facts, and one prompt per sentence shape in the train split |
 
 ## Results
 
@@ -37,20 +40,23 @@ understanding takes about 3.5 ms a turn over 150 intents.
 | Slot words cost like skips | 37.4% | 21.2% | 96.4% | 34.0% |
 | + words known to be what a slot holds are free | 94.3% | 69.2% | 96.6% | 69.0% |
 
-**bAbI** (1,000 questions per task). Tasks 1, 2, 4, 6, 7, 8, 9, 11, 12, 13,
-15, 16, 17, 18 and 20 score 100%. Task 5 (three-argument relations) scores
-99.7%: its misses ask about an older gift between the same two people, and
-Nagi remembers the newest. Not yet tried: 3 (three supporting facts) and 14
-(time reasoning) need facts in time order; 10 (indefinite knowledge) needs
-"maybe", which `check` can't say; 19 (path finding) needs answers built
-from steps.
+**Banking77** (3,080 test questions): 78.6% understood, 81.2% nearest
+intent.
 
-**ProofWriter** (closed world, depth-5 test set: 985 theories, 20,058
-questions; 99.96% overall)
+**bAbI** (1,000 questions per task). Tasks 1, 2, 4, 6 to 18, and 20
+score 100%. Task 5 (three-argument relations) scores 99.7%: its misses ask
+about an older gift between the same two people, and Nagi remembers the
+newest. Not yet tried: 3 (three supporting facts) needs where a carried
+thing was, step by step; 19 (path finding) needs an answer built from two
+steps ("s,s").
+
+**ProofWriter** (depth-5 test sets: 985 closed-world theories with 20,058
+questions, 948 open-world ones with 20,030)
 
 | Proof depth | 0 | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| Accuracy | 100% | 100% | 100% | 100% | 99.9% | 99.7% |
+| Closed world | 100% | 100% | 100% | 100% | 99.9% | 100% |
+| Open world (true, false or unknown) | 100% | 100% | 100% | 100% | 100% | 100% |
 
 **ARC-Easy and GSM8K**: the curriculum declines every question (0
 answered, 0 false accepts). They become meaningful once t1 to t5 and the
@@ -106,6 +112,22 @@ reasoning engine land.
   than `{other}`, which names no kind, until the lesson typed it
   `{other:place}`. Name a slot for what it holds. Checking free words by
   proof made bAbI five times slower, so they are only looked up.
+- The open world needs saying "no" apart from "I don't know":
+  `reason.ask` tries the fact, then its opposite. Its deep misses (95% at
+  depth 5) were two things. "Blue people are not round." was read without
+  its "not", and the loop guard cut "who eats the dog?" while showing "the
+  dog likes the tiger", which needs someone else who eats the dog. A goal
+  with one unknown may now recur once, which also took the closed world's
+  depth 5 to 100%.
+- bAbI 10 ("Bill is either in the school or the office") is `reason.ask`
+  too: "is away from" holds when someone is somewhere else, or might only
+  be somewhere else. bAbI 14 keeps where someone was at each time, with a
+  rule per place for "before the office": a rule whose relation is a
+  variable matches every goal, and its search ran out of budget.
+- Rules are indexed by the relation they conclude, as facts are by term, so
+  a goal tries only rules that could show it: bAbI runs in 4.5 minutes, from
+  15. Size reasoning (task 18) had the same trouble as positions, and the
+  same cure: tell both ways, and derive only a told step at a time.
 - CLUTRR (kinship stories) is not tried yet: its crowd-written sentences
   each tell two or three facts ("Clarence's granddaughter, Emily, was busy
   helping her brother, Michael"), and Nagi reads one intent per sentence.

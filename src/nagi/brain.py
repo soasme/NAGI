@@ -110,7 +110,7 @@ class Brain:
     def read(self, text: str) -> dict[str, Fit]:
         """How each intent reads the text, however badly, with what Nagi knows of kinds."""
         kind_of = functools.cache(lambda words, kind: self.knowledge.holds(words, "is", kind))
-        told = lambda words, kind: self.knowledge.told(words, "is", kind)
+        told = functools.cache(lambda words, kind: self.knowledge.told(words, "is", kind))
         return readings(self.intents, tokenize(text, self.ranks), kind_of, told)
 
     def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
