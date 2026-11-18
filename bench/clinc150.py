@@ -61,7 +61,7 @@ def main() -> None:
         heard = tokenize(text, brain.ranks)
         name, *_ = brain.understand(text)
         right += name is not None and brain.memory["responses"][name]["code"] == code(intent)
-        nearest = choose(brain.responses, readings(brain.intents, heard))
+        nearest = choose(brain.responses, brain.read(text))
         best += brain.memory["responses"][nearest]["code"] == code(intent)
     rejected = sum(brain.understand(text)[0] is None for text, _ in clinc["oos_test"])
     print(f"read {len(clinc['test']) + len(clinc['oos_test'])} in {time.time() - start:.0f}s")

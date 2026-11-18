@@ -9,7 +9,7 @@ from nagi.brain import Brain
 from nagi.code import Program, Turn
 from nagi.evals import evaluate
 from nagi.generate import CONFUSED
-from nagi.intent import Intent, capture
+from nagi.intent import THRESHOLD, Intent, readings
 from nagi.knowledge import Knowledge, triple
 from nagi.tokens import encode, tokenize, train
 
@@ -50,11 +50,12 @@ def test_tokens_are_learned_byte_pairs():
 # intent capture
 
 
-def test_capture_finds_every_fitting_intent():
+def test_only_intents_that_fit_well_enough_are_captured():
     ranks = train(["hi", "bye"])
     intents = {"greeting": Intent([tokenize("hi", ranks)]), "farewell": Intent([tokenize("bye", ranks)])}
-    assert capture(intents, tokenize("bye", ranks)).keys() == {"farewell"}
-    assert capture(intents, tokenize("what", ranks)) == {}
+    captured = lambda text: {n for n, fit in readings(intents, tokenize(text, ranks)).items() if fit.score >= THRESHOLD}
+    assert captured("bye") == {"farewell"}
+    assert captured("what") == set()
 
 
 # code mode
@@ -321,6 +322,14 @@ def test_a_typed_slot_holds_only_what_nagi_knows_is_that_kind():
     ))
     assert brain.respond("i saw a cat").said == ["cat"]
     assert brain.understand("i saw a car")[0] is None
+
+
+def test_a_slot_reads_what_nagi_knows_it_holds_for_free():
+    brain = greeter()
+    brain.learn(jsonl({"prompt": "play {song}", "completion": {"code": "speech.say(slot.song)"}}))
+    assert brain.understand("play the long and winding road")[0] is None
+    brain.learn(jsonl({"subject": "the long and winding road", "relation": "is a", "object": "song"}))
+    assert brain.respond("play the long and winding road").said == ["the long and winding road"]
 
 
 def test_a_slot_is_one_token():

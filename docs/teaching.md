@@ -91,6 +91,12 @@ words Nagi can show are a feeling. Taught `"i am {feeling:feeling}"`, it
 reads "i am bored" (once `bored is a feeling` is known) but not "i am a
 teacher". Its words cost nothing to read, since knowledge vouches for them.
 
+A plain slot's words cost nothing too when Nagi was told they are what the
+slot is named for (told, not shown, so reading stays a lookup). Once `the
+long and winding road is a song` is told,
+`"play {song}"` reads "play the long and winding road" as readily as "play
+it". Other words still fill it, at the price of a skip.
+
 When the wrong words end up in a slot, teach more prompts before writing
 code. The todo example teaches `add {item} to my list please`, so "add
 bread to the list, please" adds "bread".

@@ -1,8 +1,8 @@
 """SNIPS: seven assistant intents, with the words of each slot marked.
 
 Teaches the train split as SFT, one response per intent, each annotated span
-a slot ("add {music_item} to the {playlist} playlist"), then reads the test
-split. Scores the intent, and the slots as exact (slot, words) pairs, for
+a slot ("add {music_item} to the {playlist} playlist"), and each span's words
+as a fact ("cita romántica is a playlist"), then reads the test split. Scores the intent, and the slots as exact (slot, words) pairs, for
 what Nagi understands and for the nearest reading, as if nothing were
 rejected::
 
@@ -21,9 +21,9 @@ from pathlib import Path
 
 from nagi.brain import Brain
 from nagi.generate import choose
-from nagi.intent import THRESHOLD, readings
+from nagi.intent import THRESHOLD
 from nagi.plugins import curriculum
-from nagi.tokens import said, tokenize
+from nagi.tokens import said
 
 URL = "https://raw.githubusercontent.com/sonos/nlu-benchmark/master/2017-06-custom-intent-engines/{0}/{1}"
 CACHE = Path.home() / ".cache" / "nagi" / "snips"
@@ -61,16 +61,20 @@ def main() -> None:
     brain = Brain()
     brain.learn(curriculum()[0].read_text())  # only how to learn
     start = time.time()
-    taught = [(intent, prompt(pieces)) for intent in INTENTS for pieces in examples(intent, "train")]
-    brain.learn("\n".join(json.dumps({"prompt": text, "completion": {"code": code(intent)}}) for intent, text in taught))
-    print(f"taught {len(taught)} prompts in {time.time() - start:.0f}s")
+    train = [(intent, pieces) for intent in INTENTS for pieces in examples(intent, "train")]
+    values = {(p["text"], p["entity"]) for _, pieces in train for p in pieces if "entity" in p}
+    brain.learn("\n".join(
+        [json.dumps({"subject": text, "relation": "is a", "object": entity}) for text, entity in sorted(values)]
+        + [json.dumps({"prompt": prompt(pieces), "completion": {"code": code(intent)}}) for intent, pieces in train]
+    ))
+    print(f"taught {len(train)} prompts and {len(values)} slot values in {time.time() - start:.0f}s")
 
     start, asked = time.time(), 0
     right, found, wanted, matched = Counter(), Counter(), Counter(), Counter()  # understood, and nearest
     for intent in INTENTS:
         for pieces in examples(intent, "test"):
             text = "".join(p["text"] for p in pieces)
-            words, fits = said(text), readings(brain.intents, tokenize(text, brain.ranks))
+            words, fits = said(text), brain.read(text)
             nearest = choose(brain.responses, fits)
             name = nearest if fits[nearest].score >= THRESHOLD else None
             asked, gold = asked + 1, slots(pieces)

@@ -56,6 +56,17 @@ class Knowledge:
     def __init__(self, facts: list[list[str]], rules: list[dict]):
         self.facts = facts
         self.rules = rules
+        self.indexed: list[list[str]] | None = None  # the facts as they were when last indexed
+
+    def index(self) -> dict[tuple[int, str], list[Triple]]:
+        """Facts by a term and its place, newest first, kept until the facts change."""
+        if self.indexed != self.facts:
+            self.by_term: dict[tuple[int, str], list[Triple]] = {}
+            for fact in reversed(self.facts):
+                for place, t in enumerate(fact):
+                    self.by_term.setdefault((place, t), []).append(tuple(fact))
+            self.indexed = self.facts[:]
+        return self.by_term
 
     def tell(self, subject: str, relation: str, object: str) -> Triple:
         fact = term(subject), term(relation), term(object)
@@ -88,6 +99,11 @@ class Knowledge:
         if rule not in self.rules:
             self.rules.append(rule)
 
+    def told(self, subject: str, relation: str, object: str) -> bool:
+        """Whether the fact was told, not shown: a lookup, no proof."""
+        fact = term(subject), term(relation), term(object)
+        return fact in self.index().get((0, fact[0]), [])
+
     def holds(self, subject: str, relation: str, object: str) -> bool:
         return next(self.prove((term(subject), term(relation), term(object))), None) is not None
 
@@ -97,11 +113,7 @@ class Knowledge:
         The most bound condition is shown first, as Prolog programmers order
         them by hand, and proving gives up after STEPS facts and rules tried.
         """
-        index: dict[tuple[int, str], list[Triple]] = {}  # facts by a term and its place, newest first
-        for fact in reversed(self.facts):
-            for place, t in enumerate(fact):
-                index.setdefault((place, t), []).append(tuple(fact))
-        yield from self.show([goal], {}, [], 0, [STEPS], index)
+        yield from self.show([goal], {}, [], 0, [STEPS], self.index())
 
     def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, budget: list[int], index):
         if not goals:

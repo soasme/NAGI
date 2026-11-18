@@ -12,8 +12,8 @@ $ uv run python bench/proofwriter.py     # reasoning over rules in English
 
 | Bench | Measures | Nagi is taught |
 |---|---|---|
-| [CLINC150](https://github.com/clinc/oos-eval) | 150 assistant intents, and questions none of them covers | the curriculum, then the 15,000 train prompts as SFT, one response per intent |
-| [SNIPS](https://github.com/sonos/nlu-benchmark) | 7 assistant intents, and which words fill each slot | the curriculum, then the train split as SFT, each annotated span a slot and its words a fact |
+| [CLINC150](https://github.com/clinc/oos-eval) | 150 assistant intents, and questions none of them covers | only how to learn, then the 15,000 train prompts as SFT, one response per intent |
+| [SNIPS](https://github.com/sonos/nlu-benchmark) | 7 assistant intents, and which words fill each slot | only how to learn, then the train split as SFT, each annotated span a slot and its words a fact |
 | [bAbI](https://research.facebook.com/downloads/babi/) | answering questions about short stories | the curriculum, then `bench/babi.jsonl`: how to read the stories' sentences, and rules for places, directions, positions, sizes and motives |
 | [ProofWriter](https://allenai.org/data/proofwriter) | true or false from facts and rules told in English, up to 5 steps deep | only how to learn, the theories' words as facts, and one prompt per sentence shape in the train split |
 
@@ -32,10 +32,10 @@ understanding takes about 3.5 ms a turn over 150 intents.
 
 **SNIPS** (700 test sentences)
 
-| | Intent | Slot F1 |
-|---|---|---|
-| Understood | 37.4% | 21.2% |
-| Nearest reading | 96.4% | 34.0% |
+| | Understood: intent | slot F1 | Nearest reading: intent | slot F1 |
+|---|---|---|---|---|
+| Slot words cost like skips | 37.4% | 21.2% | 96.4% | 34.0% |
+| + words known to be what a slot holds are free | 94.3% | 69.2% | 96.6% | 69.0% |
 
 **bAbI** (1,000 questions per task). Tasks 1, 2, 4, 6, 7, 8, 9, 11, 12, 13,
 15, 16, 17, 18 and 20 score 100%. Task 5 (three-argument relations) scores
@@ -96,7 +96,16 @@ reasoning engine land.
   false accepts on the shipped evals). And a slot knows nothing of what it
   holds, so where two slots meet ("my | Classical Relaxations") any split
   costs the same. Both point at slots learning their contents, as typed
-  slots do through knowledge.
+  slots do through knowledge. So a plain slot's words are now free when
+  Nagi knows they are what the slot is named for ("cita romántica is a
+  playlist"), and cost a skip otherwise: understood intents rose from 37%
+  to 94% and slot F1 from 21% to 69%, with no new false accepts on CLINC.
+  Unknown values still split arbitrarily where two slots meet. A free
+  slot can also lure words out of place: in bAbI's "The hallway is east of
+  the bathroom.", the known place "bathroom" was read into `{place}` rather
+  than `{other}`, which names no kind, until the lesson typed it
+  `{other:place}`. Name a slot for what it holds. Checking free words by
+  proof made bAbI five times slower, so they are only looked up.
 - CLUTRR (kinship stories) is not tried yet: its crowd-written sentences
   each tell two or three facts ("Clarence's granddaughter, Emily, was busy
   helping her brother, Michael"), and Nagi reads one intent per sentence.

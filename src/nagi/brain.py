@@ -30,7 +30,7 @@ from pathlib import Path
 
 from nagi.code import Program, Turn
 from nagi.generate import Response, choose, generate
-from nagi.intent import Intent, capture
+from nagi.intent import THRESHOLD, Fit, Intent, readings
 from nagi.knowledge import Knowledge
 from nagi.learning import Learner, Lesson
 from nagi.tokens import said, tokenize, train
@@ -107,10 +107,15 @@ class Brain:
             self.memory["responses"][name] = {"think": think, "code": code, "prompts": {}, "value": 0}
         return self.memory["responses"][name]
 
+    def read(self, text: str) -> dict[str, Fit]:
+        """How each intent reads the text, however badly, with what Nagi knows of kinds."""
+        kind_of = functools.cache(lambda words, kind: self.knowledge.holds(words, "is", kind))
+        told = lambda words, kind: self.knowledge.told(words, "is", kind)
+        return readings(self.intents, tokenize(text, self.ranks), kind_of, told)
+
     def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
         """The response Nagi would give, the words it read as not part of it, and its slots."""
-        kind_of = functools.cache(lambda words, kind: self.knowledge.holds(words, "is", kind))
-        fits = capture(self.intents, tokenize(text, self.ranks), kind_of)
+        fits = {name: fit for name, fit in self.read(text).items() if fit.score >= THRESHOLD}
         name = choose(self.responses, fits)
         words = said(text)
         if name is None:
