@@ -328,9 +328,9 @@ def test_a_typed_slot_holds_only_what_nagi_knows_is_that_kind():
 def test_a_slot_reads_what_nagi_knows_it_holds_for_free():
     brain = greeter()
     brain.learn(jsonl({"prompt": "play {song}", "completion": {"code": "speech.say(slot.song)"}}))
-    assert brain.understand("play the long and winding road")[0] is None
-    brain.learn(jsonl({"subject": "the long and winding road", "relation": "is a", "object": "song"}))
-    assert brain.respond("play the long and winding road").said == ["the long and winding road"]
+    assert brain.understand("play long tall sally once more")[0] is None
+    brain.learn(jsonl({"subject": "long tall sally once more", "relation": "is a", "object": "song"}))
+    assert brain.respond("play long tall sally once more").said == ["long tall sally once more"]
 
 
 def test_a_slot_is_one_token():

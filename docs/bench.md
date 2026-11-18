@@ -39,6 +39,7 @@ understanding takes about 3.5 ms a turn over 150 intents.
 |---|---|---|---|---|
 | Slot words cost like skips | 37.4% | 21.2% | 96.4% | 34.0% |
 | + words known to be what a slot holds are free | 94.3% | 69.2% | 96.6% | 69.0% |
+| + only if every word is part of what was told | 93.7% | 75.8% | 96.1% | 75.4% |
 
 **Banking77** (3,080 test questions): 78.6% understood, 81.2% nearest
 intent.
@@ -106,6 +107,9 @@ reasoning engine land.
   Nagi knows they are what the slot is named for ("cita romántica is a
   playlist"), and cost a skip otherwise: understood intents rose from 37%
   to 94% and slot F1 from 21% to 69%, with no new false accepts on CLINC.
+  Facts drop articles, so "the album" was told as much as "album", and a
+  free slot swallowed the "the" that SNIPS leaves out: a span is now free
+  only if each of its words is part of what was told (slot F1 69% to 76%).
   Unknown values still split arbitrarily where two slots meet. A free
   slot can also lure words out of place: in bAbI's "The hallway is east of
   the bathroom.", the known place "bathroom" was read into `{place}` rather

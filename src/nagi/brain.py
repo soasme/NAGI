@@ -31,7 +31,7 @@ from pathlib import Path
 from nagi.code import Program, Turn
 from nagi.generate import Response, choose, generate
 from nagi.intent import THRESHOLD, Fit, Intent, readings
-from nagi.knowledge import Knowledge
+from nagi.knowledge import Knowledge, term
 from nagi.learning import Learner, Lesson
 from nagi.tokens import said, tokenize, train
 
@@ -110,7 +110,8 @@ class Brain:
     def read(self, text: str) -> dict[str, Fit]:
         """How each intent reads the text, however badly, with what Nagi knows of kinds."""
         kind_of = functools.cache(lambda words, kind: self.knowledge.holds(words, "is", kind))
-        told = functools.cache(lambda words, kind: self.knowledge.told(words, "is", kind))
+        whole = lambda words: len(term(words).split()) == len(words.split())  # no word read for nothing, as "the"
+        told = functools.cache(lambda words, kind: whole(words) and self.knowledge.told(words, "is", kind))
         return readings(self.intents, tokenize(text, self.ranks), kind_of, told)
 
     def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
