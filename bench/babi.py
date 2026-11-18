@@ -28,6 +28,7 @@ LESSON = Path(__file__).with_name("babi.jsonl")
 TASKS = {
     1: "single-supporting-fact",
     2: "two-supporting-facts",
+    3: "three-supporting-facts",
     4: "two-arg-relations",
     5: "three-arg-relations",
     6: "yes-no-questions",

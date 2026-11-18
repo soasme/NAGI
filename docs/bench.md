@@ -43,11 +43,12 @@ understanding takes about 3.5 ms a turn over 150 intents.
 **Banking77** (3,080 test questions): 78.6% understood, 81.2% nearest
 intent.
 
-**bAbI** (1,000 questions per task). Tasks 1, 2, 4, and 6 to 20 score
-100%. Task 5 (three-argument relations) scores 99.7%: its misses ask
-about an older gift between the same two people, and Nagi remembers the
-newest. Not yet tried: 3 (three supporting facts) needs where a carried
-thing was, step by step.
+**bAbI** (1,000 questions per task): all 20 tasks. Tasks 1, 2, 4, and 6 to
+20 score 100%. Task 5 (three-argument relations) scores 99.7%: its misses
+ask about an older gift between the same two people, and Nagi remembers
+the newest. Task 3 (three supporting facts) scores 98.9%: a thing was
+"before the kitchen" where its carrier came to the kitchen from, which
+Nagi keeps only for the carrier's latest visit there.
 
 **ProofWriter** (depth-5 test sets: 985 closed-world theories with 20,058
 questions, 948 open-world ones with 20,030)
