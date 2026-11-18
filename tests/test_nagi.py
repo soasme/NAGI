@@ -408,6 +408,10 @@ def test_update_replaces_what_was_known():
     assert knowledge.facts == [["mary", "is in", "garden"]]
 
 
+def test_a_variable_may_be_named_like_an_article():
+    assert triple("{a} is {the}") == ("{a}", "is", "{the}")
+
+
 def test_a_rule_needs_a_condition():
     with pytest.raises(ValueError, match="if"):
         Knowledge([], []).rule("{x} is {y}")

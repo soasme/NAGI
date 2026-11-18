@@ -32,10 +32,11 @@ ARTICLES = {"a", "an", "the"}
 
 def term(text: str) -> str:
     """Words as knowledge compares them; a {variable} stays as is."""
+    variable = lambda word: re.fullmatch(r"\{\w+\}", word)
     return " ".join(
-        word if re.fullmatch(r"\{\w+\}", word) else normal
+        word if variable(word) else normal
         for word in text.split()
-        if (normal := normalize(word)) and normal not in ARTICLES
+        if variable(word) or ((normal := normalize(word)) and normal not in ARTICLES)
     )
 
 

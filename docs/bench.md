@@ -43,19 +43,18 @@ understanding takes about 3.5 ms a turn over 150 intents.
 **Banking77** (3,080 test questions): 78.6% understood, 81.2% nearest
 intent.
 
-**bAbI** (1,000 questions per task). Tasks 1, 2, 4, 6 to 18, and 20
-score 100%. Task 5 (three-argument relations) scores 99.7%: its misses ask
+**bAbI** (1,000 questions per task). Tasks 1, 2, 4, and 6 to 20 score
+100%. Task 5 (three-argument relations) scores 99.7%: its misses ask
 about an older gift between the same two people, and Nagi remembers the
 newest. Not yet tried: 3 (three supporting facts) needs where a carried
-thing was, step by step; 19 (path finding) needs an answer built from two
-steps ("s,s").
+thing was, step by step.
 
 **ProofWriter** (depth-5 test sets: 985 closed-world theories with 20,058
 questions, 948 open-world ones with 20,030)
 
 | Proof depth | 0 | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| Closed world | 100% | 100% | 100% | 100% | 99.9% | 100% |
+| Closed world | 100% | 100% | 100% | 100% | 100% | 100% |
 | Open world (true, false or unknown) | 100% | 100% | 100% | 100% | 100% | 100% |
 
 **ARC-Easy and GSM8K**: the curriculum declines every question (0
@@ -124,6 +123,11 @@ reasoning engine land.
   be somewhere else. bAbI 14 keeps where someone was at each time, with a
   rule per place for "before the office": a rule whose relation is a
   variable matches every goal, and its search ran out of budget.
+- bAbI 19 finds a two-step way with rules whose conditions have a
+  variable relation ("{b} {r} {a} and {r} step {d}"), which is cheap,
+  unlike a variable relation in a conclusion. `speech.answer` says several
+  parts ("S, s."). It also found that `term` dropped a variable named
+  `{a}`, taking it for an article.
 - Rules are indexed by the relation they conclude, as facts are by term, so
   a goal tries only rules that could show it: bAbI runs in 4.5 minutes, from
   15. Size reasoning (task 18) had the same trouble as positions, and the

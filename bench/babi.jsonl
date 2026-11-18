@@ -297,22 +297,49 @@
 {"subject": "a rhino", "relation": "is a", "object": "mammal"}
 {"rule": "{x} has color {c} if {x} is {k} and {k} is animal and {y} is {k} and {y} is {c} and {c} is color"}
 {"prompt": "{name} is {color:color}.", "completion": {"think": "They tell me what color someone is.", "code": "reason.tell(slot.name, \"is\", slot.color)"}}
-{"rule": "{x} north of {y} if {y} south of {x}"}
-{"prompt": "The {place} is north of the {other:place}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"north of\", slot.other)"}}
+{"subject": "north of", "relation": "step", "object": "n"}
+{"prompt": "The {place} is north of the {other:place}.", "completion": {"think": "They tell me where one place is from another, so I know where that one is from it too.", "code": "reason.tell(slot.place, \"north of\", slot.other)\nreason.tell(slot.other, \"south of\", slot.place)"}}
 {"prompt": "What is the {place} north of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"north of\"))"}}
 {"prompt": "What is north of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"north of\", slot.place))"}}
-{"rule": "{x} south of {y} if {y} north of {x}"}
-{"prompt": "The {place} is south of the {other:place}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"south of\", slot.other)"}}
+{"subject": "south of", "relation": "step", "object": "s"}
+{"prompt": "The {place} is south of the {other:place}.", "completion": {"think": "They tell me where one place is from another, so I know where that one is from it too.", "code": "reason.tell(slot.place, \"south of\", slot.other)\nreason.tell(slot.other, \"north of\", slot.place)"}}
 {"prompt": "What is the {place} south of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"south of\"))"}}
 {"prompt": "What is south of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"south of\", slot.place))"}}
-{"rule": "{x} east of {y} if {y} west of {x}"}
-{"prompt": "The {place} is east of the {other:place}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"east of\", slot.other)"}}
+{"subject": "east of", "relation": "step", "object": "e"}
+{"prompt": "The {place} is east of the {other:place}.", "completion": {"think": "They tell me where one place is from another, so I know where that one is from it too.", "code": "reason.tell(slot.place, \"east of\", slot.other)\nreason.tell(slot.other, \"west of\", slot.place)"}}
 {"prompt": "What is the {place} east of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"east of\"))"}}
 {"prompt": "What is east of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"east of\", slot.place))"}}
-{"rule": "{x} west of {y} if {y} east of {x}"}
-{"prompt": "The {place} is west of the {other:place}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"west of\", slot.other)"}}
+{"subject": "west of", "relation": "step", "object": "w"}
+{"prompt": "The {place} is west of the {other:place}.", "completion": {"think": "They tell me where one place is from another, so I know where that one is from it too.", "code": "reason.tell(slot.place, \"west of\", slot.other)\nreason.tell(slot.other, \"east of\", slot.place)"}}
 {"prompt": "What is the {place} west of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"west of\"))"}}
 {"prompt": "What is west of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"west of\", slot.place))"}}
+{"rule": "{a} first step to kitchen {d} if {b} {r} {a} and {r} step {d} and kitchen {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to kitchen {e} if {b} {r} {a} and {r} step {d} and kitchen {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the kitchen?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to kitchen\"), reason.what(slot.place, \"second step to kitchen\"))"}}
+{"rule": "{a} first step to garden {d} if {b} {r} {a} and {r} step {d} and garden {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to garden {e} if {b} {r} {a} and {r} step {d} and garden {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the garden?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to garden\"), reason.what(slot.place, \"second step to garden\"))"}}
+{"rule": "{a} first step to office {d} if {b} {r} {a} and {r} step {d} and office {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to office {e} if {b} {r} {a} and {r} step {d} and office {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the office?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to office\"), reason.what(slot.place, \"second step to office\"))"}}
+{"rule": "{a} first step to bathroom {d} if {b} {r} {a} and {r} step {d} and bathroom {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to bathroom {e} if {b} {r} {a} and {r} step {d} and bathroom {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the bathroom?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to bathroom\"), reason.what(slot.place, \"second step to bathroom\"))"}}
+{"rule": "{a} first step to hallway {d} if {b} {r} {a} and {r} step {d} and hallway {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to hallway {e} if {b} {r} {a} and {r} step {d} and hallway {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the hallway?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to hallway\"), reason.what(slot.place, \"second step to hallway\"))"}}
+{"rule": "{a} first step to bedroom {d} if {b} {r} {a} and {r} step {d} and bedroom {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to bedroom {e} if {b} {r} {a} and {r} step {d} and bedroom {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the bedroom?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to bedroom\"), reason.what(slot.place, \"second step to bedroom\"))"}}
+{"rule": "{a} first step to school {d} if {b} {r} {a} and {r} step {d} and school {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to school {e} if {b} {r} {a} and {r} step {d} and school {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the school?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to school\"), reason.what(slot.place, \"second step to school\"))"}}
+{"rule": "{a} first step to park {d} if {b} {r} {a} and {r} step {d} and park {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to park {e} if {b} {r} {a} and {r} step {d} and park {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the park?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to park\"), reason.what(slot.place, \"second step to park\"))"}}
+{"rule": "{a} first step to cinema {d} if {b} {r} {a} and {r} step {d} and cinema {s} {b} and {s} step {e}"}
+{"rule": "{a} second step to cinema {e} if {b} {r} {a} and {r} step {d} and cinema {s} {b} and {s} step {e}"}
+{"prompt": "How do you go from the {place} to the cinema?", "completion": {"think": "They ask the way from one place to another. Which way to a place next door, and which way on from there?", "code": "speech.answer(reason.what(slot.place, \"first step to cinema\"), reason.what(slot.place, \"second step to cinema\"))"}}
 {"prompt": "The {shape} is to the left of the {other}.", "completion": {"think": "They tell me where one shape is from another, so I know where that one is from it too.", "code": "reason.tell(slot.shape, \"left of\", slot.other)\nreason.tell(slot.other, \"right of\", slot.shape)"}}
 {"prompt": "Is the {shape} to the left of the {other}?", "completion": {"think": "They ask where one shape is from another.", "code": "speech.answer(reason.check(slot.shape, \"is left of\", slot.other))"}}
 {"rule": "{x} is left of {z} if {x} left of {z}"}
