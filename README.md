@@ -224,8 +224,8 @@ Benchmarks live in `bench/` and download their data on first run. CLINC150
 measures intent capture on real assistant requests, out-of-scope ones
 included. bAbI measures reasoning over stories, with Nagi taught only
 `bench/babi.jsonl`: how to read the stories' sentences, and rules for where
-things are, directions, positions, sizes and motives. It answers 14 of the
-20 tasks, at 100% each.
+things are, directions, positions, sizes and motives. It answers 16 of the
+20 tasks, 15 of them at 100%.
 
 ```console
 $ uv run python bench/clinc150.py

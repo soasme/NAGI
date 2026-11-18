@@ -202,7 +202,7 @@ plugins supply the domain: modules with contracts, rules, and specs.
   or told in conversation. Backward chaining answers, and the proof becomes
   the turn's thoughts. Facts and rules are tried newest first, so a later
   lesson refines an earlier one. Facts are indexed by each term, so a goal
-  looks only at facts that could match. 14 of bAbI's 20 tasks score 100%.
+  looks only at facts that could match. 15 of bAbI's 20 tasks score 100%.
   Still to come: forward chaining, step results as facts, and word forms
   (bAbI's "mice" needs a taught plural today).
 - **Contract planning**: type annotations are contracts
@@ -299,10 +299,12 @@ own evals. CLINC150 (150 assistant intents and out-of-scope questions,
 
 bAbI (stories and questions; Nagi is taught `bench/babi.jsonl`, sentence
 forms with slots and the rules they need, on top of the curriculum). Tasks
-1, 2, 4, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18 and 20 score 100% of 1000
-each. Not yet tried: 3 (three supporting facts needs time order), 5
-(three-argument relations), 10 (indefinite knowledge, "maybe"), 13
-(compound coreference), 14 (time reasoning) and 19 (path finding).
+1, 2, 4, 6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 18 and 20 score 100% of 1000
+each, and 5 (three-argument relations) 99.7%: its misses ask about an
+older gift between the same two people, and Nagi remembers the newest.
+Not yet tried: 3 (three supporting facts) and 14 (time reasoning) need
+facts in time order; 10 (indefinite knowledge) needs "maybe", which `check`
+can't say; 19 (path finding) needs answers built from steps.
 
 What the runs showed:
 
