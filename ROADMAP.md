@@ -292,7 +292,7 @@ must not block them.
 | Tool calls | ~4M/s compiled closures | keep calls free of per-call lookups |
 
 **Benchmarks**. `bench/` measures Nagi on public data rather than only its
-own evals: CLINC150, Banking77, SNIPS, bAbI and ProofWriter. Results, and what each
+own evals: CLINC150, Banking77, SNIPS, HWU64, bAbI and ProofWriter. Results, and what each
 run showed, are in [docs/bench.md](docs/bench.md).
 
 **Trust**. Everything stays local by default. Plugins declare permissions

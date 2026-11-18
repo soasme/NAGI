@@ -7,6 +7,7 @@ script downloads its dataset to `~/.cache/nagi/` on first run.
 $ uv run python bench/clinc150.py        # intent capture
 $ uv run python bench/banking77.py       # close intents
 $ uv run python bench/snips.py           # slots
+$ uv run python bench/hwu64.py           # slots, across 64 intents
 $ uv run python bench/babi.py            # reasoning over stories
 $ uv run python bench/proofwriter.py     # reasoning over rules in English
 $ uv run python bench/proofwriter.py --world OWA   # where unknown isn't false
@@ -17,6 +18,7 @@ $ uv run python bench/proofwriter.py --world OWA   # where unknown isn't false
 | [CLINC150](https://github.com/clinc/oos-eval) | 150 assistant intents, and questions none of them covers | only how to learn, then the 15,000 train prompts as SFT, one response per intent |
 | [Banking77](https://github.com/PolyAI-LDN/task-specific-datasets) | 77 close intents of one bank's customers | only how to learn, then the 10,003 train prompts as SFT |
 | [SNIPS](https://github.com/sonos/nlu-benchmark) | 7 assistant intents, and which words fill each slot | only how to learn, then the train split as SFT, each annotated span a slot and its words a fact |
+| [HWU64](https://github.com/xliuhw/NLU-Evaluation-Data) | 64 home-assistant intents in 21 domains, and their slots | as SNIPS, on the first of ten cross-validation folds |
 | [bAbI](https://research.facebook.com/downloads/babi/) | answering questions about short stories | the curriculum, then `bench/babi.jsonl`: how to read the stories' sentences, and rules for places, times, directions, ways, positions, sizes and motives |
 | [ProofWriter](https://allenai.org/data/proofwriter) | true or false from facts and rules told in English, up to 5 steps deep, and in the open world also unknown | only how to learn, the theories' words as facts, and one prompt per sentence shape in the train split |
 
@@ -40,6 +42,10 @@ understanding takes about 3.5 ms a turn over 150 intents.
 | Slot words cost like skips | 37.4% | 21.2% | 96.4% | 34.0% |
 | + words known to be what a slot holds are free | 94.3% | 69.2% | 96.6% | 69.0% |
 | + only if every word is part of what was told | 93.7% | 75.8% | 96.1% | 75.4% |
+
+**HWU64** (fold 1: 9,960 train prompts, 1,076 test sentences): 68.4%
+intent and 53.3% slot F1 understood, 71.0% and 51.9% for the nearest
+reading.
 
 **Banking77** (3,080 test questions): 78.6% understood, 81.2% nearest
 intent.
@@ -137,6 +143,14 @@ reasoning engine land.
   a goal tries only rules that could show it: bAbI runs in 4.5 minutes, from
   15. Size reasoning (task 18) had the same trouble as positions, and the
   same cure: tell both ways, and derive only a told step at a time.
+- HWU64's intents are closer than SNIPS's ("turn off the lights" for Hue
+  or for Wemo), and its slots more numerous, so it scores lower. Its train
+  split has prompts that are all slot ("{movie_name}", "define
+  {definition_word}"), and with free slots they lure: "mute speaker" is
+  read as a definition, "mute" skipped and "speaker" a told word. Leaving
+  free words out of a score's weight stopped the lure, but sank every
+  sentence that is mostly a known name and one skipped word (SNIPS
+  understood 94% to 71%), so it was not kept.
 - CLUTRR (kinship stories) is not tried yet: its crowd-written sentences
   each tell two or three facts ("Clarence's granddaughter, Emily, was busy
   helping her brother, Michael"), and Nagi reads one intent per sentence.
