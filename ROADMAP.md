@@ -204,7 +204,8 @@ plugins supply the domain: modules with contracts, rules, and specs.
   lesson refines an earlier one. Facts are indexed by each term, so a goal
   looks only at facts that could match. A relation starting "not" holds
   when the rest can't be shown, and rules can be told in conversation
-  (`reason.rule`). 15 of bAbI's 20 tasks score 100%, and ProofWriter 99.96%.
+  (`reason.rule`), and `reason.ask` tells "no" from "I don't know". 18 of
+  bAbI's 20 tasks score 100%, and ProofWriter 100% in both worlds.
   Still to come: forward chaining, step results as facts, and word forms
   (bAbI's "mice" needs a taught plural today).
 - **Contract planning**: type annotations are contracts
@@ -291,7 +292,7 @@ must not block them.
 | Tool calls | ~4M/s compiled closures | keep calls free of per-call lookups |
 
 **Benchmarks**. `bench/` measures Nagi on public data rather than only its
-own evals: CLINC150, SNIPS, bAbI and ProofWriter. Results, and what each
+own evals: CLINC150, Banking77, SNIPS, bAbI and ProofWriter. Results, and what each
 run showed, are in [docs/bench.md](docs/bench.md).
 
 **Trust**. Everything stays local by default. Plugins declare permissions

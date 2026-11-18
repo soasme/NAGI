@@ -49,8 +49,10 @@ slots, code mode, and reasoning with facts and rules. The curriculum covers
 greetings (t0), animal sounds (t1), colors, feelings and numbers (t2), and
 kinds of things (t3).
 
-On public benchmarks, Nagi scores 100% on 15 of bAbI's 20 tasks and 99.96%
-on ProofWriter. Reading real assistant requests is weaker: 76% on CLINC150.
+On public benchmarks, Nagi scores 100% on 18 of bAbI's 20 tasks (and 99.7%
+and 98.9% on the other two) and 100% on ProofWriter, closed and open world.
+Reading real assistant requests is weaker: 76% on CLINC150, 79% on
+Banking77, 94% on SNIPS.
 See [Benchmarks](bench.md).
 
 Planned: memory layers and packages, learning in conversation, typed

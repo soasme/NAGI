@@ -17,7 +17,7 @@ $ uv run python bench/proofwriter.py --world OWA   # where unknown isn't false
 | [CLINC150](https://github.com/clinc/oos-eval) | 150 assistant intents, and questions none of them covers | only how to learn, then the 15,000 train prompts as SFT, one response per intent |
 | [Banking77](https://github.com/PolyAI-LDN/task-specific-datasets) | 77 close intents of one bank's customers | only how to learn, then the 10,003 train prompts as SFT |
 | [SNIPS](https://github.com/sonos/nlu-benchmark) | 7 assistant intents, and which words fill each slot | only how to learn, then the train split as SFT, each annotated span a slot and its words a fact |
-| [bAbI](https://research.facebook.com/downloads/babi/) | answering questions about short stories | the curriculum, then `bench/babi.jsonl`: how to read the stories' sentences, and rules for places, directions, positions, sizes and motives |
+| [bAbI](https://research.facebook.com/downloads/babi/) | answering questions about short stories | the curriculum, then `bench/babi.jsonl`: how to read the stories' sentences, and rules for places, times, directions, ways, positions, sizes and motives |
 | [ProofWriter](https://allenai.org/data/proofwriter) | true or false from facts and rules told in English, up to 5 steps deep, and in the open world also unknown | only how to learn, the theories' words as facts, and one prompt per sentence shape in the train split |
 
 ## Results

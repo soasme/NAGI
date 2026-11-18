@@ -49,7 +49,7 @@ and a completion is a thought and a program:
 - [Code mode](docs/code-mode.md): the programs responses and learners run
 - [Plugins](docs/plugins.md): your own modules, learners and curricula
 - [Architecture](docs/architecture.md): how a sentence becomes a response
-- [Benchmarks](docs/bench.md): CLINC150, SNIPS, bAbI, ProofWriter
+- [Benchmarks](docs/bench.md): CLINC150, Banking77, SNIPS, bAbI, ProofWriter
 - [Development](docs/development.md): working on Nagi itself
 - [FAQ](docs/faq.md)
 
