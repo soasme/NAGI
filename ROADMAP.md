@@ -201,10 +201,10 @@ plugins supply the domain: modules with contracts, rules, and specs.
   `{variables}` (a relation can be a variable too), both taught by learners
   or told in conversation. Backward chaining answers, and the proof becomes
   the turn's thoughts. Facts and rules are tried newest first, so a later
-  lesson refines an earlier one. 14 of bAbI's 20 tasks score 100%. Still to
-  come: forward chaining or tabling (a failed proof searches its whole
-  budget), step results as facts, and word forms (bAbI's "mice" needs a
-  taught plural today).
+  lesson refines an earlier one. Facts are indexed by each term, so a goal
+  looks only at facts that could match. 14 of bAbI's 20 tasks score 100%.
+  Still to come: forward chaining, step results as facts, and word forms
+  (bAbI's "mice" needs a taught plural today).
 - **Contract planning**: type annotations are contracts
   (`parse(turn, text: Text) -> Date`). The planner chains calls from what
   is known to the goal type, best-first within a budget, ordered by learned

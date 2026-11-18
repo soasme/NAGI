@@ -92,9 +92,13 @@ class Knowledge:
         The most bound condition is shown first, as Prolog programmers order
         them by hand, and proving gives up after STEPS facts and rules tried.
         """
-        yield from self.show([goal], {}, [], 0, [STEPS])
+        index: dict[tuple[int, str], list[Triple]] = {}  # facts by a term and its place, newest first
+        for fact in reversed(self.facts):
+            for place, t in enumerate(fact):
+                index.setdefault((place, t), []).append(tuple(fact))
+        yield from self.show([goal], {}, [], 0, [STEPS], index)
 
-    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, budget: list[int]):
+    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, budget: list[int], index):
         if not goals:
             yield bound, []
             return
@@ -104,13 +108,14 @@ class Knowledge:
         shape = tuple("{}" if is_variable(t) else t for t in goal)
         if shape in stack:  # showing this needs showing itself first
             return
-        for fact in reversed(self.facts):
+        known = [index.get((place, t), []) for place, t in enumerate(goal) if not is_variable(t)]
+        for fact in min(known, key=len) if known else map(tuple, reversed(self.facts)):
             budget[0] -= 1
             if budget[0] < 0:
                 return
-            if (more := unify(goal, tuple(fact), bound)) is not None:
-                for done, steps in self.show(rest, more, stack, depth, budget):
-                    yield done, [said(tuple(fact)), *steps]
+            if (more := unify(goal, fact, bound)) is not None:
+                for done, steps in self.show(rest, more, stack, depth, budget, index):
+                    yield done, [said(fact), *steps]
         if depth == DEPTH:
             return
         for rule in reversed(self.rules):
@@ -122,9 +127,9 @@ class Knowledge:
             if (more := unify(then, goal, bound)) is None:
                 continue
             conditions = [tuple(map(fresh, c)) for c in rule["if"]]
-            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1, budget):
+            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1, budget, index):
                 conclusion = "so " + said(resolve(goal, shown))
-                for done, steps in self.show(rest, shown, stack, depth, budget):
+                for done, steps in self.show(rest, shown, stack, depth, budget, index):
                     yield done, [*why, conclusion, *steps]
 
 
