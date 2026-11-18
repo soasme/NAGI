@@ -131,7 +131,8 @@ read the words heard in a slot of their prompt: taught `"is a {thing} a
 "polar bear". A response that reads a slot is only chosen when its slot
 was heard. A slot can name the kind of thing it holds: `"i am
 {feeling:feeling}"` reads "i am bored" only if Nagi can show bored is a
-feeling, so "i am a teacher" isn't read as a feeling. `module.function` must be in the module's `__all__`, and
+feeling, so "i am a teacher" isn't read as a feeling. Its words cost nothing to read,
+since knowledge vouches for them. `module.function` must be in the module's `__all__`, and
 takes the current turn (or lesson) first. A turn carries what was heard,
 the untaught words (`turn.residue`), the slots (`turn.slots`), the time, a
 random source for variety, and `turn.state`, which persists:
@@ -222,8 +223,9 @@ $ uv run pytest
 Benchmarks live in `bench/` and download their data on first run. CLINC150
 measures intent capture on real assistant requests, out-of-scope ones
 included. bAbI measures reasoning over stories, with Nagi taught only
-`bench/babi.jsonl`: how to read the stories' sentences, two rules for where
-things are, and plurals.
+`bench/babi.jsonl`: how to read the stories' sentences, and rules for where
+things are, directions, positions, sizes and motives. It answers 14 of the
+20 tasks, at 100% each.
 
 ```console
 $ uv run python bench/clinc150.py

@@ -11,8 +11,9 @@ Each triple in a rule is its first word, its last word, and the relation
 between them, so a term in a rule is one word or a variable.
 
 Nagi answers by backward chaining: to show a triple, it finds a fact that
-matches, newest first, or a rule whose conclusion matches, then shows the
-rule's conditions in turn. Each proof is the facts it used and what it
+matches, or a rule whose conclusion matches, then shows the rule's
+conditions in turn. Facts and rules are both tried newest first, so a later
+lesson refines an earlier one, as a later learner does. Each proof is the facts it used and what it
 concluded from them, in order, so it can be thought out loud.
 """
 
@@ -24,6 +25,7 @@ from nagi.tokens import normalize
 Triple = tuple[str, str, str]
 Bindings = dict[str, str]
 DEPTH = 8  # rules applied in a row before a proof gives up
+STEPS = 20000  # facts and rules tried before a proof gives up
 ARTICLES = {"a", "an", "the"}
 
 
@@ -85,32 +87,44 @@ class Knowledge:
         return next(self.prove((term(subject), term(relation), term(object))), None) is not None
 
     def prove(self, goal: Triple) -> Iterator[tuple[Bindings, list[str]]]:
-        """Every way to show the goal: the bindings of its variables, and the steps."""
-        yield from self.show([goal], {}, [], 0)
+        """Every way to show the goal: the bindings of its variables, and the steps.
 
-    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int):
+        The most bound condition is shown first, as Prolog programmers order
+        them by hand, and proving gives up after STEPS facts and rules tried.
+        """
+        yield from self.show([goal], {}, [], 0, [STEPS])
+
+    def show(self, goals: list[Triple], bound: Bindings, stack: list[Triple], depth: int, budget: list[int]):
         if not goals:
             yield bound, []
             return
-        goal, rest = resolve(goals[0], bound), goals[1:]
+        resolved = [resolve(g, bound) for g in goals]
+        at = max(range(len(goals)), key=lambda i: sum(not is_variable(t) for t in resolved[i]))
+        goal, rest = resolved[at], goals[:at] + goals[at + 1 :]
         shape = tuple("{}" if is_variable(t) else t for t in goal)
         if shape in stack:  # showing this needs showing itself first
             return
         for fact in reversed(self.facts):
+            budget[0] -= 1
+            if budget[0] < 0:
+                return
             if (more := unify(goal, tuple(fact), bound)) is not None:
-                for done, steps in self.show(rest, more, stack, depth):
+                for done, steps in self.show(rest, more, stack, depth, budget):
                     yield done, [said(tuple(fact)), *steps]
         if depth == DEPTH:
             return
-        for number, rule in enumerate(self.rules):
-            fresh = lambda t: f"{t[:-1]}.{depth}.{number}}}" if is_variable(t) else t
+        for rule in reversed(self.rules):
+            budget[0] -= 1
+            if budget[0] < 0:
+                return
+            fresh = lambda t, n=budget[0]: f"{t[:-1]}.{n}}}" if is_variable(t) else t  # new names for each use
             then = tuple(map(fresh, rule["then"]))
             if (more := unify(then, goal, bound)) is None:
                 continue
             conditions = [tuple(map(fresh, c)) for c in rule["if"]]
-            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1):
+            for shown, why in self.show(conditions, more, [*stack, shape], depth + 1, budget):
                 conclusion = "so " + said(resolve(goal, shown))
-                for done, steps in self.show(rest, shown, stack, depth):
+                for done, steps in self.show(rest, shown, stack, depth, budget):
                     yield done, [*why, conclusion, *steps]
 
 

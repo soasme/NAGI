@@ -1,14 +1,64 @@
+{"subject": "the kitchen", "relation": "is a", "object": "place"}
+{"subject": "the garden", "relation": "is a", "object": "place"}
+{"subject": "the office", "relation": "is a", "object": "place"}
+{"subject": "the bathroom", "relation": "is a", "object": "place"}
+{"subject": "the hallway", "relation": "is a", "object": "place"}
+{"subject": "the bedroom", "relation": "is a", "object": "place"}
+{"rule": "{x} is at {y} if {x} is in {y} and {y} is place"}
 {"rule": "{x} is at {z} if {x} is in {y} and {y} is at {z}"}
-{"rule": "{x} is at {y} if {x} is in {y}"}
-{"subject": "mice", "relation": "is plural of", "object": "mouse"}
-{"subject": "cats", "relation": "is plural of", "object": "cat"}
-{"subject": "wolves", "relation": "is plural of", "object": "wolf"}
-{"subject": "sheep", "relation": "is plural of", "object": "sheep"}
-{"prompt": "{person} went to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)"}}
-{"prompt": "{person} went back to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)"}}
-{"prompt": "{person} moved to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)"}}
-{"prompt": "{person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)"}}
-{"prompt": "{person} travelled to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)"}}
+{"prompt": "{person} went to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} went back to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} moved to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} journeyed to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} travelled to the {place}.", "completion": {"think": "They tell me where someone went. Now they are there, and no longer where they were.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} is in the {place}.", "completion": {"think": "They tell me where someone is.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(\"he or she\", \"means\", slot.person)"}}
+{"prompt": "{person} is no longer in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)"}}
+{"prompt": "{person} is not in the {place}.", "completion": {"think": "They tell me someone left a place.", "code": "reason.forget(slot.person, \"is in\", slot.place)"}}
+{"prompt": "{person} and {other} went to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)"}}
+{"prompt": "{person} and {other} went back to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)"}}
+{"prompt": "{person} and {other} moved to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)"}}
+{"prompt": "{person} and {other} journeyed to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)"}}
+{"prompt": "{person} and {other} travelled to the {place}.", "completion": {"think": "They tell me where two people went.", "code": "reason.update(slot.person, \"is in\", slot.place)\nreason.update(slot.other, \"is in\", slot.place)"}}
+{"prompt": "then he went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then he went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then he moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then he journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then he travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then she went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then she went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then she moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then she journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "then she travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that he went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that he went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that he moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that he journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that he travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that she went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that she went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that she moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that she journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "after that she travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that he went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that he went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that he moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that he journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that he travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that she went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that she went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that she moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that she journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "following that she travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards he went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards he went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards he moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards he journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards he travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards she went to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards she went back to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards she moved to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards she journeyed to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
+{"prompt": "afterwards she travelled to the {place}.", "completion": {"think": "They tell me where the person they just spoke of went.", "code": "reason.update(reason.what(\"he or she\", \"means\"), \"is in\", slot.place)"}}
 {"prompt": "{person} got the {thing} there.", "completion": {"think": "Someone took a thing. It is with them now, wherever they go.", "code": "reason.update(slot.thing, \"is in\", slot.person)"}}
 {"prompt": "{person} grabbed the {thing} there.", "completion": {"think": "Someone took a thing. It is with them now, wherever they go.", "code": "reason.update(slot.thing, \"is in\", slot.person)"}}
 {"prompt": "{person} picked up the {thing} there.", "completion": {"think": "Someone took a thing. It is with them now, wherever they go.", "code": "reason.update(slot.thing, \"is in\", slot.person)"}}
@@ -21,9 +71,85 @@
 {"prompt": "{person} left the {thing} there.", "completion": {"think": "Someone put a thing down. It stays where they are now.", "code": "reason.update(slot.thing, \"is in\", reason.what(slot.person, \"is at\"))"}}
 {"prompt": "{person} put down the {thing}.", "completion": {"think": "Someone put a thing down. It stays where they are now.", "code": "reason.update(slot.thing, \"is in\", reason.what(slot.person, \"is at\"))"}}
 {"prompt": "{person} put down the {thing} there.", "completion": {"think": "Someone put a thing down. It stays where they are now.", "code": "reason.update(slot.thing, \"is in\", reason.what(slot.person, \"is at\"))"}}
-{"prompt": "Where is {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.say(reason.what(slot.thing, \"is at\"))"}}
-{"prompt": "Where is the {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.say(reason.what(slot.thing, \"is at\"))"}}
-{"prompt": "Is {person} in the {place}?", "completion": {"think": "They ask whether someone is in a place. Check where they are.", "code": "speech.say(reason.check(slot.person, \"is at\", slot.place))"}}
+{"prompt": "{person} gave the {thing} to {other}.", "completion": {"think": "Someone gave a thing to someone else. It is with them now.", "code": "reason.update(slot.thing, \"is in\", slot.other)"}}
+{"prompt": "{person} handed the {thing} to {other}.", "completion": {"think": "Someone gave a thing to someone else. It is with them now.", "code": "reason.update(slot.thing, \"is in\", slot.other)"}}
+{"prompt": "{person} passed the {thing} to {other}.", "completion": {"think": "Someone gave a thing to someone else. It is with them now.", "code": "reason.update(slot.thing, \"is in\", slot.other)"}}
+{"prompt": "Where is {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.answer(reason.what(slot.thing, \"is at\"))"}}
+{"prompt": "Where is the {thing}?", "completion": {"think": "They ask where something is. Find where it is in, and where that is.", "code": "speech.answer(reason.what(slot.thing, \"is at\"))"}}
+{"prompt": "Is {person} in the {place}?", "completion": {"think": "They ask whether someone is in a place. Check where they are.", "code": "speech.answer(reason.check(slot.person, \"is at\", slot.place))"}}
+{"prompt": "What is {person} carrying?", "completion": {"think": "They ask what someone carries: whatever is in them.", "code": "speech.answer(reason.each(\"is in\", slot.person))"}}
+{"prompt": "How many objects is {person} carrying?", "completion": {"think": "They ask how many things someone carries. Count what is in them.", "code": "speech.answer(reason.what(reason.count(\"is in\", slot.person), \"in words\"))"}}
+{"subject": "0", "relation": "in words", "object": "none"}
+{"subject": "mice", "relation": "is plural of", "object": "mouse"}
+{"subject": "cats", "relation": "is plural of", "object": "cat"}
+{"subject": "wolves", "relation": "is plural of", "object": "wolf"}
+{"subject": "sheep", "relation": "is plural of", "object": "sheep"}
 {"prompt": "{kind} are afraid of {other}.", "completion": {"think": "They tell me what a kind of animal is afraid of. Remember it of one of them.", "code": "reason.tell(reason.what(slot.kind, \"is plural of\"), \"afraid of\", reason.what(slot.other, \"is plural of\"))"}}
 {"prompt": "{name} is a {kind}.", "completion": {"think": "They tell me what kind of thing someone is.", "code": "reason.tell(slot.name, \"is\", slot.kind)"}}
-{"prompt": "What is {name} afraid of?", "completion": {"think": "They ask what someone is afraid of. What kind are they, and what is that kind afraid of?", "code": "speech.say(reason.what(slot.name, \"afraid of\"))"}}
+{"prompt": "What is {name} afraid of?", "completion": {"think": "They ask what someone is afraid of. What kind are they, and what is that kind afraid of?", "code": "speech.answer(reason.what(slot.name, \"afraid of\"))"}}
+{"subject": "a swan", "relation": "is a", "object": "bird"}
+{"subject": "a rhino", "relation": "is a", "object": "mammal"}
+{"rule": "{x} has color {c} if {x} is {k} and {k} is animal and {y} is {k} and {y} is {c} and {c} is color"}
+{"prompt": "{name} is {color:color}.", "completion": {"think": "They tell me what color someone is.", "code": "reason.tell(slot.name, \"is\", slot.color)"}}
+{"rule": "{x} north of {y} if {y} south of {x}"}
+{"prompt": "The {place} is north of the {other}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"north of\", slot.other)"}}
+{"prompt": "What is the {place} north of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"north of\"))"}}
+{"prompt": "What is north of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"north of\", slot.place))"}}
+{"rule": "{x} south of {y} if {y} north of {x}"}
+{"prompt": "The {place} is south of the {other}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"south of\", slot.other)"}}
+{"prompt": "What is the {place} south of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"south of\"))"}}
+{"prompt": "What is south of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"south of\", slot.place))"}}
+{"rule": "{x} east of {y} if {y} west of {x}"}
+{"prompt": "The {place} is east of the {other}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"east of\", slot.other)"}}
+{"prompt": "What is the {place} east of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"east of\"))"}}
+{"prompt": "What is east of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"east of\", slot.place))"}}
+{"rule": "{x} west of {y} if {y} east of {x}"}
+{"prompt": "The {place} is west of the {other}.", "completion": {"think": "They tell me where one place is from another.", "code": "reason.tell(slot.place, \"west of\", slot.other)"}}
+{"prompt": "What is the {place} west of?", "completion": {"think": "They ask what a place is that way from.", "code": "speech.answer(reason.what(slot.place, \"west of\"))"}}
+{"prompt": "What is west of the {place}?", "completion": {"think": "They ask what is that way from a place.", "code": "speech.answer(reason.which(\"west of\", slot.place))"}}
+{"prompt": "The {shape} is to the left of the {other}.", "completion": {"think": "They tell me where one shape is from another, so I know where that one is from it too.", "code": "reason.tell(slot.shape, \"left of\", slot.other)\nreason.tell(slot.other, \"right of\", slot.shape)"}}
+{"prompt": "Is the {shape} to the left of the {other}?", "completion": {"think": "They ask where one shape is from another.", "code": "speech.answer(reason.check(slot.shape, \"is left of\", slot.other))"}}
+{"rule": "{x} is left of {z} if {x} left of {z}"}
+{"rule": "{x} is left of {z} if {x} left of {y} and {y} is left of {z}"}
+{"rule": "{x} is left of {z} if {x} above {y} and {y} is left of {z}"}
+{"rule": "{x} is left of {z} if {x} below {y} and {y} is left of {z}"}
+{"rule": "{x} is left of {z} if {x} left of {y} and {y} above {z}"}
+{"rule": "{x} is left of {z} if {x} left of {y} and {y} below {z}"}
+{"prompt": "The {shape} is to the right of the {other}.", "completion": {"think": "They tell me where one shape is from another, so I know where that one is from it too.", "code": "reason.tell(slot.shape, \"right of\", slot.other)\nreason.tell(slot.other, \"left of\", slot.shape)"}}
+{"prompt": "Is the {shape} to the right of the {other}?", "completion": {"think": "They ask where one shape is from another.", "code": "speech.answer(reason.check(slot.shape, \"is right of\", slot.other))"}}
+{"rule": "{x} is right of {z} if {x} right of {z}"}
+{"rule": "{x} is right of {z} if {x} right of {y} and {y} is right of {z}"}
+{"rule": "{x} is right of {z} if {x} above {y} and {y} is right of {z}"}
+{"rule": "{x} is right of {z} if {x} below {y} and {y} is right of {z}"}
+{"rule": "{x} is right of {z} if {x} right of {y} and {y} above {z}"}
+{"rule": "{x} is right of {z} if {x} right of {y} and {y} below {z}"}
+{"prompt": "The {shape} is above the {other}.", "completion": {"think": "They tell me where one shape is from another, so I know where that one is from it too.", "code": "reason.tell(slot.shape, \"above\", slot.other)\nreason.tell(slot.other, \"below\", slot.shape)"}}
+{"prompt": "Is the {shape} above the {other}?", "completion": {"think": "They ask where one shape is from another.", "code": "speech.answer(reason.check(slot.shape, \"is above\", slot.other))"}}
+{"rule": "{x} is above {z} if {x} above {z}"}
+{"rule": "{x} is above {z} if {x} above {y} and {y} is above {z}"}
+{"rule": "{x} is above {z} if {x} left of {y} and {y} is above {z}"}
+{"rule": "{x} is above {z} if {x} right of {y} and {y} is above {z}"}
+{"rule": "{x} is above {z} if {x} above {y} and {y} left of {z}"}
+{"rule": "{x} is above {z} if {x} above {y} and {y} right of {z}"}
+{"prompt": "The {shape} is below the {other}.", "completion": {"think": "They tell me where one shape is from another, so I know where that one is from it too.", "code": "reason.tell(slot.shape, \"below\", slot.other)\nreason.tell(slot.other, \"above\", slot.shape)"}}
+{"prompt": "Is the {shape} below the {other}?", "completion": {"think": "They ask where one shape is from another.", "code": "speech.answer(reason.check(slot.shape, \"is below\", slot.other))"}}
+{"rule": "{x} is below {z} if {x} below {z}"}
+{"rule": "{x} is below {z} if {x} below {y} and {y} is below {z}"}
+{"rule": "{x} is below {z} if {x} left of {y} and {y} is below {z}"}
+{"rule": "{x} is below {z} if {x} right of {y} and {y} is below {z}"}
+{"rule": "{x} is below {z} if {x} below {y} and {y} left of {z}"}
+{"rule": "{x} is below {z} if {x} below {y} and {y} right of {z}"}
+{"rule": "{x} bigger than {y} if {y} fits inside {x}"}
+{"rule": "{x} fits inside {y} if {y} bigger than {x}"}
+{"rule": "{x} bigger than {z} if {x} bigger than {y} and {y} bigger than {z}"}
+{"prompt": "The {thing} is bigger than the {other}.", "completion": {"think": "They tell me one thing is bigger than another.", "code": "reason.tell(slot.thing, \"bigger than\", slot.other)"}}
+{"prompt": "The {thing} fits inside the {other}.", "completion": {"think": "They tell me one thing fits inside another.", "code": "reason.tell(slot.thing, \"fits inside\", slot.other)"}}
+{"prompt": "Is the {thing} bigger than the {other}?", "completion": {"think": "They ask whether one thing is bigger than another.", "code": "speech.answer(reason.check(slot.thing, \"bigger than\", slot.other))"}}
+{"prompt": "Does the {thing} fit in the {other}?", "completion": {"think": "They ask whether one thing fits in another.", "code": "speech.answer(reason.check(slot.thing, \"fits inside\", slot.other))"}}
+{"rule": "{x} will go to kitchen if {x} is hungry"}
+{"rule": "{x} will go to kitchen if {x} is thirsty"}
+{"rule": "{x} will go to bedroom if {x} is tired"}
+{"rule": "{x} will go to garden if {x} is bored"}
+{"prompt": "Where will {person} go?", "completion": {"think": "They ask where someone will go. What do they feel, and where does that send them?", "code": "speech.answer(reason.what(slot.person, \"will go to\"))"}}
+{"prompt": "Why did {person} go to the {place}?", "completion": {"think": "They ask why someone did something. How do they feel?", "code": "speech.answer(reason.what(slot.person, \"feels\"))"}}
+{"prompt": "Why did {person} get the {thing}?", "completion": {"think": "They ask why someone did something. How do they feel?", "code": "speech.answer(reason.what(slot.person, \"feels\"))"}}

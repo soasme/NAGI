@@ -1,11 +1,11 @@
 """bAbI: stories and questions that need reasoning over what was said.
 
 Nagi learns its curriculum and ``bench/babi.jsonl``: how to read the
-stories' sentences (prompts with slots), two rules for where things are,
-and plurals. Deduction ("Gertrude is a sheep", "sheep are afraid of
-wolves") needs nothing new: the curriculum already teaches that a thing does
-what its kind does. Then Nagi hears each test story, sentence by sentence,
-and answers its questions::
+stories' sentences (prompts with slots), and rules for where things are,
+directions, positions, sizes and motives. Deduction ("Gertrude is a sheep",
+"sheep are afraid of wolves") needs nothing new: the curriculum already
+teaches that a thing does what its kind does. Then Nagi hears each test
+story, sentence by sentence, and answers its questions::
 
     uv run python bench/babi.py
 
@@ -28,8 +28,18 @@ LESSON = Path(__file__).with_name("babi.jsonl")
 TASKS = {
     1: "single-supporting-fact",
     2: "two-supporting-facts",
+    4: "two-arg-relations",
     6: "yes-no-questions",
+    7: "counting",
+    8: "lists-sets",
+    9: "simple-negation",
+    11: "basic-coreference",
+    12: "conjunction",
     15: "basic-deduction",
+    16: "basic-induction",
+    17: "positional-reasoning",
+    18: "size-reasoning",
+    20: "agents-motivations",
 }
 
 
@@ -51,6 +61,11 @@ def stories(task: int) -> list[list[tuple[str, str | None]]]:
     return found
 
 
+def words(text: str) -> set[str]:
+    """An answer's words, so "milk and apple" is "apple,milk"."""
+    return {normalize(w) for w in text.split()} - {"and", ""}
+
+
 def main() -> None:
     brain = Brain()
     for asset in curriculum():
@@ -66,7 +81,7 @@ def main() -> None:
                 unread += turn.said == ["...?"]
                 if answer is not None:
                     asked += 1
-                    right += normalize(turn.said[-1]) == normalize(answer)
+                    right += words(turn.said[-1]) == words(answer.replace(",", " "))
         print(f"task {task:2} {name:24} {right / asked:6.1%} of {asked}"
               f"  ({unread} sentences not understood, {time.time() - start:.1f}s)")
 

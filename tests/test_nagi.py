@@ -363,6 +363,15 @@ def test_rules_that_lead_back_to_themselves_end():
     assert list(knowledge.prove(("whale", "is", "fish"))) == []
 
 
+def test_a_rule_can_be_used_twice_in_one_proof():
+    knowledge = Knowledge([], [])
+    knowledge.tell("box", "fits inside", "chest")
+    knowledge.tell("chocolate", "fits inside", "box")
+    knowledge.rule("{x} bigger than {y} if {y} fits inside {x}")
+    knowledge.rule("{x} bigger than {z} if {x} bigger than {y} and {y} bigger than {z}")
+    assert knowledge.holds("chest", "bigger than", "chocolate")
+
+
 def test_update_replaces_what_was_known():
     knowledge = Knowledge([], [])
     knowledge.update("Mary", "is in", "the kitchen")
