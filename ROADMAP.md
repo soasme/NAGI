@@ -200,9 +200,11 @@ plugins supply the domain: modules with contracts, rules, and specs.
 - ✅ **Facts and rules**: facts are triples, rules are sentences with
   `{variables}` (a relation can be a variable too), both taught by learners
   or told in conversation. Backward chaining answers, and the proof becomes
-  the turn's thoughts. bAbI tasks 1, 2, 6 and 15 score 100%. Still to come:
-  forward chaining, step results as facts, and word forms (bAbI's "mice"
-  needs a taught plural today).
+  the turn's thoughts. Facts and rules are tried newest first, so a later
+  lesson refines an earlier one. 14 of bAbI's 20 tasks score 100%. Still to
+  come: forward chaining or tabling (a failed proof searches its whole
+  budget), step results as facts, and word forms (bAbI's "mice" needs a
+  taught plural today).
 - **Contract planning**: type annotations are contracts
   (`parse(turn, text: Text) -> Date`). The planner chains calls from what
   is known to the goal type, best-first within a budget, ordered by learned
@@ -295,15 +297,12 @@ own evals. CLINC150 (150 assistant intents and out-of-scope questions,
 | Bigram capture | 69.1% | 66.4% | 75.3% |
 | + words weighed by 1 + IDF ✅ | 76.1% | 81.7% | 82.9% |
 
-bAbI (stories and questions; Nagi is taught `bench/babi.jsonl`, 28 sentence
-forms with slots, two rules and four plurals, on top of the curriculum):
-
-| Task | Accuracy |
-|---|---|
-| 1 single supporting fact | 100% |
-| 2 two supporting facts | 100% |
-| 6 yes/no questions | 100% |
-| 15 basic deduction | 100% |
+bAbI (stories and questions; Nagi is taught `bench/babi.jsonl`, sentence
+forms with slots and the rules they need, on top of the curriculum). Tasks
+1, 2, 4, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18 and 20 score 100% of 1000
+each. Not yet tried: 3 (three supporting facts needs time order), 5
+(three-argument relations), 10 (indefinite knowledge, "maybe"), 13
+(compound coreference), 14 (time reasoning) and 19 (path finding).
 
 What the runs showed:
 
@@ -325,6 +324,15 @@ What the runs showed:
   whole sentence; a dearer skip cost CLINC more than it saved. What stops
   "what time is it" fitting "what is a {thing}" is that a response reading
   a slot needs it heard.
+- Rules that call each other freely blow up a depth-first proof: task 17's
+  inverse, transitive and cross-axis rules ran out of budget before trying
+  the plain transitive one. Telling both directions, and deriving `is left
+  of` only from told `left of` facts, keeps every step on a fact and
+  scores 100%. Rules must be written with the search in mind, as in
+  Prolog.
+- Typed slots were first checked after reading, so a typed reading could
+  lose to an untyped one and be thrown away. Checked while reading, they
+  cost nothing, since knowledge vouches for them.
 - Teaching 15,000 prompts takes about 40 s, nearly all of it retraining the
   tokenizer; understanding takes about 3.5 ms a turn over 150 intents.
 - On ARC-Easy and GSM8K the shipped curriculum declines every question
