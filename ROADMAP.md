@@ -202,7 +202,9 @@ plugins supply the domain: modules with contracts, rules, and specs.
   or told in conversation. Backward chaining answers, and the proof becomes
   the turn's thoughts. Facts and rules are tried newest first, so a later
   lesson refines an earlier one. Facts are indexed by each term, so a goal
-  looks only at facts that could match. 15 of bAbI's 20 tasks score 100%.
+  looks only at facts that could match. A relation starting "not" holds
+  when the rest can't be shown, and rules can be told in conversation
+  (`reason.rule`). 15 of bAbI's 20 tasks score 100%, and ProofWriter 99.96%.
   Still to come: forward chaining, step results as facts, and word forms
   (bAbI's "mice" needs a taught plural today).
 - **Contract planning**: type annotations are contracts
@@ -306,6 +308,14 @@ Not yet tried: 3 (three supporting facts) and 14 (time reasoning) need
 facts in time order; 10 (indefinite knowledge) needs "maybe", which `check`
 can't say; 19 (path finding) needs answers built from steps.
 
+ProofWriter (closed world, depth-5 test set: 985 theories, 20,058
+questions; Nagi is taught how to learn, the theories' words as facts, and
+one prompt for each of the 146 sentence shapes in the train split):
+
+| Proof depth | 0 | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|---|
+| Accuracy | 100% | 100% | 100% | 100% | 99.9% | 99.7% |
+
 What the runs showed:
 
 - Backing the bigrams off to single tokens raised CLINC in-scope accuracy
@@ -332,6 +342,11 @@ What the runs showed:
   of` only from told `left of` facts, keeps every step on a fact and
   scores 100%. Rules must be written with the search in mind, as in
   Prolog.
+- With the whole curriculum, ProofWriter slowed sixfold and missed deep
+  proofs: "a thing does what its kind does" turns each goal about Dave into
+  a search over everything Dave is. A theory is meant to be all there is,
+  so the bench teaches only how to learn. Prior knowledge that is general
+  enough to always apply is also general enough to always cost.
 - Typed slots were first checked after reading, so a typed reading could
   lose to an untyped one and be thrown away. Checked while reading, they
   cost nothing, since knowledge vouches for them.

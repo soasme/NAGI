@@ -9,12 +9,13 @@ to the turn's thoughts. Conversation can add to what Nagi knows::
     speech.say(reason.check(slot.thing, "is", slot.kind))  # "Is a whale a fish?"
     speech.say(reason.each("is in", slot.person))         # "What is Mary carrying?"
     speech.say(reason.count("is in", slot.person))        # "How many objects is Mary carrying?"
+    reason.rule("{x}", "is", slot.b, "{x}", "is", slot.a)  # "All {a} things are {b}."
 """
 
 from nagi.code import Turn
 from nagi.knowledge import said, term
 
-__all__ = ["check", "count", "each", "forget", "tell", "update", "what", "which"]
+__all__ = ["check", "count", "each", "forget", "rule", "tell", "update", "what", "which"]
 
 UNKNOWN = "I don't know"
 NOTHING = "nothing"
@@ -74,6 +75,15 @@ def forget(turn: Turn, subject: str, relation: str, object: str) -> None:
 
 def tell(turn: Turn, subject: str, relation: str, object: str) -> None:
     turn.thoughts.append("now I know " + said(turn.knowledge.tell(subject, relation, object)))
+
+
+def rule(turn: Turn, *terms: str) -> None:
+    """Know a rule told as triples, the conclusion first: subject, relation, object, subject, ..."""
+    if len(terms) < 6 or len(terms) % 3:
+        raise ValueError("a rule is a conclusion and conditions, each a subject, relation and object")
+    then, *conditions = (tuple(map(term, terms[at : at + 3])) for at in range(0, len(terms), 3))
+    turn.knowledge.suppose(then, conditions)
+    turn.thoughts.append(f"now I know {said(then)} if " + " and ".join(map(said, conditions)))
 
 
 def update(turn: Turn, subject: str, relation: str, object: str) -> None:

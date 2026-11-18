@@ -12,7 +12,8 @@ between them, so a term in a rule is one word or a variable.
 
 Nagi answers by backward chaining: to show a triple, it finds a fact that
 matches, or a rule whose conclusion matches, then shows the rule's
-conditions in turn. Facts and rules are both tried newest first, so a later
+conditions in turn. A relation starting "not" holds when the rest can't be
+shown: "cat not is big" holds unless "cat is big" does. Facts and rules are both tried newest first, so a later
 lesson refines an earlier one, as a later learner does. Each proof is the facts it used and what it
 concluded from them, in order, so it can be thought out loud.
 """
@@ -79,7 +80,11 @@ class Knowledge:
         then, _, conditions = text.partition(" if ")
         if not conditions:
             raise ValueError(f'a rule is "<conclusion> if <condition> and <condition>": {text!r}')
-        rule = {"then": list(triple(then)), "if": [list(triple(c)) for c in conditions.split(" and ")]}
+        self.suppose(triple(then), [triple(c) for c in conditions.split(" and ")])
+
+    def suppose(self, then: Triple, conditions: list[Triple]) -> None:
+        """Know that ``then`` holds whenever the conditions do."""
+        rule = {"then": list(then), "if": [list(c) for c in conditions]}
         if rule not in self.rules:
             self.rules.append(rule)
 
@@ -103,8 +108,15 @@ class Knowledge:
             yield bound, []
             return
         resolved = [resolve(g, bound) for g in goals]
-        at = max(range(len(goals)), key=lambda i: sum(not is_variable(t) for t in resolved[i]))
+        ready = lambda g: not g[1].startswith("not ") or not any(map(is_variable, g))  # a negation waits for its terms
+        at = max(range(len(goals)), key=lambda i: (ready(resolved[i]), sum(not is_variable(t) for t in resolved[i])))
         goal, rest = resolved[at], goals[:at] + goals[at + 1 :]
+        if goal[1].startswith("not "):  # what can't be shown is not true
+            positive = goal[0], goal[1][4:], goal[2]
+            if next(self.show([positive], bound, [], depth, budget, index), None) is None:
+                for done, steps in self.show(rest, bound, stack, depth, budget, index):
+                    yield done, [f"I can't show {said(positive)}", *steps]
+            return
         shape = tuple("{}" if is_variable(t) else t for t in goal)
         if shape in stack:  # showing this needs showing itself first
             return

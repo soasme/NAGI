@@ -22,6 +22,7 @@ Responding is three separate stages: token in, intent capture, generate.
 """
 
 import copy
+import functools
 import hashlib
 import json
 from datetime import datetime
@@ -108,7 +109,7 @@ class Brain:
 
     def understand(self, text: str) -> tuple[str | None, list[str], dict[str, str]]:
         """The response Nagi would give, the words it read as not part of it, and its slots."""
-        kind_of = lambda words, kind: self.knowledge.holds(words, "is", kind)
+        kind_of = functools.cache(lambda words, kind: self.knowledge.holds(words, "is", kind))
         fits = capture(self.intents, tokenize(text, self.ranks), kind_of)
         name = choose(self.responses, fits)
         words = said(text)

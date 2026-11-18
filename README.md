@@ -85,7 +85,8 @@ fact is a subject, a relation and an object, compared as plain words, so
 "a whale is a mammal" is `whale | is | mammal`. A rule is a sentence of such
 triples with `{variables}`. To answer, Nagi chains backward: a matching
 fact (newest first), or a rule whose conclusion matches, whose conditions
-it then shows in turn. What it can't show is not true.
+it then shows in turn. What it can't show is not true, and a relation can
+say so: `cat | not is | big` holds unless `cat is big` can be shown.
 
 Responses reach it through the `reason` module, with slots:
 
@@ -99,6 +100,11 @@ Responses reach it through the `reason` module, with slots:
 | `reason.tell(subject, relation, object)` | knows a new fact |
 | `reason.update(subject, relation, object)` | the same, replacing what was known of the subject's relation |
 | `reason.forget(subject, relation, object)` | no longer knows the fact |
+| `reason.rule(subject, relation, object, ...)` | knows a rule: the conclusion's triple, then each condition's |
+
+So rules can be told, too: taught `"all {kind} things are {other}."` with
+`reason.rule("{x}", "is", slot.other, "{x}", "is", slot.kind)`, Nagi hears
+"All zorby things are blippy." and reasons with it.
 
 A proof is thought out loud: `nagi respond --think is a whale an animal`
 thinks `whale is mammal`, `mammal is animal`, `so whale is animal`, and says
@@ -225,9 +231,13 @@ measures intent capture on real assistant requests, out-of-scope ones
 included. bAbI measures reasoning over stories, with Nagi taught only
 `bench/babi.jsonl`: how to read the stories' sentences, and rules for where
 things are, directions, positions, sizes and motives. It answers 16 of the
-20 tasks, 15 of them at 100%.
+20 tasks, 15 of them at 100%. ProofWriter measures reasoning over rules
+told in English ("If someone is big then they are kind."), up to five steps
+deep, with Nagi taught only how to learn, the theories' words, and one
+prompt per sentence shape in the train split.
 
 ```console
 $ uv run python bench/clinc150.py
 $ uv run python bench/babi.py
+$ uv run python bench/proofwriter.py
 ```

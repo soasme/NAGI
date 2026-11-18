@@ -372,6 +372,17 @@ def test_a_rule_can_be_used_twice_in_one_proof():
     assert knowledge.holds("chest", "bigger than", "chocolate")
 
 
+def test_a_negated_relation_holds_when_the_rest_cannot_be_shown():
+    knowledge = Knowledge([], [])
+    knowledge.tell("cat", "is", "young")
+    knowledge.tell("dog", "is", "young")
+    knowledge.tell("dog", "is", "big")
+    knowledge.rule("{x} is small if {x} not is big and {x} is young")
+    assert knowledge.holds("cat", "is", "small")
+    assert not knowledge.holds("dog", "is", "small")
+    assert knowledge.holds("dog", "not is", "small")
+
+
 def test_update_replaces_what_was_known():
     knowledge = Knowledge([], [])
     knowledge.update("Mary", "is in", "the kitchen")
@@ -400,6 +411,18 @@ def test_nagi_reasons_out_loud():
     assert turn.thoughts == ["zorb is blip", "blip is orb", "so zorb is orb"]
     assert brain.respond("Is a zorb a fish?").said == ["no"]
     assert brain.memory["facts"][-2:] == [["zorb", "is", "blip"], ["blip", "is", "orb"]]
+
+
+def test_a_rule_can_be_told():
+    brain = greeter()
+    brain.learn(jsonl(
+        {"prompt": "all {kind} things are {other}.", "completion": {"code": 'reason.rule("{x}", "is", slot.other, "{x}", "is", slot.kind)'}},
+        {"prompt": "the {thing} is {kind}.", "completion": {"code": 'reason.tell(slot.thing, "is", slot.kind)'}},
+        {"prompt": "is the {thing} {kind}?", "completion": {"code": 'speech.say(reason.check(slot.thing, "is", slot.kind))'}},
+    ))
+    assert brain.respond("All zorby things are blippy.").thoughts[-1] == "now I know {x} is blippy if {x} is zorby"
+    brain.respond("The orb is zorby.")
+    assert brain.respond("Is the orb blippy?").said == ["yes"]
 
 
 def test_state_is_kept_between_turns():
